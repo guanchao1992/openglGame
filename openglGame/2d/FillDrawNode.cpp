@@ -26,7 +26,8 @@ void FillDrawNode::initFillDrawProgram()
 SPFillDrawNode FillDrawNode::create()
 {
 	SPFillDrawNode node = make_shared<FillDrawNode>();
-	node->init(node);
+	node->record(node);
+	node->init();
 	return node;
 }
 
@@ -46,11 +47,9 @@ FillDrawNode::~FillDrawNode()
 
 }
 
-void FillDrawNode::init(SPNode node)
+void FillDrawNode::init()
 {
-	Node::init(node);
 	_shader = GameApp::getInstance()->getShader("filldraw");
-
 
 }
 

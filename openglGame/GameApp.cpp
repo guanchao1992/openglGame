@@ -1,6 +1,7 @@
 #include "GameApp.h"
 #include<iostream>
-#include "FillDrawNode.h"
+#include "2d/FillDrawNode.h"
+
 GameApp::GameApp()
 {
 }
@@ -13,6 +14,7 @@ void GameApp::init()
 {
 	this->initShader();
 
+	/**/
 	//画格子
 	for (int x = 0; x < 20; ++x)
 	{
@@ -38,6 +40,9 @@ void GameApp::init()
 			this->addChild(fd);
 		}
 	}
+
+	_start = GameStart::create();
+	addChild(_start);
 }
 
 int GameApp::initShader()
@@ -60,9 +65,7 @@ int GameApp::initShader()
 
 	FillDrawNode::initFillDrawProgram();
 	//filldraw
-	auto app = GameApp::getInstance();
-
-	//glGetUniformLocation
+	//auto app = GameApp::getInstance();
 
 	return 0;
 }
@@ -156,6 +159,7 @@ void GameApp::reshape()
 
 void GameApp::update(float time)
 {
+	_start->update(time);
 }
 
 void GameApp::setViewSize(GLfloat widht, GLfloat height)
@@ -170,4 +174,57 @@ void GameApp::setProjectSize(GLfloat widht, GLfloat height)
 	_projectWidth = widht;
 	_projectHeight = height;
 	_reLoadView = true;
+}
+
+
+GLUSvoid GameApp::programKey(const GLUSboolean pressed, const GLUSint key)
+{
+	if (key == GLFW_KEY_UP || key == 'w' || key == 'W')
+	{ 
+		if (pressed)
+		{
+			printf("上键 按下");
+		}
+		else
+		{
+			printf("上键 弹起");
+		}
+		_start->onUp(pressed);
+	}
+	if (key == GLFW_KEY_DOWN || key == 's' || key == 'S')
+	{
+		if (pressed)
+		{
+			printf("下键 按下");
+		}
+		else
+		{
+			printf("下键 弹起");
+		}
+		_start->onDown(pressed);
+	}
+	if (key == GLFW_KEY_LEFT || key == 'a' || key == 'A')
+	{
+		if (pressed)
+		{
+			printf("左键 按下");
+		}
+		else
+		{
+			printf("左键 弹起");
+		}
+		_start->onLeft(pressed);
+	}
+	if (key == GLFW_KEY_RIGHT || key == 'd' || key == 'D')
+	{
+		if (pressed)
+		{
+			printf("右键 按下");
+		}
+		else
+		{
+			printf("右键 弹起");
+		}
+		_start->onRight(pressed);
+	}
 }

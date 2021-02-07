@@ -2,10 +2,11 @@
 #include <map>
 #include <memory>
 #include "GL/glus.h"
-#include "Shader.h"
+#include "Base/Shader.h"
 #include "Base/Singleton.h"
 #include <vector>
-#include "Node.h"
+#include "2d/Node.h"
+#include "GameStart.h"
 
 using namespace std;
 
@@ -26,6 +27,8 @@ public:
 	virtual void reshape();
 	//做一些绘制之外的其他操作
 	void update(float time);
+
+	GLUSvoid programKey(const GLUSboolean pressed, const GLUSint key);
 public:
 	GLint getProgram(const char*name);
 	SPShader getShader(const char*name);
@@ -51,5 +54,7 @@ protected:
 	GLfloat _projectHeight;		//设计高度
 
 	GLboolean _reLoadView;	//重新加载窗口
+public:
+	shared_ptr<GameStart> _start;
 };
 

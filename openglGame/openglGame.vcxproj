@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(SolutionDir)OpenGL_Libs\glew-2.1.0\lib\$(Platform);$(SolutionDir)OpenGL_Libs\glfw-3.3.2.bin.WIN32\lib-vc2017;$(SolutionDir)OpenGL_Libs\GLUS\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)OpenGL_Libs\glew-2.1.0\include;$(SolutionDir)OpenGL_Libs\glfw-3.3.2.bin.WIN32\include;$(SolutionDir)OpenGL_Libs\GLUS\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);$(ProjectDir);$(SolutionDir)OpenGL_Libs\glew-2.1.0\include;$(SolutionDir)OpenGL_Libs\glfw-3.3.2.bin.WIN32\include;$(SolutionDir)OpenGL_Libs\GLUS\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -155,25 +155,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Base\Singleton.cpp" />
-    <ClCompile Include="FillDrawNode.cpp" />
-    <ClCompile Include="GameApp.cpp" />
-    <ClCompile Include="Node.cpp" />
-    <ClCompile Include="openglGame.cpp" />
-    <ClCompile Include="Shader.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Base\Singleton.h" />
-    <ClInclude Include="Base\Size.h" />
-    <ClInclude Include="Base\Vector2.h" />
-    <ClInclude Include="Base\Vector3.h" />
-    <ClInclude Include="Base\Vector4.h" />
-    <ClInclude Include="FillDrawNode.h" />
-    <ClInclude Include="GameApp.h" />
-    <ClInclude Include="Node.h" />
-    <ClInclude Include="Shader.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\Shader\default.frag.glsl" />
     <None Include="..\Shader\default.vert.glsl" />
     <None Include="..\Shader\filldraw.frag.glsl" />
@@ -182,6 +163,27 @@
     <None Include="..\Shader\rendershadow.vert.glsl" />
     <None Include="..\Shader\useshadow.frag.glsl" />
     <None Include="..\Shader\useshadow.vert.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="2d\FillDrawNode.cpp" />
+    <ClCompile Include="2d\Node.cpp" />
+    <ClCompile Include="Base\Shader.cpp" />
+    <ClCompile Include="Base\Singleton.cpp" />
+    <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameStart.cpp" />
+    <ClCompile Include="openglGame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="2d\FillDrawNode.h" />
+    <ClInclude Include="2d\Node.h" />
+    <ClInclude Include="Base\Shader.h" />
+    <ClInclude Include="Base\Singleton.h" />
+    <ClInclude Include="Base\Size.h" />
+    <ClInclude Include="Base\Vector2.h" />
+    <ClInclude Include="Base\Vector3.h" />
+    <ClInclude Include="Base\Vector4.h" />
+    <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameStart.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

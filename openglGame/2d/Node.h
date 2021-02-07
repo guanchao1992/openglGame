@@ -5,13 +5,15 @@
 #include "Base/Vector2.h"
 #include "Base/Vector3.h"
 #include <vector>
-#include "Shader.h"
+#include "Base/Shader.h"
 #include "Base/Vector4.h"
 
 using namespace std;
 
 
 #define	StatementNode(ClassType);	class ClassType;typedef shared_ptr<ClassType> SP##ClassType;
+
+
 
 StatementNode(Node)
 class Node
@@ -22,8 +24,8 @@ protected:
 	//~Node() {};
 public:
 	static SPNode create();
+	void record(SPNode selfNode); //记录智能指针。该记录会在removeFromParent中删除。
 public:
-	virtual void init(SPNode selfNode);
 	virtual void reshape();
 	virtual void rander();
 	virtual void draw();
@@ -33,6 +35,7 @@ public:
 	void removeFromParent();
 	void removeChild(SPNode node);
 	void setPosition(const Vector2&pos);
+	void setPosition(float x, float y);
 	void setContentSize(const Size&size);
 	void setColor(const Vector4&color);
 

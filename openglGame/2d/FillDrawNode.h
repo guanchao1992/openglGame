@@ -17,7 +17,8 @@ public:
 	static SPFillDrawNode create();
 	~FillDrawNode();
 public:
-	virtual void init(SPNode node);
+	void init();
+
 	virtual void rander();
 	virtual void draw();
 

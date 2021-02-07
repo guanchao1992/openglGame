@@ -13,42 +13,15 @@
 #include "GameApp.h"
 
 #include "GL/glus.h"
-#include "FillDrawNode.h"
- /**
-  * The used shader program.
-  */
-//static GLUSprogram g_program;
 
-/**
- * The location of the vertex in the shader program.
- */
+#define VIEW_WIDTH 1000
+#define VIEW_HEIGHT 800
 
 GLUSboolean init(GLUSvoid)
 {
 	auto app = GameApp::getInstance();
 	app->init();
-
-	auto fd = FillDrawNode::create();
-	GameApp::getInstance()->addChild(fd);
-	fd->addVertex(Vector2(-0.5,0));
-	fd->addVertex(Vector2(0.5,0));
-	fd->addVertex(Vector2(0,0.5));
-	fd->setColor(Vector4(1, 0, 1, 1));
-	fd->enforceVertex();
-
-
-	auto fd2 = FillDrawNode::create();
-	GameApp::getInstance()->addChild(fd2);
-	fd2->addVertex(Vector2(-0.5, -0.5));
-	fd2->addVertex(Vector2(0.5, -0.5));
-	fd2->addVertex(Vector2(0, 0));
-	fd2->setColor(Vector4(0, 0, 1, 1));
-	fd2->enforceVertex();
-
-
-	fd->draw();
-	fd2->draw();
-
+	app->draw();
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	return GLUS_TRUE;
@@ -61,6 +34,7 @@ GLUSvoid reshape(GLUSint width, GLUSint height)
 	app->setViewSize(width, height);
 	app->reshape();
 
+	glClear(GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, width, height);
 }
 
@@ -72,8 +46,8 @@ GLUSboolean update(GLUSfloat time)
 	{
 		app->reshape();
 	}
-
 	app->draw();
+
 	glClear(GL_DEPTH_BUFFER_BIT);
 	GameApp::getInstance()->rander();
 	return GLUS_TRUE;
@@ -116,7 +90,13 @@ int main(int argc, char* argv[])
 
 	glusWindowSetTerminateFunc(terminate);
 
-	if (!glusWindowCreate("GLUS Example Window", 640, 480, GLUS_FALSE, GLUS_FALSE, eglConfigAttributes, eglContextAttributes, 0))
+	
+	glusWindowSetKeyFunc([](const GLUSboolean pressed, const GLUSint key) {
+		auto app = GameApp::getInstance();
+		app->programKey(pressed, key);
+	});
+
+	if (!glusWindowCreate("GLUS Example Window", VIEW_WIDTH, VIEW_HEIGHT, GLUS_FALSE, GLUS_FALSE, eglConfigAttributes, eglContextAttributes, 0))
 	{
 		printf("Could not create window!\n");
 		return -1;

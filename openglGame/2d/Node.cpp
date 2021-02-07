@@ -4,11 +4,11 @@
 SPNode Node::create()
 {
 	SPNode node = make_shared<Node>();
-	node->init(node);
+	node->record(node);
 	return node;
 }
 
-void Node::init(SPNode selfNode)
+void Node::record(SPNode selfNode)
 {
 	_this = selfNode;
 }
@@ -72,6 +72,13 @@ void Node::removeFromParent()
 void Node::setPosition(const Vector2&pos)
 {
 	_position = pos;
+	_redraw = true;
+}
+
+void Node::setPosition(float x, float y)
+{
+	_position._x = x;
+	_position._y = y;
 	_redraw = true;
 }
 

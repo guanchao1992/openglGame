@@ -15,55 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="openglGame.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GameApp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\Singleton.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="FillDrawNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="GameApp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Singleton.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Vector2.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Size.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="FillDrawNode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Vector4.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Vector3.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\Shader\rendershadow.frag.glsl">
       <Filter>资源文件</Filter>
     </None>
@@ -88,5 +39,60 @@
     <None Include="..\Shader\default.vert.glsl">
       <Filter>资源文件</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Base\Shader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\Singleton.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameApp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStart.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="openglGame.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\FillDrawNode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\Node.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Base\Shader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Singleton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Size.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Vector2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Vector3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Vector4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameApp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStart.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\FillDrawNode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\Node.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

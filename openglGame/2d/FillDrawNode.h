@@ -13,14 +13,14 @@ typedef struct FillDrawVertex__
 StatementNode(FillDrawNode)
 class FillDrawNode :public Node
 {
+	StatementCreate(FillDrawNode)
 public:
-	static SPFillDrawNode create();
 	~FillDrawNode();
 public:
 	void init();
 
 	virtual void rander();
-	virtual void draw();
+	virtual void draw(const GLfloat *parentTransform);
 
 public:
 	static void initFillDrawProgram();

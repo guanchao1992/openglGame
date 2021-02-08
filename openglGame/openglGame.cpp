@@ -17,12 +17,23 @@
 #define VIEW_WIDTH 1000
 #define VIEW_HEIGHT 800
 
+const static GLfloat biasMatrix[] = {
+	1.0f, 0.0f, 0.0f, 0.0f,
+	0.0f, 1.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 0.0f, 1.0f };
+
 GLUSboolean init(GLUSvoid)
 {
 	auto app = GameApp::getInstance();
 	app->init();
-	app->draw();
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+	// Basic blending equation.
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	app->visit(biasMatrix, false);
 
 	return GLUS_TRUE;
 }
@@ -34,7 +45,6 @@ GLUSvoid reshape(GLUSint width, GLUSint height)
 	app->setViewSize(width, height);
 	app->reshape();
 
-	glClear(GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, width, height);
 }
 
@@ -46,10 +56,13 @@ GLUSboolean update(GLUSfloat time)
 	{
 		app->reshape();
 	}
-	app->draw();
+	app->visit(biasMatrix, app->isReLoadView());
 
-	glClear(GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+
 	GameApp::getInstance()->rander();
+
 	return GLUS_TRUE;
 }
 

@@ -62,6 +62,12 @@
     <ClCompile Include="2d\Node.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="EgameController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\DrawBoxNode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\Shader.h">
@@ -92,6 +98,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="2d\Node.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EgameController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\DrawBoxNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

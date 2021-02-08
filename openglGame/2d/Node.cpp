@@ -1,13 +1,6 @@
 #include "Node.h"
 
 
-SPNode Node::create()
-{
-	SPNode node = make_shared<Node>();
-	node->record(node);
-	return node;
-}
-
 void Node::record(SPNode selfNode)
 {
 	_this = selfNode;
@@ -19,7 +12,7 @@ void Node::reshape()
 	{
 		(*it)->reshape();
 	}
-	_redraw = true;
+	recodeDraw();
 
 	//do something
 }
@@ -34,13 +27,34 @@ void Node::rander()
 	//do something
 }
 
-//如果发生了更改，需要重新
-void Node::draw()
+void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 {
+	if (_revisit || true)
+	{
+		parentFlag = true;
+		_revisit = false;
+		GLfloat selfMatrix[16] =
+		{
+			1.0f ,0.0f ,0.0f,0.0f,
+			0.0f ,1.0f ,0.0f,0.0f,
+			0.0f ,0.0f ,1.0f,0.0f,
+			getPosition()._x ,getPosition()._y ,0.0f,1.0f,
+		};
+
+		glusMatrix4x4Multiplyf(_transform, parentTransform, selfMatrix);
+	}
+
+	this->draw(parentTransform);
+
 	for (auto it = _childs->begin(); it != _childs->end(); it++)
 	{
-		(*it)->draw();
+		(*it)->visit(_transform, parentFlag);
 	}
+}
+
+//如果发生了更改，需要重新
+void Node::draw(const GLfloat *parentTransform)
+{
 	//do something
 }
 
@@ -68,28 +82,53 @@ void Node::removeFromParent()
 	this->_parent->removeChild(this->_this);
 }
 
+vector<SPNode> Node::getChilds()
+{
+	return *_childs;
+}
+
 
 void Node::setPosition(const Vector2&pos)
 {
-	_position = pos;
-	_redraw = true;
+	setPosition(pos._x, pos._y);
 }
 
 void Node::setPosition(float x, float y)
 {
 	_position._x = x;
 	_position._y = y;
-	_redraw = true;
+	_revisit = true;
+	recodeDraw();
 }
 
 void Node::setContentSize(const Size&size)
 {
 	_contentSize = size;
-	_redraw = true;
+	_revisit = true;
+	recodeDraw();
 }
 
 void Node::setColor(const Vector4&color)
 {
 	_color = color;
+	recodeDraw();
+}
+
+void Node::setColor(float r, float g, float b, float l)
+{
+	_color.setVector(r, g, b, l);
+	recodeDraw();
+}
+
+void Node::recodeDraw()
+{
+	if (_redraw)
+	{
+		return;
+	}
 	_redraw = true;
+	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	{
+		(*it)->recodeDraw();
+	}
 }

@@ -23,7 +23,7 @@ public:
 
 	virtual void init();
 	virtual void rander();
-	virtual void draw();
+	virtual void draw(const GLfloat *parentTransform);
 	virtual void reshape();
 	//做一些绘制之外的其他操作
 	void update(float time);
@@ -44,14 +44,15 @@ public:
 protected:
 	shared_ptr<map<string, SPShader>> _shaders = make_shared<map<string, SPShader>>();
 
-	GLfloat _projectionMatrix[16];
+	//GLfloat _projectionMatrix[16];
 	GLfloat _viewMatrix[16];
 	GLfloat _modelMatrix[16];
+	GLfloat _modelViewMatrix[16];
 
 	GLfloat _viewWidth;			//窗口宽度
 	GLfloat _viewHeight;		//窗口高度
-	GLfloat _projectWidth;		//设计宽度
-	GLfloat _projectHeight;		//设计高度
+	GLfloat _projectWidth;		//设计宽度，未生效
+	GLfloat _projectHeight;		//设计高度，未生效
 
 	GLboolean _reLoadView;	//重新加载窗口
 public:

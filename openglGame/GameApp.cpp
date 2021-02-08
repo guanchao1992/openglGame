@@ -14,7 +14,6 @@ void GameApp::init()
 {
 	this->initShader();
 
-	/**/
 	//画格子
 	for (int x = 0; x < 20; ++x)
 	{
@@ -47,7 +46,6 @@ void GameApp::init()
 
 int GameApp::initShader()
 {
-	glusMatrix4x4Identityf(_projectionMatrix);
 	glusMatrix4x4Identityf(_viewMatrix);
 	glusMatrix4x4Identityf(_modelMatrix);
 
@@ -114,9 +112,9 @@ void GameApp::rander()
 	//do something
 }
 
-void GameApp::draw()
+void GameApp::draw(const GLfloat *parentTransform)
 {
-	Node::draw();
+	Node::draw(parentTransform);
 
 	//do something
 }
@@ -126,14 +124,6 @@ void GameApp::reshape()
 	Node::reshape();
 	_reLoadView = false;
 
-	GLfloat biasMatrix[] = {
-		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f };
-
-	//ModelViewProject = Project * View * Model;
-	GLfloat modelViewProjectionMatrix[16];
 	GLfloat modelViewMatrix[16];
 
 	GLfloat viewMatrix[] = { 
@@ -141,25 +131,35 @@ void GameApp::reshape()
 		0.0f, 2 / _viewHeight, 0.0f, 0.0f,
 		0.0f, 0.0f, 1.f, 0.0f,
 		-1, -1, 0.0f, 1.0f };
+
 	glusMatrix4x4Copyf(_viewMatrix, viewMatrix, false);
 
-	glusMatrix4x4Multiplyf(modelViewMatrix, _viewMatrix, _modelMatrix);
-	glusMatrix4x4Multiplyf(modelViewProjectionMatrix, _projectionMatrix, modelViewMatrix);
-
-	glusMatrix4x4Multiplyf(modelViewProjectionMatrix, modelViewProjectionMatrix, biasMatrix);
+	glusMatrix4x4Multiplyf(_modelViewMatrix, _viewMatrix, _modelMatrix);
 
 	for (auto it = _shaders->begin(); it != _shaders->end(); it++)
 	{
-		GLint g_modelViewProjectionMatrix = glGetUniformLocation(it->second->getProgram(), "u_modelViewProjectionMatrix");
-
-		glUniformMatrix4fv(g_modelViewProjectionMatrix, 1, GL_FALSE, modelViewProjectionMatrix);
-
+		GLint g_modelViewMatrix = glGetUniformLocation(it->second->getProgram(), "u_modelViewMatrix");
+		glUniformMatrix4fv(g_modelViewMatrix, 1, GL_FALSE, _modelViewMatrix);
 	}
 }
 
 void GameApp::update(float time)
 {
 	_start->update(time);
+
+
+	static float t_time = 0, f;
+	static int frame = 0;
+	static int timebase = 0;
+	char s[256] = { 0 };
+	frame++;
+	t_time = t_time + time;
+	if (t_time - timebase > 1) {
+		sprintf_s(s, 256, "FPS:%4.2f", frame * 1.0 / (t_time - timebase));
+		timebase = t_time;
+		frame = 0;
+		printf("帧率为：%s\n", s);
+	}
 }
 
 void GameApp::setViewSize(GLfloat widht, GLfloat height)
@@ -226,5 +226,17 @@ GLUSvoid GameApp::programKey(const GLUSboolean pressed, const GLUSint key)
 			printf("右键 弹起");
 		}
 		_start->onRight(pressed);
+	}
+	if (key == GLFW_KEY_SPACE)
+	{
+		if (pressed)
+		{
+			printf("右键 按下");
+		}
+		else
+		{
+			printf("右键 弹起");
+		}
+		_start->onRotate(pressed);
 	}
 }

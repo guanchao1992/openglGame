@@ -23,14 +23,6 @@ void FillDrawNode::initFillDrawProgram()
 	//glUniform4fv(g_colorLocation, 1, colorV4);
 }
 
-SPFillDrawNode FillDrawNode::create()
-{
-	SPFillDrawNode node = make_shared<FillDrawNode>();
-	node->record(node);
-	node->init();
-	return node;
-}
-
 FillDrawNode::~FillDrawNode()
 {
 	if (_verticesVBO != -1)
@@ -56,27 +48,42 @@ void FillDrawNode::init()
 void FillDrawNode::rander()
 {
 	Node::rander();
+	if (!_shader)
+	{
+		return;
+	}
 
 	glUseProgram(_shader->getProgram());
 	glBindVertexArray(_verticesVAO);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexs.size());
 }
 
-void FillDrawNode::draw()
+void FillDrawNode::draw(const GLfloat* parentTransform)
 {
-	Node::draw();
-	if (!_redraw)
+	Node::draw(parentTransform);
+	if (!_shader)
 	{
 		return;
 	}
+	if (!_redraw)
+	{
+		//return;
+	}
 	_redraw = false;
-
 
 	int i = 0;
 	for (auto it = _vertexs.begin(); it != _vertexs.end(); it++)
 	{
-		pfdVectexs.get()[i].vertexs[0] = it->_x + _position._x;
-		pfdVectexs.get()[i].vertexs[1] = it->_y + _position._y;
+		GLfloat mtx[] = {
+			1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			it->_x + _position._x ,it->_y + _position._y , 0.0f, 1.0f };
+
+		glusMatrix4x4Multiplyf(mtx, parentTransform, mtx);
+
+		pfdVectexs.get()[i].vertexs[0] = mtx[12];
+		pfdVectexs.get()[i].vertexs[1] = mtx[13];
 		pfdVectexs.get()[i].vertexs[2] = 0.0f;
 		pfdVectexs.get()[i].vertexs[3] = 1.0f;
 
@@ -88,6 +95,7 @@ void FillDrawNode::draw()
 	}
 
 	GLint program = _shader->getProgram();
+
 	glUseProgram(program);
 
 	//glGenBuffers(1, &_verticesVBO);

@@ -1,4 +1,5 @@
 #include "Node.h"
+#include "GameApp.h"
 
 
 void Node::record(SPNode selfNode)
@@ -33,6 +34,7 @@ void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 	{
 		parentFlag = true;
 		_revisit = false;
+		_redraw = true;
 		GLfloat selfMatrix[16] =
 		{
 			1.0f ,0.0f ,0.0f,0.0f,
@@ -43,6 +45,7 @@ void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 
 		glusMatrix4x4Multiplyf(_transform, parentTransform, selfMatrix);
 	}
+
 
 	this->draw(parentTransform);
 

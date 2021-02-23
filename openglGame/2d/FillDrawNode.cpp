@@ -9,7 +9,7 @@ static int fdVectexsSize = 64;
 GLint FillDrawNode::g_vertexLocation = -1;
 GLint FillDrawNode::g_colorLocation = -1;
 
-void FillDrawNode::initFillDrawProgram()
+void FillDrawNode::initProgram()
 {
 	auto app = GameApp::getInstance();
 	auto program = app->getProgram("filldraw");
@@ -53,9 +53,21 @@ void FillDrawNode::rander()
 		return;
 	}
 
-	glUseProgram(_shader->getProgram());
+
+	auto program = _shader->getProgram();
+	glUseProgram(program);
+
+	//glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
+
 	glBindVertexArray(_verticesVAO);
+
 	glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexs.size());
+
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+
+	//glUseProgram(0);
 }
 
 void FillDrawNode::draw(const GLfloat* parentTransform)
@@ -67,7 +79,7 @@ void FillDrawNode::draw(const GLfloat* parentTransform)
 	}
 	if (!_redraw)
 	{
-		//return;
+	//	return;
 	}
 	_redraw = false;
 
@@ -94,9 +106,13 @@ void FillDrawNode::draw(const GLfloat* parentTransform)
 		i = i + 1;
 	}
 
-	GLint program = _shader->getProgram();
+	// Basic blending equation.
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glUseProgram(program);
+	//glEnable(GL_BLEND);
+
+	GLint program = _shader->getProgram();
 
 	//glGenBuffers(1, &_verticesVBO);
 
@@ -111,8 +127,14 @@ void FillDrawNode::draw(const GLfloat* parentTransform)
 	glVertexAttribPointer(g_colorLocation, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)offsetof(FDVertex, colors));
 	glEnableVertexAttribArray(g_colorLocation);
 
-	// Use the program.
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindVertexArray(0);
+	//glUseProgram(program);
+
+	//glDisable(GL_BLEND);
+
+	//glUseProgram(0);
 }
 
 void FillDrawNode::clearAllVertex()
@@ -184,4 +206,6 @@ void FillDrawNode::enforceVertex()
 	glEnableVertexAttribArray(g_colorLocation);
 	*/
 
+	//auto program = GameApp::getInstance()->getProgram("filldraw");
+	//glUseProgram(program);
 }

@@ -1,3 +1,3 @@
 #include "Singleton.h"
 
-SingletonClaseCpp(Singleton);
+//SingletonClaseCpp(Singleton);

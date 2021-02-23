@@ -13,6 +13,7 @@
 #include "GameApp.h"
 
 #include "GL/glus.h"
+#include "2d/ImageLoad.h"
 
 #define VIEW_WIDTH 1000
 #define VIEW_HEIGHT 800
@@ -27,10 +28,14 @@ GLUSboolean init(GLUSvoid)
 {
 	auto app = GameApp::getInstance();
 	app->init();
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// Basic blending equation.
 	glEnable(GL_BLEND);
+
+	//glClearDepth(1.0f);
+	//glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_CULL_FACE);
+
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	app->visit(biasMatrix, false);
@@ -50,18 +55,33 @@ GLUSvoid reshape(GLUSint width, GLUSint height)
 
 GLUSboolean update(GLUSfloat time)
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClearColor(0.0, 0.0, 0.0, 0.5);
+
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	auto app = GameApp::getInstance();
 	app->update(time);
 	if (app->isReLoadView())
 	{
 		app->reshape();
 	}
+	//auto program = app->getProgram("filldraw");
+	//glUseProgram(program);
+
 	app->visit(biasMatrix, app->isReLoadView());
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
 	GameApp::getInstance()->rander();
+
+	
+	//static gl_texture_t *png_tex = ReadPNGFromFile("d:\\pngtest2.png");
+	//glDrawPixels(png_tex->width, png_tex->height, png_tex->format, GL_UNSIGNED_BYTE, png_tex->texels);
 
 	return GLUS_TRUE;
 }

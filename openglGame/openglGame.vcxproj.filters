@@ -39,6 +39,12 @@
     <None Include="..\Shader\default.vert.glsl">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="..\Shader\texture.frag.glsl">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\Shader\texture.vert.glsl">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Shader.cpp">
@@ -66,6 +72,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="2d\DrawBoxNode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\TextureNode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\ImageLoad.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,6 +116,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="2d\DrawBoxNode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\TextureNode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\ImageLoad.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderFiles.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

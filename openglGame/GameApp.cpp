@@ -1,6 +1,9 @@
 #include "GameApp.h"
 #include<iostream>
 #include "2d/FillDrawNode.h"
+#include "2d/ImageLoad.h"
+#include "2d/TextureNode.h"
+#include "ShaderFiles.h"
 
 GameApp::GameApp()
 {
@@ -15,17 +18,17 @@ void GameApp::init()
 	this->initShader();
 
 	//画格子
-	for (int x = 0; x < 20; ++x)
+	for (int x = 0; x < 5; ++x)
 	{
-		for (int y = 0; y < 20; ++y)
+		for (int y = 0; y < 10; ++y)
 		{
 			auto fd = FillDrawNode::create();
 			fd->addVertex(Vector2(0, 0));
-			fd->addVertex(Vector2(40, 0));
-			fd->addVertex(Vector2(40, 40));
-			fd->addVertex(Vector2(0, 40));
+			fd->addVertex(Vector2(120, 0));
+			fd->addVertex(Vector2(120, 120));
+			fd->addVertex(Vector2(0, 120));
 
-			fd->setPosition(Vector2(40 * x, 40 * y));
+			fd->setPosition(Vector2(120 * x, 120 * y));
 			if ((x + y) % 2 == 0)
 			{
 				fd->setColor(Vector4(0.2, 0.2, 0.2, 1));
@@ -40,8 +43,42 @@ void GameApp::init()
 		}
 	}
 
+
+	//_textureTest1 = loadPNGTexture("d:\\res\\test (3).png");
+
 	_start = GameStart::create();
-	addChild(_start);
+	//addChild(_start);
+
+	char path[256];
+	int index = 1;
+	//画格子
+	for (int x = 5; x < 10; ++x)
+	{
+		for (int y = 0; y < 10; ++y)
+		{
+			auto tn = TextureNode::create();
+			tn->addVertex(Vector2(0, 0), Vector2(0, 0));
+			tn->addVertex(Vector2(120, 0), Vector2(1, 0));
+			tn->addVertex(Vector2(120, 120), Vector2(1, 1));
+			tn->addVertex(Vector2(0, 120), Vector2(0, 1));
+			sprintf_s(path, 256, ".\\res\\test (%d).png", index++);
+			tn->setTextureID(loadPNGTexture(path));
+
+			tn->setPosition(Vector2(120 * x, 120 * y));
+			if ((x + y) % 2 == 0)
+			{
+				//tn->setColor(Vector4(0.2, 0.2, 0.2, 1));
+			}
+			else
+			{
+				//tn->setColor(Vector4(0.3, 0.3, 0.3, 1));
+			}
+			tn->enforceVertex();
+
+			this->addChild(tn);
+		}
+	}
+
 }
 
 int GameApp::initShader()
@@ -49,11 +86,9 @@ int GameApp::initShader()
 	glusMatrix4x4Identityf(_viewMatrix);
 	glusMatrix4x4Identityf(_modelMatrix);
 
-	const char* shaders[] = { "rendershadow", "useshadow" ,"default", "filldraw"};
-
-	for (int i = 0; i < sizeof(shaders) / sizeof(char*); ++i)
+	for (int i = 0; i < sizeof(G_SHADERS) / sizeof(char*); ++i)
 	{
-		const char* shaderName = shaders[i];
+		const char* shaderName = G_SHADERS[i];
 
 		SPShader shader = make_shared<Shader>();
 		shader->loadShader(shaderName);
@@ -61,7 +96,9 @@ int GameApp::initShader()
 		_shaders->insert(map<string, SPShader>::value_type(shaderName, shader));
 	}
 
-	FillDrawNode::initFillDrawProgram();
+	FillDrawNode::initProgram();
+	TextureNode::initProgram();
+
 	//filldraw
 	//auto app = GameApp::getInstance();
 
@@ -123,6 +160,7 @@ void GameApp::reshape()
 {
 	Node::reshape();
 	_reLoadView = false;
+	//_redraw = true;
 
 	GLfloat modelViewMatrix[16];
 
@@ -138,9 +176,12 @@ void GameApp::reshape()
 
 	for (auto it = _shaders->begin(); it != _shaders->end(); it++)
 	{
-		GLint g_modelViewMatrix = glGetUniformLocation(it->second->getProgram(), "u_modelViewMatrix");
+		auto program = it->second->getProgram();
+		glUseProgram(program);
+		GLint g_modelViewMatrix = glGetUniformLocation(program, "u_modelViewMatrix");
 		glUniformMatrix4fv(g_modelViewMatrix, 1, GL_FALSE, _modelViewMatrix);
 	}
+	glUseProgram(0);
 }
 
 void GameApp::update(float time)

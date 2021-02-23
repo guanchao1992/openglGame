@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(SolutionDir)OpenGL_Libs\glew-2.1.0\lib\$(Platform);$(SolutionDir)OpenGL_Libs\glfw-3.3.2.bin.WIN32\lib-vc2017;$(SolutionDir)OpenGL_Libs\GLUS\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir);$(ProjectDir);$(SolutionDir)OpenGL_Libs\glew-2.1.0\include;$(SolutionDir)OpenGL_Libs\glfw-3.3.2.bin.WIN32\include;$(SolutionDir)OpenGL_Libs\GLUS\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)OpenGL_Libs\glew-2.1.0\lib\$(Platform);$(SolutionDir)OpenGL_Libs\glfw-3.3.2.bin.WIN32\lib-vc2017;$(SolutionDir)OpenGL_Libs\GLUS\lib;$(SolutionDir)OpenGL_Libs\libpng\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir);$(ProjectDir);$(SolutionDir)OpenGL_Libs\glew-2.1.0\include;$(SolutionDir)OpenGL_Libs\glfw-3.3.2.bin.WIN32\include;$(SolutionDir)OpenGL_Libs\GLUS\include;$(SolutionDir)OpenGL_Libs\libpng\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;GLUS.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;GLUS.lib;libpng.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\OpenGL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -161,13 +161,17 @@
     <None Include="..\Shader\filldraw.vert.glsl" />
     <None Include="..\Shader\rendershadow.frag.glsl" />
     <None Include="..\Shader\rendershadow.vert.glsl" />
+    <None Include="..\Shader\texture.frag.glsl" />
+    <None Include="..\Shader\texture.vert.glsl" />
     <None Include="..\Shader\useshadow.frag.glsl" />
     <None Include="..\Shader\useshadow.vert.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2d\DrawBoxNode.cpp" />
     <ClCompile Include="2d\FillDrawNode.cpp" />
+    <ClCompile Include="2d\ImageLoad.cpp" />
     <ClCompile Include="2d\Node.cpp" />
+    <ClCompile Include="2d\TextureNode.cpp" />
     <ClCompile Include="Base\Shader.cpp" />
     <ClCompile Include="Base\Singleton.cpp" />
     <ClCompile Include="EgameController.cpp" />
@@ -178,7 +182,9 @@
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h" />
     <ClInclude Include="2d\FillDrawNode.h" />
+    <ClInclude Include="2d\ImageLoad.h" />
     <ClInclude Include="2d\Node.h" />
+    <ClInclude Include="2d\TextureNode.h" />
     <ClInclude Include="Base\Shader.h" />
     <ClInclude Include="Base\Singleton.h" />
     <ClInclude Include="Base\Size.h" />
@@ -188,6 +194,7 @@
     <ClInclude Include="EgameController.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameStart.h" />
+    <ClInclude Include="ShaderFiles.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

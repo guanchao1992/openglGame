@@ -23,7 +23,7 @@ public:
 	virtual void draw(const GLfloat *parentTransform);
 
 public:
-	static void initFillDrawProgram();
+	static void initProgram();
 	//void ensureCapcity(int count);
 	
 	void clearAllVertex();

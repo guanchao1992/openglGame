@@ -195,7 +195,7 @@ void GameApp::update(float time)
 	char s[256] = { 0 };
 	frame++;
 	t_time = t_time + time;
-	if (t_time - timebase > 1) {
+	if (t_time - timebase > 3) {
 		sprintf_s(s, 256, "FPS:%4.2f", frame * 1.0 / (t_time - timebase));
 		timebase = t_time;
 		frame = 0;

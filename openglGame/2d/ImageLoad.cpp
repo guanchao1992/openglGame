@@ -231,14 +231,13 @@ GLuint loadPNGTexture(const char *filename)
 	{
 		/* Generate texture */
 		glGenTextures(1, &png_tex->id);
-		glActiveTexture(GL_TEXTURE0);
+		//glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, png_tex->id);
 		/* Setup some parameters for texture filters and mipmapping */
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
 		glGetIntegerv(GL_UNPACK_ALIGNMENT, &alignment);
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -248,6 +247,12 @@ GLuint loadPNGTexture(const char *filename)
 		/* OpenGL has its own copy of texture data */
 		free(png_tex->texels);
 		free(png_tex);
+	}
+	GLenum err = glGetError();
+	if (err != GL_NO_ERROR)
+	{
+		static int num = 0;
+		printf("error:0x%04X in %s %s %d.---%d\n", err, __FILE__, __FUNCTION__, __LINE__, ++num);
 	}
 	return tex_id;
 }

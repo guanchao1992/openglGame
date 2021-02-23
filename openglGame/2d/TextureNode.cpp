@@ -12,46 +12,17 @@ GLint TextureNode::g_vertexLocation = -1;
 GLint TextureNode::g_textCoordLocation = -1;
 GLint TextureNode::g_texture0Location = -1;
 
-GLuint _textureTest1 = -1;
-
-static GLuint g_testTexture;
 
 void TextureNode::initProgram()
 {
-	//GLUStgaimage image;
-	//glusImageLoadTga("d:\\test_tag (1).tga", &image);
-
-	//_textureTest1 = CreateTextureFromPng("d:\\pngtest3.png");
-
-	//glGenTextures(1, &g_testTexture);
-	//glBindTexture(GL_TEXTURE_2D, g_testTexture);
-
-	//glTexImage2D(GL_TEXTURE_2D, 0, image.format, image.width, image.height, 0, image.format, GL_UNSIGNED_BYTE, image.data);
-
-
-	//format png_tex->internalFormat
-	//GL_ALPHA
-
-	//glTexImage2D(GL_TEXTURE_2D, 0, image.format, image.width, image.height, 0, image.format, GL_UNSIGNED_BYTE, image.data);
-	//glTexImage2D(GL_TEXTURE_2D, 0, png_tex->format, png_tex->width, png_tex->height, 0, png_tex->format, GL_UNSIGNED_BYTE, png_tex->texels);
-
-	// Mipmap generation is now included in OpenGL 3 and above
-	//glGenerateMipmap(GL_TEXTURE_2D);
-
 	auto app = GameApp::getInstance();
 	auto program = app->getProgram("texture");
 
 	g_vertexLocation = glGetAttribLocation(program, "a_vertex");
 	g_textCoordLocation = glGetAttribLocation(program, "a_texCoord");
 	
-
-	//GLint g_modelViewMatrix = glGetUniformLocation(it->second->getProgram(), "u_modelViewMatrix");
-	//glUniformMatrix4fv(g_modelViewMatrix, 1, GL_FALSE, _modelViewMatrix);
 	g_texture0Location = glGetUniformLocation(program, "CC_Texture0");
 
-
-	//GLfloat colorV4[] = { 1.0f,0.0f,0.0f,1.0f };
-	//glUniform4fv(g_colorLocation, 1, colorV4);
 }
 
 TextureNode::~TextureNode()
@@ -88,17 +59,16 @@ void TextureNode::rander()
 
 	glUseProgram(_shader->getProgram());
 
-	//glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
+	glActiveTexture(GL_TEXTURE0 + 0);
+	glBindTexture(GL_TEXTURE_2D, _textureId);
+	glUniform1i(g_texture0Location, 0);//这里的0和glActiveTexture后面的0是一个意思
 
 	glBindVertexArray(_verticesVAO);
-
-	glEnable(GL_TEXTURE_2D);
-
-	glActiveTexture(GL_TEXTURE0 + _textureId);
-	glBindTexture(GL_TEXTURE_2D, _textureId);
-	glUniform1i(g_texture0Location, _textureId);
-
 	glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexs.size());
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
+	glUseProgram(0);
 }
 
 void TextureNode::draw(const GLfloat* parentTransform)
@@ -210,6 +180,13 @@ void TextureNode::enforceVertex()
 	glBufferData(GL_ARRAY_BUFFER, fdVectexsSize * (4 + 2) * sizeof(GLfloat), (GLfloat*)ptnVectexs.get(), GL_STATIC_DRAW);
 
 	glBindVertexArray(_verticesVAO);
+
+	GLenum err = glGetError();
+	if (err != GL_NO_ERROR)
+	{
+		static int num = 0;
+		printf("error:0x%04X in %s %s %d.---%d\n", err, __FILE__, __FUNCTION__, __LINE__, ++num);
+	}
 
 	/*
 	if (_textureTest == -1)

@@ -49,13 +49,10 @@ void TextureNode::init()
 	auto b = offsetof(TNVertex, texCoord);
 }
 
-void TextureNode::rander()
+void TextureNode::randerOne()
 {
-	Node::rander();
 	if (!_shader)
-	{
 		return;
-	}
 
 	glUseProgram(_shader->getProgram());
 
@@ -73,15 +70,8 @@ void TextureNode::rander()
 
 void TextureNode::draw(const GLfloat* transform)
 {
-	Node::draw(transform);
-	if (!_shader)
-	{
-		return;
-	}
 	if (!_redraw)
-	{
 		return;
-	}
 	_redraw = false;
 
 	int i = 0;
@@ -187,39 +177,6 @@ void TextureNode::enforceVertex()
 		static int num = 0;
 		printf("error:0x%04X in %s %s %d.---%d\n", err, __FILE__, __FUNCTION__, __LINE__, ++num);
 	}
-
-	/*
-	if (_textureTest == -1)
-	{
-		glGenTextures(1, &_textureTest);
-	}
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _textureTest);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GLUS_RGB, 300, 200, 0, GLUS_RGB, GL_UNSIGNED_BYTE, 0);
-
-	// Mipmap generation is now included in OpenGL 3 and above
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Trilinear filtering
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	*/
-
-	/*
-	GLint program = _shader->getProgram();
-	glUseProgram(program);
-
-	glVertexAttribPointer(g_vertexLocation, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)offsetof(FDVertex, vertexs));
-	glEnableVertexAttribArray(g_vertexLocation);
-	glVertexAttribPointer(g_colorLocation, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)offsetof(FDVertex, colors));
-	glEnableVertexAttribArray(g_colorLocation);
-	*/
 
 }
 

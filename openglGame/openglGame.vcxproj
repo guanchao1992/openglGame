@@ -173,7 +173,6 @@
     <ClCompile Include="2d\TextureNode.cpp" />
     <ClCompile Include="base\MathRotate.cpp" />
     <ClCompile Include="base\Shader.cpp" />
-    <ClCompile Include="base\Singleton.cpp" />
     <ClCompile Include="control\TextureController.cpp" />
     <ClCompile Include="EgameController.cpp" />
     <ClCompile Include="GameApp.cpp" />

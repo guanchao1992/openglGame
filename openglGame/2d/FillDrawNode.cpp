@@ -45,13 +45,10 @@ void FillDrawNode::init()
 
 }
 
-void FillDrawNode::rander()
+void FillDrawNode::randerOne()
 {
-	Node::rander();
 	if (!_shader)
-	{
 		return;
-	}
 
 	auto program = _shader->getProgram();
 	glUseProgram(program);
@@ -67,15 +64,8 @@ void FillDrawNode::rander()
 
 void FillDrawNode::draw(const GLfloat* parentTransform)
 {
-	Node::draw(parentTransform);
-	if (!_shader)
-	{
-		return;
-	}
 	if (!_redraw)
-	{
 		return;
-	}
 	_redraw = false;
 
 	int i = 0;
@@ -101,13 +91,6 @@ void FillDrawNode::draw(const GLfloat* parentTransform)
 		i = i + 1;
 	}
 
-	// Basic blending equation.
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//glDisable(GL_BLEND);
-
-	GLint program = _shader->getProgram();
-
 	glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
 	glBufferData(GL_ARRAY_BUFFER, fdVectexsSize * (4 + 4) * sizeof(GLfloat), (GLfloat*)pfdVectexs.get(), GL_STATIC_DRAW);
 
@@ -122,7 +105,6 @@ void FillDrawNode::draw(const GLfloat* parentTransform)
 
 	glBindVertexArray(0);
 
-	glUseProgram(0);
 }
 
 void FillDrawNode::clearAllVertex()

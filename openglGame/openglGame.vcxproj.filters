@@ -65,9 +65,6 @@
     <ClCompile Include="base\Shader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="base\Singleton.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="control\TextureController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

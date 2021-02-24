@@ -13,16 +13,24 @@ using namespace std;
 
 class GameApp : public Node
 {
-	SingletonClase(GameApp);
-protected:
+public: 
+	//SingletonClase(GameApp);
+
+	static shared_ptr<GameApp> getInstance() 
+	{ 
+		static shared_ptr<GameApp> instance = make_shared<GameApp>();
+		instance->record(instance);
+		return instance;
+	}
+
+public:
+
 	GameApp();
 	~GameApp();
-public:
 	int initShader();
 	int removeAllShader();
 
 	virtual void init();
-	virtual void rander();
 	virtual void draw(const GLfloat *parentTransform);
 	virtual void reshape();
 	//做一些绘制之外的其他操作
@@ -33,7 +41,6 @@ public:
 	GLint getProgram(const char*name);
 	SPShader getShader(const char*name);
 
-	void addNode(SPNode node);
 	void setViewSize(GLfloat widht, GLfloat height);
 	void setProjectSize(GLfloat widht, GLfloat height);
 	GLboolean isReLoadView() { return _reLoadView; }
@@ -54,7 +61,7 @@ protected:
 	GLfloat _projectWidth;		//设计宽度，未生效
 	GLfloat _projectHeight;		//设计高度，未生效
 
-	GLboolean _reLoadView;	//重新加载窗口
+	GLboolean _reLoadView = true;	//重新加载窗口
 public:
 	shared_ptr<GameStart> _start;
 };

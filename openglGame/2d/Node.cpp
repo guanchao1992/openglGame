@@ -2,6 +2,7 @@
 #include "GameApp.h"
 #include "glm/glm.hpp"
 #include "glm/gtx/transform.hpp"
+#include <algorithm>
 
 void Node::record(SPNode selfNode)
 {
@@ -14,18 +15,27 @@ void Node::reshape()
 	{
 		(*it)->reshape();
 	}
-	recodeDraw();
+	_revisit = true;
+	_redraw = true;
 
 	//do something
 }
 
 void Node::rander()
 {
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	for (auto it = _visitLeft->begin(); it != _visitLeft->end(); it++)
 	{
 		(*it)->rander();
 	}
+	this->randerOne();
+	for (auto it = _visitRight->begin(); it != _visitRight->end(); it++)
+	{
+		(*it)->rander();
+	}
+}
 
+void Node::randerOne()
+{
 	//do something
 }
 
@@ -36,23 +46,19 @@ void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 		parentFlag = true;
 		_revisit = false;
 		_redraw = true;
-		GLfloat selfMatrix[16] =
-		{
-			1.0f ,0.0f ,0.0f,0.0f,
-			0.0f ,1.0f ,0.0f,0.0f,
-			0.0f ,0.0f ,1.0f,0.0f,
-			getPosition()._x ,getPosition()._y ,0.0f,1.0f,
-		};
-
-		//glusMatrix4x4Multiplyf(_mvTransform, parentTransform, selfMatrix);
 
 		refreshTransformParent();
 
 		glusMatrix4x4Multiplyf(_mvTransform, parentTransform, _transform);
 	}
+	_redraw = true;
+	if (_reorder)
+	{
+		_reorder = false;
+		refreshOrder();
+	}
 
 	this->draw(_mvTransform);
-
 	for (auto it = _childs->begin(); it != _childs->end(); it++)
 	{
 		(*it)->visit(_mvTransform, parentFlag);
@@ -63,12 +69,15 @@ void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 void Node::draw(const GLfloat *parentTransform)
 {
 	//do something
+	_redraw = false;
 }
 
 void Node::addChild(SPNode node)
 {
 	node->_parent = this->_this;
 	_childs->push_back(node);
+
+	_reorder = true;
 }
 
 void Node::removeChild(SPNode node)
@@ -78,6 +87,7 @@ void Node::removeChild(SPNode node)
 		if (*it == node)
 		{
 			node->_parent = nullptr;
+			node->_this = nullptr;	//重要！！去除节点的自引用。
 			_childs->erase(it);
 			break;
 		}
@@ -94,7 +104,6 @@ vector<SPNode> Node::getChilds()
 	return *_childs;
 }
 
-
 void Node::setPosition(const Vector2&pos)
 {
 	setPosition(pos._x, pos._y);
@@ -105,7 +114,6 @@ void Node::setPosition(float x, float y)
 	_position._x = x;
 	_position._y = y;
 	_revisit = true;
-	recodeDraw();
 }
 
 void Node::setAngle(float angle)
@@ -120,7 +128,6 @@ void Node::setAngleCoordinate(float angleX, float angleY, float angleZ)
 	_angleZ = angleZ;
 
 	_revisit = true;
-	recodeDraw();
 }
 
 void Node::setRotateAxis(Vector3 vec, float angle)
@@ -129,7 +136,6 @@ void Node::setRotateAxis(Vector3 vec, float angle)
 	_angleAxis = angle;
 
 	_revisit = true;
-	recodeDraw();
 }
 
 void Node::setScaleX(float scale)
@@ -146,15 +152,14 @@ void Node::setScale(float scaleX, float scaleY)
 {
 	_scaleX = scaleX;
 	_scaleY = scaleY;
+
 	_revisit = true;
-	recodeDraw();
 }
 
 void Node::setContentSize(const Size&size)
 {
 	_contentSize = size;
 	_revisit = true;
-	recodeDraw();
 }
 
 void Node::refreshTransformParent()
@@ -162,7 +167,6 @@ void Node::refreshTransformParent()
 	glm::mat4 transformMat(1.0f);
 
 	transformMat = glm::translate(transformMat, _position._x, _position._y, 0.0f);
-
 
 	if (_angleZ != 0)
 		transformMat = glm::rotate(transformMat, _angleZ, 0.f, 0.f, 1.f);
@@ -189,24 +193,46 @@ void Node::refreshTransformParent()
 void Node::setColor(const Vector4&color)
 {
 	_color = color;
-	recodeDraw();
+	_redraw = true;
 }
 
 void Node::setColor(float r, float g, float b, float l)
 {
 	_color.setVector(r, g, b, l);
-	recodeDraw();
+	_redraw = true;
 }
 
-void Node::recodeDraw()
+void Node::setZOrder(int localZOrder)
 {
-	if (_redraw)
-	{
+	if (_localZOrder == localZOrder)
 		return;
+	_localZOrder = localZOrder;
+	if (_parent != nullptr)
+	{
+		_parent->_reorder = true;
 	}
-	_redraw = true;
+}
+
+void Node::refreshOrder()
+{
+	_visitLeft->clear();
+	_visitRight->clear();
+
 	for (auto it = _childs->begin(); it != _childs->end(); it++)
 	{
-		(*it)->recodeDraw();
+		if ((*it)->getZOrder() < 0)
+		{
+			_visitLeft->push_back(*it);
+		}
+		else
+		{
+			_visitRight->push_back(*it);
+		}
 	}
+	sort(_visitLeft->begin(), _visitLeft->end(), [](SPNode a, SPNode b) {
+		return a->getZOrder() < b->getZOrder();
+	});
+	sort(_visitRight->begin(), _visitRight->end(), [](SPNode a, SPNode b) {
+		return a->getZOrder() < b->getZOrder();
+	});
 }

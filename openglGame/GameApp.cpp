@@ -17,6 +17,7 @@ GameApp::~GameApp()
 
 void GameApp::init()
 {
+	setScale(0.8, 0.8);
 	this->initShader();
 
 	//»­¸ñ×Ó
@@ -82,6 +83,13 @@ void GameApp::init()
 		}
 	}
 
+	_childs->at(12)->setZOrder(104);
+	_childs->at(13)->setZOrder(102);
+	_childs->at(14)->setZOrder(101);
+
+	_childs->at(12)->setColor(1, 1, 0, 1);
+	_childs->at(13)->setColor(1, 0.5, 0, 1);
+	_childs->at(14)->setColor(1, 0.1, 0, 1);
 }
 
 int GameApp::initShader()
@@ -140,18 +148,6 @@ SPShader GameApp::getShader(const char*name)
 }
 
 
-void GameApp::addNode(SPNode node)
-{
-	_childs->push_back(node);
-}
-
-void GameApp::rander()
-{
-	Node::rander();
-
-	//do something
-}
-
 void GameApp::draw(const GLfloat *parentTransform)
 {
 	Node::draw(parentTransform);
@@ -207,9 +203,9 @@ void GameApp::update(float time)
 	static float all_time = 0.f;
 	all_time += time;
 
-	_childs->at(12)->setAngleCoordinate(all_time * 10, 0, 0);
-	_childs->at(13)->setAngleCoordinate(0, all_time * 10, 0);
-	_childs->at(14)->setAngleCoordinate(0, 0, all_time * 10);
+	_childs->at(12)->setAngleCoordinate(all_time * 30, 0, 0);
+	_childs->at(13)->setAngleCoordinate(0, all_time * 30, 0);
+	_childs->at(14)->setAngleCoordinate(0, 0, all_time * 30);
 
 	_childs->at(12)->setScale(0.5, 1.5);
 	_childs->at(13)->setScale(0.5, 1.5);

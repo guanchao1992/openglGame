@@ -19,7 +19,7 @@ public:
 public:
 	void init();
 
-	virtual void rander();
+	virtual void randerOne();
 	virtual void draw(const GLfloat *parentTransform);
 
 public:

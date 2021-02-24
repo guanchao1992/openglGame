@@ -47,10 +47,31 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Base\Shader.cpp">
+    <ClCompile Include="2d\DrawBoxNode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Base\Singleton.cpp">
+    <ClCompile Include="2d\FillDrawNode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\Node.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\TextureNode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="base\MathRotate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Shader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Singleton.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="control\TextureController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EgameController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GameApp.cpp">
@@ -62,48 +83,9 @@
     <ClCompile Include="openglGame.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="2d\FillDrawNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="2d\Node.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="EgameController.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="2d\DrawBoxNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="2d\TextureNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="2d\ImageLoad.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Base\Shader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Singleton.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Size.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Vector2.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Vector3.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Base\Vector4.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GameApp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStart.h">
+    <ClInclude Include="2d\DrawBoxNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="2d\FillDrawNode.h">
@@ -112,16 +94,40 @@
     <ClInclude Include="2d\Node.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="EgameController.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="2d\DrawBoxNode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="2d\TextureNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="2d\ImageLoad.h">
+    <ClInclude Include="base\MathRotate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Shader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Singleton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Size.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Vector2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Vector3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Vector4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\TextureController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EgameController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameApp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStart.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ShaderFiles.h">

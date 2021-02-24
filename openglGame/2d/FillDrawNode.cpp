@@ -53,21 +53,16 @@ void FillDrawNode::rander()
 		return;
 	}
 
-
 	auto program = _shader->getProgram();
 	glUseProgram(program);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
 
 	glBindVertexArray(_verticesVAO);
 
 	glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexs.size());
 
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-
-	//glUseProgram(0);
+	glUseProgram(0);
 }
 
 void FillDrawNode::draw(const GLfloat* parentTransform)
@@ -79,7 +74,7 @@ void FillDrawNode::draw(const GLfloat* parentTransform)
 	}
 	if (!_redraw)
 	{
-	//	return;
+		return;
 	}
 	_redraw = false;
 
@@ -90,7 +85,7 @@ void FillDrawNode::draw(const GLfloat* parentTransform)
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
-			it->_x + _position._x ,it->_y + _position._y , 0.0f, 1.0f };
+			it->_x ,it->_y , 0.0f, 1.0f };
 
 		glusMatrix4x4Multiplyf(mtx, parentTransform, mtx);
 
@@ -109,17 +104,13 @@ void FillDrawNode::draw(const GLfloat* parentTransform)
 	// Basic blending equation.
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	//glEnable(GL_BLEND);
+	//glDisable(GL_BLEND);
 
 	GLint program = _shader->getProgram();
-
-	//glGenBuffers(1, &_verticesVBO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
 	glBufferData(GL_ARRAY_BUFFER, fdVectexsSize * (4 + 4) * sizeof(GLfloat), (GLfloat*)pfdVectexs.get(), GL_STATIC_DRAW);
 
-	//glGenVertexArrays(1, &_verticesVAO);
 	glBindVertexArray(_verticesVAO);
 
 	glVertexAttribPointer(g_vertexLocation, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)offsetof(FDVertex, vertexs));
@@ -130,11 +121,8 @@ void FillDrawNode::draw(const GLfloat* parentTransform)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBindVertexArray(0);
-	//glUseProgram(program);
 
-	//glDisable(GL_BLEND);
-
-	//glUseProgram(0);
+	glUseProgram(0);
 }
 
 void FillDrawNode::clearAllVertex()
@@ -157,7 +145,7 @@ void FillDrawNode::enforceVertex()
 		pfdVectexs.get_deleter();
 		pfdVectexs = unique_ptr<FDVertex[]>(new FDVertex[fdVectexsSize]);
 
-		//定点数发生变化，清空缓存去，在下面重新创建。
+		//定点数发生变化，清空缓存区，在下面重新创建。
 		glDeleteBuffers(1, &_verticesVBO);
 		_verticesVBO = -1;
 	}

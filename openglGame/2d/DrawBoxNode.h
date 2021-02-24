@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Node.h"
-#include "Base/Vector3.h"
+#include "base/Vector3.h"
 #include "FillDrawNode.h"
 
 enum BoxType

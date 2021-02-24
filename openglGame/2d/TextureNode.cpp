@@ -1,7 +1,7 @@
 #include "TextureNode.h"
 #include "GameApp.h"
 #include <GL/glew.h>
-#include "ImageLoad.h"
+#include "control/TextureController.h"
 
 
 static unique_ptr<TNVertex[]>ptnVectexs(new TNVertex[64]);
@@ -71,9 +71,9 @@ void TextureNode::rander()
 	glUseProgram(0);
 }
 
-void TextureNode::draw(const GLfloat* parentTransform)
+void TextureNode::draw(const GLfloat* transform)
 {
-	Node::draw(parentTransform);
+	Node::draw(transform);
 	if (!_shader)
 	{
 		return;
@@ -91,9 +91,9 @@ void TextureNode::draw(const GLfloat* parentTransform)
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
-			it->_x + _position._x ,it->_y + _position._y , 0.0f, 1.0f };
+			it->_x ,it->_y , 0.0f, 1.0f };
 
-		glusMatrix4x4Multiplyf(mtx, parentTransform, mtx);
+		glusMatrix4x4Multiplyf(mtx, transform, mtx);
 
 		ptnVectexs.get()[i].vertexs[0] = mtx[12];
 		ptnVectexs.get()[i].vertexs[1] = mtx[13];

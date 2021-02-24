@@ -1,9 +1,11 @@
 #include "GameApp.h"
 #include<iostream>
 #include "2d/FillDrawNode.h"
-#include "2d/ImageLoad.h"
 #include "2d/TextureNode.h"
 #include "ShaderFiles.h"
+#include "control/TextureController.h"
+#include "glm/glm.hpp"
+#include "glm/gtx/transform.hpp"
 
 GameApp::GameApp()
 {
@@ -58,11 +60,12 @@ void GameApp::init()
 		{
 			auto tn = TextureNode::create();
 			tn->addVertex(Vector2(0, 0), Vector2(0, 0));
-			tn->addVertex(Vector2(120, 0), Vector2(1, 0));
-			tn->addVertex(Vector2(120, 120), Vector2(1, 1));
 			tn->addVertex(Vector2(0, 120), Vector2(0, 1));
+			tn->addVertex(Vector2(120, 120), Vector2(1, 1));
+			tn->addVertex(Vector2(120, 0), Vector2(1, 0));
 			sprintf_s(path, 256, ".\\res\\test (%d).png", index++);
-			tn->setTextureID(loadPNGTexture(path));
+			auto pt = TextureController::getInstance()->loadPng(path);
+			tn->setTextureID(pt->_textureId);
 
 			tn->setPosition(Vector2(120 * x, 120 * y));
 			if ((x + y) % 2 == 0)
@@ -160,7 +163,6 @@ void GameApp::reshape()
 {
 	Node::reshape();
 	_reLoadView = false;
-	//_redraw = true;
 
 	GLfloat modelViewMatrix[16];
 
@@ -189,7 +191,7 @@ void GameApp::update(float time)
 	_start->update(time);
 
 
-	static float t_time = 0, f;
+	static float t_time = 0.f;
 	static int frame = 0;
 	static int timebase = 0;
 	char s[256] = { 0 };
@@ -201,6 +203,19 @@ void GameApp::update(float time)
 		frame = 0;
 		printf("Ö¡ÂÊÎª£º%s\n", s);
 	}
+
+	static float all_time = 0.f;
+	all_time += time;
+
+	_childs->at(12)->setAngleCoordinate(all_time * 10, 0, 0);
+	_childs->at(13)->setAngleCoordinate(0, all_time * 10, 0);
+	_childs->at(14)->setAngleCoordinate(0, 0, all_time * 10);
+
+	_childs->at(12)->setScale(0.5, 1.5);
+	_childs->at(13)->setScale(0.5, 1.5);
+	_childs->at(14)->setScale(0.5, 1.5);
+
+
 }
 
 void GameApp::setViewSize(GLfloat widht, GLfloat height)

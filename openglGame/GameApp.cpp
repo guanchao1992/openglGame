@@ -15,10 +15,19 @@ GameApp::~GameApp()
 {
 }
 
+
 void GameApp::init()
 {
-	setScale(0.8, 0.8);
+	_events = make_shared<dexode::EventBus>();
+	_listener = make_shared<dexode::eventbus::Listener<dexode::eventbus::Bus>>(_events);
+
+	_listener->listen([&](const Event& event) {
+		printf("测试事件,接受到事件ID：%d\n", event._eventId);
+	});
+
 	this->initShader();
+
+	setScale(0.8, 0.8);
 
 	//画格子
 	for (int x = 0; x < 5; ++x)
@@ -46,11 +55,8 @@ void GameApp::init()
 		}
 	}
 
-
-	//_textureTest1 = loadPNGTexture("d:\\res\\test (3).png");
-
 	_start = GameStart::create();
-	//addChild(_start);
+	addChild(_start);
 
 	char path[256];
 	int index = 1;
@@ -83,6 +89,7 @@ void GameApp::init()
 		}
 	}
 
+	/*
 	_childs->at(12)->setZOrder(104);
 	_childs->at(13)->setZOrder(102);
 	_childs->at(14)->setZOrder(101);
@@ -90,6 +97,10 @@ void GameApp::init()
 	_childs->at(12)->setColor(1, 1, 0, 1);
 	_childs->at(13)->setColor(1, 0.5, 0, 1);
 	_childs->at(14)->setColor(1, 0.1, 0, 1);
+
+	*/
+
+	_events->postpone(Event{ EventType::EVENT_GAME_RESTART });
 }
 
 int GameApp::initShader()
@@ -200,18 +211,7 @@ void GameApp::update(float time)
 		printf("帧率为：%s\n", s);
 	}
 
-	static float all_time = 0.f;
-	all_time += time;
-
-	_childs->at(12)->setAngleCoordinate(all_time * 30, 0, 0);
-	_childs->at(13)->setAngleCoordinate(0, all_time * 30, 0);
-	_childs->at(14)->setAngleCoordinate(0, 0, all_time * 30);
-
-	_childs->at(12)->setScale(0.5, 1.5);
-	_childs->at(13)->setScale(0.5, 1.5);
-	_childs->at(14)->setScale(0.5, 1.5);
-
-
+	_events->process();
 }
 
 void GameApp::setViewSize(GLfloat widht, GLfloat height)

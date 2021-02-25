@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="dexode">
+      <UniqueIdentifier>{4b98b7aa-6866-49c3-b128-3aea2932038a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Shader\rendershadow.frag.glsl">
@@ -80,6 +83,24 @@
     <ClCompile Include="openglGame.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\dexode\eventbus\perk\PassPerk.cpp">
+      <Filter>dexode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dexode\eventbus\perk\Perk.cpp">
+      <Filter>dexode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dexode\eventbus\perk\PerkEventBus.cpp">
+      <Filter>dexode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dexode\eventbus\perk\TagPerk.cpp">
+      <Filter>dexode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dexode\eventbus\perk\WaitPerk.cpp">
+      <Filter>dexode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dexode\EventBus.cpp">
+      <Filter>dexode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -128,6 +149,51 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ShaderFiles.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\Bus.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\internal\event_id.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\internal\ListenerAttorney.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\internal\listener_traits.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\Listener.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\perk\PassPerk.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\perk\Perk.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\perk\PerkEventBus.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\perk\TagPerk.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\perk\WaitPerk.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\permission\PostponeBus.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\stream\EventStream.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\eventbus\stream\ProtectedEventStream.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dexode\EventBus.hpp">
+      <Filter>dexode</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEvent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

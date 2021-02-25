@@ -93,6 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_AMD64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,6 +168,12 @@
     <None Include="..\Shader\useshadow.vert.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\dexode\EventBus.cpp" />
+    <ClCompile Include="..\dexode\eventbus\perk\PassPerk.cpp" />
+    <ClCompile Include="..\dexode\eventbus\perk\Perk.cpp" />
+    <ClCompile Include="..\dexode\eventbus\perk\PerkEventBus.cpp" />
+    <ClCompile Include="..\dexode\eventbus\perk\TagPerk.cpp" />
+    <ClCompile Include="..\dexode\eventbus\perk\WaitPerk.cpp" />
     <ClCompile Include="2d\DrawBoxNode.cpp" />
     <ClCompile Include="2d\FillDrawNode.cpp" />
     <ClCompile Include="2d\Node.cpp" />
@@ -180,6 +187,20 @@
     <ClCompile Include="openglGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\dexode\EventBus.hpp" />
+    <ClInclude Include="..\dexode\eventbus\Bus.hpp" />
+    <ClInclude Include="..\dexode\eventbus\internal\event_id.hpp" />
+    <ClInclude Include="..\dexode\eventbus\internal\ListenerAttorney.hpp" />
+    <ClInclude Include="..\dexode\eventbus\internal\listener_traits.hpp" />
+    <ClInclude Include="..\dexode\eventbus\Listener.hpp" />
+    <ClInclude Include="..\dexode\eventbus\perk\PassPerk.hpp" />
+    <ClInclude Include="..\dexode\eventbus\perk\Perk.hpp" />
+    <ClInclude Include="..\dexode\eventbus\perk\PerkEventBus.hpp" />
+    <ClInclude Include="..\dexode\eventbus\perk\TagPerk.hpp" />
+    <ClInclude Include="..\dexode\eventbus\perk\WaitPerk.hpp" />
+    <ClInclude Include="..\dexode\eventbus\permission\PostponeBus.hpp" />
+    <ClInclude Include="..\dexode\eventbus\stream\EventStream.hpp" />
+    <ClInclude Include="..\dexode\eventbus\stream\ProtectedEventStream.hpp" />
     <ClInclude Include="2d\DrawBoxNode.h" />
     <ClInclude Include="2d\FillDrawNode.h" />
     <ClInclude Include="2d\Node.h" />
@@ -194,6 +215,7 @@
     <ClInclude Include="control\TextureController.h" />
     <ClInclude Include="EgameController.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameEvent.h" />
     <ClInclude Include="GameStart.h" />
     <ClInclude Include="ShaderFiles.h" />
   </ItemGroup>

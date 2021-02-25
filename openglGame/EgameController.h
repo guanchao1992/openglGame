@@ -2,6 +2,7 @@
 #include "Base/Singleton.h"
 #include <2d/Node.h>
 #include "2d/DrawBoxNode.h"
+#include "dexode/EventBus.hpp"
 
 
 enum BlockType
@@ -51,5 +52,7 @@ private:
 	vector<BlockRow> _vecBlocks;
 	int _widthSize = 10;
 	int _heightSize = 10;
+
+	dexode::eventbus::Listener<dexode::EventBus> _listener;
 };
 

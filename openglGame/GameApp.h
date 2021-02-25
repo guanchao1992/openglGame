@@ -7,9 +7,10 @@
 #include <vector>
 #include "2d/Node.h"
 #include "GameStart.h"
+#include "dexode/EventBus.hpp"
+#include "GameEvent.h"
 
 using namespace std;
-
 
 class GameApp : public Node
 {
@@ -48,6 +49,7 @@ public:
 	GLfloat getViewHeight() { return _viewHeight; }
 	GLfloat getProjectWidth() { return _viewWidth; }
 	GLfloat getProjectHeight() { return _viewHeight; }
+
 protected:
 	shared_ptr<map<string, SPShader>> _shaders = make_shared<map<string, SPShader>>();
 
@@ -62,6 +64,12 @@ protected:
 	GLfloat _projectHeight;		//设计高度，未生效
 
 	GLboolean _reLoadView = true;	//重新加载窗口
+
+	shared_ptr<dexode::EventBus> _events = nullptr;
+
+	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
+	//dexode::eventbus::Listener<dexode::eventbus::Bus> _listener;
+
 public:
 	shared_ptr<GameStart> _start;
 };

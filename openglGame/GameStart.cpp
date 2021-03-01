@@ -1,25 +1,65 @@
 #include "GameStart.h"
 #include "2d/FillDrawNode.h"
 #include "EgameController.h"
+#include "GameEvent.h"
+#include "GameApp.h"
+#include "control/TimerController.h"
+#include <math.h>
 
 
 void GameStart::init()
 {
-	/*
-	auto fd = FillDrawNode::create();
-	fd->addVertex(Vector2(0, 0));
-	fd->addVertex(Vector2(55, 0));
-	fd->addVertex(Vector2(55, 90));
-	fd->addVertex(Vector2(0, 90));
-	fd->enforceVertex();
-	addChild(fd);
-	*/
+	_listener = GameApp::getInstance()->createListenerSP();
+
+	_listener->listen([&](const KeyEvent& et) {
+		if (et._isDown)
+		{
+			printf("event:%d按下了按键:%d\n", et._eventId, et._key);
+		}
+		else
+		{
+			printf("event:%d放开了按键:%d\n", et._eventId, et._key);
+		}
+		if (et._key == GLFW_KEY_UP || et._key == 'w' || et._key == 'W')
+		{
+			onUp(et._isDown);
+		}
+		if (et._key == GLFW_KEY_DOWN || et._key == 's' || et._key == 'S')
+		{
+			onDown(et._isDown);
+		}
+		if (et._key == GLFW_KEY_LEFT || et._key == 'a' || et._key == 'A')
+		{
+			onLeft(et._isDown);
+		}
+		if (et._key == GLFW_KEY_RIGHT || et._key == 'd' || et._key == 'D')
+		{
+			onRight(et._isDown);
+		}
+		if (et._key == GLFW_KEY_SPACE)
+		{
+			onRotate(et._isDown);
+		}
+	});
+
 	auto fd = Block::create();
 	addChild(fd);
 
 	fd->setPosition(Vector2(100, 100));
 	_block = fd;
+	fd->setTag(1001);
 
+
+	/*
+	addTimer(2, 1, [&, fd](float time) {
+		fd->removeFromParent();
+		return true;
+	});
+	*/
+	addTimer(0.1, -1, [&](float time) {
+		onAddBlockDown();
+		return false;
+	});
 }
 
 void GameStart::update(GLfloat time)
@@ -76,4 +116,24 @@ void GameStart::onRotateR(bool keyPress)
 	{
 		_block->resetDir(_block->_dir - 1);
 	}
+}
+
+void GameStart::onAddBlockDown()
+{
+	auto block = Block::create();
+	block->setPosition(10 + rand() % 40 * 20, 500);
+	this->addChild(block, 20);
+	block->resetType((BlockType)(rand() % 7));
+
+	addTimer(0.0, -1, [&, block](float time) {
+		auto pos = block->getPosition();
+		block->setPosition(pos._x, pos._y - 200 * time);
+		if (block->getPosition()._y < 100)
+		{
+			block->removeFromParent();
+			return true;
+		}
+		;
+		return false;
+	});
 }

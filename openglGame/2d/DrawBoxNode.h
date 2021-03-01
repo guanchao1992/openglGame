@@ -17,6 +17,8 @@ StatementNode(DrawBoxNode)
 class DrawBoxNode :public FillDrawNode
 {
 	StatementCreate(DrawBoxNode);
+public:
+	~DrawBoxNode();
 	void init();
 	void resetBoxType(BoxType bt);
 	BoxType getBoxType() { return _boxType; }

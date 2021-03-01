@@ -62,9 +62,6 @@
     <ClCompile Include="2d\TextureNode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="base\MathRotate.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="base\Shader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -101,6 +98,12 @@
     <ClCompile Include="..\dexode\EventBus.cpp">
       <Filter>dexode</Filter>
     </ClCompile>
+    <ClCompile Include="base\ControllerBase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="control\TimerController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -113,9 +116,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="2d\TextureNode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="base\MathRotate.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="base\Shader.h">
@@ -194,6 +194,12 @@
       <Filter>dexode</Filter>
     </ClInclude>
     <ClInclude Include="GameEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\ControllerBase.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\TimerController.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

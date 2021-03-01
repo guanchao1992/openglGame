@@ -1,6 +1,6 @@
 #pragma once
 #include "Node.h"
-#include "Base/Vector3.h"
+#include "base/Vector3.h"
 
 
 typedef struct TextureNodeVertex__
@@ -59,9 +59,6 @@ private:
 
 	GLuint _verticesVBO = -1;
 	GLuint _verticesVAO = -1;
-
-	GLuint _verticesColorVBO;
-	GLuint _verticesColorVAO;
 private:
 	vector<Vector2> _vertexs;
 	vector<Vector2> _texCoords;

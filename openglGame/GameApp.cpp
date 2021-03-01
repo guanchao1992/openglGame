@@ -6,21 +6,23 @@
 #include "control/TextureController.h"
 #include "glm/glm.hpp"
 #include "glm/gtx/transform.hpp"
+#include <synchapi.h>
+#include <math.h>
 
 GameApp::GameApp()
 {
+	_listener = createListenerSP();
+	_controllerMaster = ControllerMaster::getInstance();
 }
 
 GameApp::~GameApp()
 {
 }
 
-
 void GameApp::init()
 {
-	_events = make_shared<dexode::EventBus>();
-	_listener = make_shared<dexode::eventbus::Listener<dexode::eventbus::Bus>>(_events);
-
+	/*
+	*/
 	_listener->listen([&](const Event& event) {
 		printf("测试事件,接受到事件ID：%d\n", event._eventId);
 	});
@@ -28,6 +30,11 @@ void GameApp::init()
 	this->initShader();
 
 	setScale(0.8, 0.8);
+
+	_start = GameStart::create();
+	addChild(_start, 10000);
+
+	return;
 
 	//画格子
 	for (int x = 0; x < 5; ++x)
@@ -55,8 +62,6 @@ void GameApp::init()
 		}
 	}
 
-	_start = GameStart::create();
-	addChild(_start);
 
 	char path[256];
 	int index = 1;
@@ -89,17 +94,6 @@ void GameApp::init()
 		}
 	}
 
-	/*
-	_childs->at(12)->setZOrder(104);
-	_childs->at(13)->setZOrder(102);
-	_childs->at(14)->setZOrder(101);
-
-	_childs->at(12)->setColor(1, 1, 0, 1);
-	_childs->at(13)->setColor(1, 0.5, 0, 1);
-	_childs->at(14)->setColor(1, 0.1, 0, 1);
-
-	*/
-
 	_events->postpone(Event{ EventType::EVENT_GAME_RESTART });
 }
 
@@ -121,8 +115,6 @@ int GameApp::initShader()
 	FillDrawNode::initProgram();
 	TextureNode::initProgram();
 
-	//filldraw
-	//auto app = GameApp::getInstance();
 
 	return 0;
 }
@@ -158,14 +150,6 @@ SPShader GameApp::getShader(const char*name)
 	return nullptr;
 }
 
-
-void GameApp::draw(const GLfloat *parentTransform)
-{
-	Node::draw(parentTransform);
-
-	//do something
-}
-
 void GameApp::reshape()
 {
 	Node::reshape();
@@ -195,8 +179,11 @@ void GameApp::reshape()
 
 void GameApp::update(float time)
 {
+	_controllerMaster->update(time);
+
 	_start->update(time);
 
+	_events->process();
 
 	static float t_time = 0.f;
 	static int frame = 0;
@@ -204,14 +191,24 @@ void GameApp::update(float time)
 	char s[256] = { 0 };
 	frame++;
 	t_time = t_time + time;
-	if (t_time - timebase > 3) {
+	if (t_time - timebase > 1) {
 		sprintf_s(s, 256, "FPS:%4.2f", frame * 1.0 / (t_time - timebase));
 		timebase = t_time;
 		frame = 0;
 		printf("帧率为：%s\n", s);
 	}
 
-	_events->process();
+
+	static float s_fps = 1.0f / 60;
+
+	float pause_time = 0;
+	if (s_fps > time )
+	{
+		float sti = s_fps - time ;
+
+		Sleep(sti * 1000);
+	}
+
 }
 
 void GameApp::setViewSize(GLfloat widht, GLfloat height)
@@ -228,67 +225,8 @@ void GameApp::setProjectSize(GLfloat widht, GLfloat height)
 	_reLoadView = true;
 }
 
-
-GLUSvoid GameApp::programKey(const GLUSboolean pressed, const GLUSint key)
+shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> GameApp::createListenerSP()
 {
-	if (key == GLFW_KEY_UP || key == 'w' || key == 'W')
-	{ 
-		if (pressed)
-		{
-			printf("上键 按下");
-		}
-		else
-		{
-			printf("上键 弹起");
-		}
-		_start->onUp(pressed);
-	}
-	if (key == GLFW_KEY_DOWN || key == 's' || key == 'S')
-	{
-		if (pressed)
-		{
-			printf("下键 按下");
-		}
-		else
-		{
-			printf("下键 弹起");
-		}
-		_start->onDown(pressed);
-	}
-	if (key == GLFW_KEY_LEFT || key == 'a' || key == 'A')
-	{
-		if (pressed)
-		{
-			printf("左键 按下");
-		}
-		else
-		{
-			printf("左键 弹起");
-		}
-		_start->onLeft(pressed);
-	}
-	if (key == GLFW_KEY_RIGHT || key == 'd' || key == 'D')
-	{
-		if (pressed)
-		{
-			printf("右键 按下");
-		}
-		else
-		{
-			printf("右键 弹起");
-		}
-		_start->onRight(pressed);
-	}
-	if (key == GLFW_KEY_SPACE)
-	{
-		if (pressed)
-		{
-			printf("右键 按下");
-		}
-		else
-		{
-			printf("右键 弹起");
-		}
-		_start->onRotate(pressed);
-	}
+	return make_shared<dexode::eventbus::Listener<dexode::eventbus::Bus>>(_events);
 }
+

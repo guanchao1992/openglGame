@@ -3,10 +3,17 @@
 #include "glm/glm.hpp"
 #include "glm/gtx/transform.hpp"
 #include <algorithm>
+#include "control/TimerController.h"
+
+Node::~Node()
+{
+	_childs->clear();
+	killAllTimer();
+}
 
 void Node::record(SPNode selfNode)
 {
-	_this = selfNode;
+	//_this = selfNode;
 }
 
 void Node::reshape()
@@ -41,7 +48,7 @@ void Node::randerOne()
 
 void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 {
-	if (_revisit)
+	if (_revisit || parentFlag)
 	{
 		parentFlag = true;
 		_revisit = false;
@@ -72,31 +79,35 @@ void Node::draw(const GLfloat *parentTransform)
 	_redraw = false;
 }
 
-void Node::addChild(SPNode node)
+void Node::addChild(SPNode node, int zOrder)
 {
-	node->_parent = this->_this;
+	node->_parent = this;
+	node->_localZOrder = zOrder;
 	_childs->push_back(node);
 
 	_reorder = true;
 }
 
-void Node::removeChild(SPNode node)
+void Node::removeAllChild()
 {
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
-	{
-		if (*it == node)
-		{
-			node->_parent = nullptr;
-			node->_this = nullptr;	//重要！！去除节点的自引用。
-			_childs->erase(it);
-			break;
-		}
-	}
+	_childs->clear();
+	_reorder = true;
 }
 
 void Node::removeFromParent()
 {
-	this->_parent->removeChild(this->_this);
+	assert(_parent, "That node havent parent.");
+
+	for (auto it = _parent->_childs->begin(); it != _parent->_childs->end(); it++)
+	{
+		if ((*it).get() == this)
+		{
+			_parent->_childs->erase(it);
+			_parent->_reorder = true;
+			_parent = nullptr;
+			break;
+		}
+	}
 }
 
 vector<SPNode> Node::getChilds()
@@ -235,4 +246,51 @@ void Node::refreshOrder()
 	sort(_visitRight->begin(), _visitRight->end(), [](SPNode a, SPNode b) {
 		return a->getZOrder() < b->getZOrder();
 	});
+}
+
+void Node::setTag(int tag)
+{
+	_tag = tag;
+}
+
+SPNode Node::getChildByTag(int tag)
+{
+	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	{
+		if ((*it)->getTag() == tag)
+		{
+			return(*it);
+		}
+	}
+	return nullptr;
+}
+
+int Node::addTimer(float interval, int num, TimerCallback callback)
+{
+	//_timerids =
+	int timerId = TimerController::getInstance()->addTimer(interval, num, callback);
+	_timerids->push_back(timerId);
+	return timerId;
+}
+
+void Node::killTimer(int timerId)
+{
+	for (auto it = _timerids->begin(); it != _timerids->end(); it++)
+	{
+		if ((*it) == timerId)
+		{
+			_timerids->erase(it);
+			TimerController::getInstance()->killTimer(timerId);
+			break;
+		}
+	}
+}
+
+void Node::killAllTimer()
+{
+	for (auto it = _timerids->begin(); it != _timerids->end(); it++)
+	{
+		TimerController::getInstance()->killTimer(*it);
+	}
+	_timerids->clear();
 }

@@ -1,12 +1,13 @@
 #pragma once
 
 #include <memory>
-#include "Base/Size.h"
-#include "Base/Vector2.h"
-#include "Base/Vector3.h"
+#include "base/Size.h"
+#include "base/Vector2.h"
+#include "base/Vector3.h"
 #include <vector>
-#include "Base/Shader.h"
-#include "Base/Vector4.h"
+#include "base/Shader.h"
+#include "base/Vector4.h"
+#include "control/TimerController.h"
 
 using namespace std;
 
@@ -27,8 +28,7 @@ class Node
 protected:
 public:
 	//Node() {};
-	~Node() {
-	};
+	~Node(); 
 	void record(SPNode selfNode); //记录智能指针。该记录会在removeFromParent中删除。
 public:
 	virtual void init() {};
@@ -40,10 +40,11 @@ public:
 	virtual void draw(const GLfloat *parentTransform);
 	GLint getProgram() { return _shader->getProgram(); };
 
-	void addChild(SPNode node);
+	void addChild(SPNode node,int zOrder = 0);
 	void removeFromParent();
-	void removeChild(SPNode node);
+	void removeAllChild();
 	vector<SPNode> getChilds();
+	SPNode getChildByTag(int tag);			//找到子节点中第一个匹配tag的项
 	void setPosition(const Vector2&pos);
 	void setPosition(float x, float y);
 	void setAngle(float angleZ);			//2d游戏默认的是绕Z轴旋转
@@ -65,11 +66,17 @@ public:
 	const Vector4& getColor() { return _color; }
 	const Vector2& getPosition() { return _position; }
 	const Size& getContentSize() { return _contentSize; }
-	SPNode getParent() { return _parent; }
+	Node* getParent() { return _parent; }
 
 	void setZOrder(int localZOrder);
 	int getZOrder() { return _localZOrder; }
 
+	void setTag(int tag);
+	int getTag() { return _tag; }
+
+	int addTimer(float interval, int num, TimerCallback callback);
+	void killTimer(int killId);
+	void killAllTimer();
 protected:
 
 	SPShader _shader = nullptr;
@@ -89,8 +96,7 @@ protected:
 	float _scaleY = 1.0f;
 
 	Vector4 _color = Vector4(0.f, 0.f, 0.f, 0.f);
-	SPNode _parent = nullptr;
-	SPNode _this = nullptr;		//引用计数自增，控制清空内存的时机
+	Node* _parent = nullptr;
 
 	shared_ptr<vector<SPNode>> _childs = make_shared<vector<SPNode>>();
 
@@ -98,6 +104,7 @@ protected:
 	shared_ptr<vector<SPNode>> _visitRight = make_shared<vector<SPNode>>();
 
 	int _localZOrder = 0;
+	int _tag = 0;
 
 	GLfloat _mvTransform[16]; // transform to draw
 	GLfloat _transform[16]; // transform to parent
@@ -106,6 +113,8 @@ protected:
 	bool _repos = true;		//坐标发生变动
 	bool _redraw = true;
 	bool _reorder = true;
+
+	shared_ptr<vector<int>> _timerids = make_shared<vector<int>>();
 };
 
 

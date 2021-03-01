@@ -1,8 +1,9 @@
 #pragma once
-#include "Base/Singleton.h"
+#include "base/Singleton.h"
 #include <2d/Node.h>
 #include "2d/DrawBoxNode.h"
 #include "dexode/EventBus.hpp"
+#include "base/ControllerBase.hpp"
 
 
 enum BlockType
@@ -21,6 +22,7 @@ class Block:public Node
 {
 	StatementCreate(Block)
 public:
+	~Block();
 	void init();
 	void resetType(BlockType bt);
 	void resetDir(int dir);
@@ -39,9 +41,8 @@ struct BlockRow
 };
 
 //俄罗斯方块 游戏控制器
-class EgameController
+class EgameController :public ControllerBaseT<EgameController>
 {
-	SingletonClase(EgameController);
 public:
 
 	void restart(int width, int height);

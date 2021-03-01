@@ -6,6 +6,7 @@
 
 #include <map>
 #include <memory>
+#include "base/ControllerBase.hpp"
 
 using namespace std;
 
@@ -31,9 +32,9 @@ struct Texture
 
 typedef shared_ptr<Texture> SPTexture;
 
-class TextureController
+class TextureController :public ControllerBaseT<TextureController>
 {
-	SingletonClase(TextureController);
+	//SingletonClase(TextureController);
 public:
 	SPTexture loadPng(const char*path);
 private:

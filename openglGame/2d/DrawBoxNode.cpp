@@ -1,6 +1,12 @@
 #include "DrawBoxNode.h"
 #include "GameApp.h"
 
+
+DrawBoxNode:: ~DrawBoxNode()
+{
+
+}
+
 void DrawBoxNode::init()
 {
 	_shader = GameApp::getInstance()->getShader("filldraw");

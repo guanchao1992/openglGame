@@ -114,8 +114,7 @@ int main(int argc, char* argv[])
 
 	
 	glusWindowSetKeyFunc([](const GLUSboolean pressed, const GLUSint key) {
-		auto app = GameApp::getInstance();
-		app->programKey(pressed, key);
+		GameApp::getInstance()->getEventBus()->postpone(KeyEvent{ EVENT_KEY,key,(bool)pressed });
 	});
 
 	if (!glusWindowCreate("GLUS Example Window", VIEW_WIDTH, VIEW_HEIGHT, GLUS_FALSE, GLUS_FALSE, eglConfigAttributes, eglContextAttributes, 0))

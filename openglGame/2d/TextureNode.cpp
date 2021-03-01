@@ -38,7 +38,6 @@ TextureNode::~TextureNode()
 		glDeleteVertexArrays(1, &_verticesVAO);
 		_verticesVAO = -1;
 	}
-
 }
 
 void TextureNode::init()

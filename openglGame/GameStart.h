@@ -20,11 +20,16 @@ public:
 
 	void onRotate(bool keyPress);
 	void onRotateR(bool keyPress);
+	
+	void onAddBlockDown();
 public:
 
 	SPNode _test;
 
 
 	SPBlock _block;
+
+private:
+	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
 };
 

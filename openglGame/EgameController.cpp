@@ -43,6 +43,11 @@ const static int block_7[][4][2] = {
 	{ {-2, 0}, { -1,0 },{0,0} ,{1,0} },
 };
 
+Block::~Block()
+{
+
+}
+
 void Block::init()
 {
 	for (int i = 0; i < 4; ++i)

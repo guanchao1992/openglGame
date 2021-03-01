@@ -2,13 +2,14 @@
 #include <map>
 #include <memory>
 #include "GL/glus.h"
-#include "Base/Shader.h"
-#include "Base/Singleton.h"
+#include "base/Shader.h"
+#include "base/Singleton.h"
 #include <vector>
 #include "2d/Node.h"
 #include "GameStart.h"
 #include "dexode/EventBus.hpp"
 #include "GameEvent.h"
+#include "base/ControllerBase.hpp"
 
 using namespace std;
 
@@ -32,12 +33,13 @@ public:
 	int removeAllShader();
 
 	virtual void init();
-	virtual void draw(const GLfloat *parentTransform);
 	virtual void reshape();
 	//做一些绘制之外的其他操作
 	void update(float time);
 
-	GLUSvoid programKey(const GLUSboolean pressed, const GLUSint key);
+	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> createListenerSP();
+
+	inline shared_ptr<dexode::EventBus> getEventBus() { return _events; }
 public:
 	GLint getProgram(const char*name);
 	SPShader getShader(const char*name);
@@ -65,11 +67,10 @@ protected:
 
 	GLboolean _reLoadView = true;	//重新加载窗口
 
-	shared_ptr<dexode::EventBus> _events = nullptr;
-
+	shared_ptr<dexode::EventBus> _events = make_shared<dexode::EventBus>();
 	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
-	//dexode::eventbus::Listener<dexode::eventbus::Bus> _listener;
 
+	shared_ptr<ControllerMaster> _controllerMaster;
 public:
 	shared_ptr<GameStart> _start;
 };

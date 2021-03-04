@@ -52,28 +52,26 @@ void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 	{
 		parentFlag = true;
 		_revisit = false;
-		_redraw = true;
 
 		refreshTransformParent();
 
-		glusMatrix4x4Multiplyf(_mvTransform, parentTransform, _transform);
+		glusMatrix4x4Multiplyf(_projectTransform, parentTransform, _transform);
 	}
-	_redraw = true;
 	if (_reorder)
 	{
 		_reorder = false;
 		refreshOrder();
 	}
+	this->onDraw();
 
-	this->draw(_mvTransform);
 	for (auto it = _childs->begin(); it != _childs->end(); it++)
 	{
-		(*it)->visit(_mvTransform, parentFlag);
+		(*it)->visit(_projectTransform, parentFlag);
 	}
 }
 
-//如果发生了更改，需要重新
-void Node::draw(const GLfloat *parentTransform)
+//只有在模型发生变化的时候才需要调用
+void Node::onDraw()
 {
 	//do something
 	_redraw = false;
@@ -204,13 +202,11 @@ void Node::refreshTransformParent()
 void Node::setColor(const Vector4&color)
 {
 	_color = color;
-	_redraw = true;
 }
 
 void Node::setColor(float r, float g, float b, float l)
 {
 	_color.setVector(r, g, b, l);
-	_redraw = true;
 }
 
 void Node::setZOrder(int localZOrder)

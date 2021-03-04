@@ -3,13 +3,6 @@
 #include "base/Vector3.h"
 
 
-typedef struct FillDrawVertex__
-{
-	GLfloat vertexs[4];
-	GLfloat colors[4];
-} FDVertex;
-
-
 StatementNode(FillDrawNode)
 class FillDrawNode :public Node
 {
@@ -20,21 +13,17 @@ public:
 	void init();
 
 	virtual void randerOne();
-	virtual void draw(const GLfloat *parentTransform);
+	virtual void onDraw();
 
 public:
 	static void initProgram();
-	//void ensureCapcity(int count);
 	
 	void clearAllVertex();
 
 	void addVertex(const Vector2&pos);
-	void enforceVertex();//使顶点生效，顶点发生变化后需要调用该函数
 private:
-
 	static GLint g_vertexLocation;
 	static GLint g_colorLocation;
-	//static GLfloat *_buffer;
 
 	GLuint _verticesVBO = -1;
 	GLuint _verticesVAO = -1;
@@ -44,4 +33,5 @@ private:
 private:
 
 	vector<Vector2> _vertexs;
+
 };

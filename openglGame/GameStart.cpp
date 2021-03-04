@@ -43,18 +43,13 @@ void GameStart::init()
 	});
 
 	auto fd = Block::create();
-	addChild(fd);
+	addChild(fd,200);
 
 	fd->setPosition(Vector2(100, 100));
 	_block = fd;
 	fd->setTag(1001);
 
-
 	/*
-	addTimer(2, 1, [&, fd](float time) {
-		fd->removeFromParent();
-		return true;
-	});
 	*/
 	addTimer(0.1, -1, [&](float time) {
 		onAddBlockDown();
@@ -121,7 +116,7 @@ void GameStart::onRotateR(bool keyPress)
 void GameStart::onAddBlockDown()
 {
 	auto block = Block::create();
-	block->setPosition(10 + rand() % 40 * 20, 500);
+	block->setPosition(10 + rand() % 20 * 60, 500);
 	this->addChild(block, 20);
 	block->resetType((BlockType)(rand() % 7));
 

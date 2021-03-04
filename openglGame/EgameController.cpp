@@ -52,7 +52,16 @@ void Block::init()
 {
 	for (int i = 0; i < 4; ++i)
 	{
-		addChild(DrawBoxNode::create());
+		if (i == 0)
+		{
+			auto tb = TxcBoxNode::create();
+			addChild(tb);
+		}
+		else
+		{
+			auto db = DrawBoxNode::create();
+			addChild(db);
+		}
 	}
 	resetType(BLOCK_1);
 }
@@ -62,19 +71,28 @@ void Block::resetType(BlockType bt)
 	_blockType = bt;
 	switch (bt)
 	{
-	case BLOCK_1: _tarPos = block_1; _tarSize = sizeof(block_1) / sizeof(*block_1); break;
-	case BLOCK_2: _tarPos = block_2; _tarSize = sizeof(block_2) / sizeof(*block_2);  break;
-	case BLOCK_3: _tarPos = block_3; _tarSize = sizeof(block_3) / sizeof(*block_3);  break;
-	case BLOCK_4: _tarPos = block_4; _tarSize = sizeof(block_4) / sizeof(*block_4);  break;
-	case BLOCK_5: _tarPos = block_5; _tarSize = sizeof(block_5) / sizeof(*block_5);  break;
-	case BLOCK_6: _tarPos = block_6; _tarSize = sizeof(block_6) / sizeof(*block_6);  break;
-	case BLOCK_7: _tarPos = block_7; _tarSize = sizeof(block_7) / sizeof(*block_7);  break;
+	case BLOCK_1: _tarPos = block_1; _tarSize = sizeof(block_1) / sizeof(*block_1); setColor(Vector4(0.8, 0.1, 0.1, 1)); break;
+	case BLOCK_2: _tarPos = block_2; _tarSize = sizeof(block_2) / sizeof(*block_2); setColor(Vector4(0.3, 0.4, 0.2, 1)); break;
+	case BLOCK_3: _tarPos = block_3; _tarSize = sizeof(block_3) / sizeof(*block_3); setColor(Vector4(0.1, 0.7, 0.3, 1)); break;
+	case BLOCK_4: _tarPos = block_4; _tarSize = sizeof(block_4) / sizeof(*block_4); setColor(Vector4(0.7, 0.2, 0.4, 1)); break;
+	case BLOCK_5: _tarPos = block_5; _tarSize = sizeof(block_5) / sizeof(*block_5); setColor(Vector4(0.2, 0.5, 0.5, 1)); break;
+	case BLOCK_6: _tarPos = block_6; _tarSize = sizeof(block_6) / sizeof(*block_6); setColor(Vector4(0.1, 0.9, 0.6, 1)); break;
+	case BLOCK_7: _tarPos = block_7; _tarSize = sizeof(block_7) / sizeof(*block_7); setColor(Vector4(0.1, 0.7, 0.7, 1)); break;
 	default:
 		assert(true, "未定义的方块类型");
 		//错误
 		break;
 	}
 	resetDir(_dir);
+}
+
+void Block::setColor(const Vector4& color) {
+	auto childs = getChilds();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		childs[i]->setColor(color);
+	}
 }
 
 void Block::resetDir(int dir)

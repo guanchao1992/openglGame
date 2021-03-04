@@ -20,6 +20,13 @@ using namespace std;
 									{	shared_ptr<ClassType> node = make_shared<ClassType>();\
 										node->record(node); node->init(); return node; }
 
+#define StatementCreateN1(ClassType,T1,N1); public: static shared_ptr<ClassType> create(T1 N1) \
+									{	shared_ptr<ClassType> node = make_shared<ClassType>();\
+										node->record(node); node->init(N1); return node; }
+
+#define StatementCreateN2(ClassType,T1,N1,T2,N2); public: static shared_ptr<ClassType> create(T1 N1,T2 N2) \
+									{	shared_ptr<ClassType> node = make_shared<ClassType>();\
+										node->record(node); node->init(N1,N2); return node; }
 
 StatementNode(Node)
 class Node
@@ -37,7 +44,7 @@ public:
 	virtual void randerOne();
 
 	virtual void visit(const GLfloat *parentTransform, GLboolean parentFlag);
-	virtual void draw(const GLfloat *parentTransform);
+	virtual void onDraw();
 	GLint getProgram() { return _shader->getProgram(); };
 
 	void addChild(SPNode node,int zOrder = 0);
@@ -106,13 +113,13 @@ protected:
 	int _localZOrder = 0;
 	int _tag = 0;
 
-	GLfloat _mvTransform[16]; // transform to draw
+	GLfloat _projectTransform[16]; // transform to draw
 	GLfloat _transform[16]; // transform to parent
 
-	bool _revisit = true;
-	bool _repos = true;		//坐标发生变动
-	bool _redraw = true;
-	bool _reorder = true;
+	bool _revisit = true;	//需要重新计算变换矩阵
+	bool _redraw = true;	//需要刷新缓冲区数据
+	bool _reorder = true;	//需要重新对子节点进行排序
+	bool _revertexs = true; //需要重新创建缓冲区
 
 	shared_ptr<vector<int>> _timerids = make_shared<vector<int>>();
 };

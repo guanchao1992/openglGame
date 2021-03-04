@@ -3,6 +3,7 @@
 #include "Node.h"
 #include "base/Vector3.h"
 #include "FillDrawNode.h"
+#include "TextureNode.h"
 
 enum BoxType
 {
@@ -25,3 +26,15 @@ public:
 private:
 	BoxType _boxType;
 };
+
+
+StatementNode(TxcBoxNode)
+class TxcBoxNode :public TextureNode
+{
+	StatementCreate(TxcBoxNode);
+public:
+	void init();
+	void resetBoxType(BoxType bt);
+private:
+};
+

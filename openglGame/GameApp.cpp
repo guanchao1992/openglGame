@@ -8,6 +8,7 @@
 #include "glm/gtx/transform.hpp"
 #include <synchapi.h>
 #include <math.h>
+#include <2d/FontDrawNode.h>
 
 GameApp::GameApp()
 {
@@ -29,12 +30,9 @@ void GameApp::init()
 
 	this->initShader();
 
-	setScale(0.8, 0.8);
-
 	_start = GameStart::create();
-	addChild(_start, 10000);
+	_ui = GameUI::create();
 
-	return;
 
 	//画格子
 	for (int x = 0; x < 5; ++x)
@@ -56,9 +54,8 @@ void GameApp::init()
 			{
 				fd->setColor(Vector4(0.3, 0.3, 0.3, 1));
 			}
-			fd->enforceVertex();
 
-			this->addChild(fd);
+			_start->addChild(fd);
 		}
 	}
 
@@ -80,17 +77,7 @@ void GameApp::init()
 			tn->setTextureID(pt->_textureId);
 
 			tn->setPosition(Vector2(120 * x, 120 * y));
-			if ((x + y) % 2 == 0)
-			{
-				//tn->setColor(Vector4(0.2, 0.2, 0.2, 1));
-			}
-			else
-			{
-				//tn->setColor(Vector4(0.3, 0.3, 0.3, 1));
-			}
-			tn->enforceVertex();
-
-			this->addChild(tn);
+			_start->addChild(tn);
 		}
 	}
 
@@ -152,7 +139,7 @@ SPShader GameApp::getShader(const char*name)
 
 void GameApp::reshape()
 {
-	Node::reshape();
+	//Node::reshape();
 	_reLoadView = false;
 
 	GLfloat modelViewMatrix[16];
@@ -175,6 +162,21 @@ void GameApp::reshape()
 		glUniformMatrix4fv(g_modelViewMatrix, 1, GL_FALSE, _modelViewMatrix);
 	}
 	glUseProgram(0);
+
+	_start->reshape();
+	_ui->reshape();
+}
+
+void GameApp::visit(const GLfloat *parentTransform, GLboolean parentFlag)
+{
+	_start->visit(parentTransform, false);
+	_ui->visit(_viewMatrix, false);
+}
+
+void GameApp::rander()
+{
+	_start->rander();
+	_ui->rander();
 }
 
 void GameApp::update(float time)
@@ -182,22 +184,9 @@ void GameApp::update(float time)
 	_controllerMaster->update(time);
 
 	_start->update(time);
+	_ui->update(time);
 
 	_events->process();
-
-	static float t_time = 0.f;
-	static int frame = 0;
-	static int timebase = 0;
-	char s[256] = { 0 };
-	frame++;
-	t_time = t_time + time;
-	if (t_time - timebase > 1) {
-		sprintf_s(s, 256, "FPS:%4.2f", frame * 1.0 / (t_time - timebase));
-		timebase = t_time;
-		frame = 0;
-		printf("帧率为：%s\n", s);
-	}
-
 
 	static float s_fps = 1.0f / 60;
 

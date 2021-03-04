@@ -14,6 +14,11 @@
 
 #include "GL/glus.h"
 
+#include "ft2build.h"
+#include "freetype/freetype.h"
+#include <2d/TextureNode.h>
+#include <2d/FontDrawNode.h>
+
 #define VIEW_WIDTH 1000
 #define VIEW_HEIGHT 800
 
@@ -23,6 +28,11 @@ const static GLfloat biasMatrix[] = {
 	0.0f, 0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 1.0f };
 
+FT_Library g_library;
+FT_Error error;
+FT_Face g_face;
+
+GLuint g_ftx;
 GLUSboolean init(GLUSvoid)
 {
 	auto app = GameApp::getInstance();
@@ -39,8 +49,41 @@ GLUSboolean init(GLUSvoid)
 
 	app->visit(biasMatrix, false);
 
+	/*
+	auto error = FT_Init_FreeType(&g_library);					
+	error = FT_New_Face(g_library, "res/simhei.ttf", 0, &g_face);		
+	error = FT_Select_Charmap(g_face, FT_ENCODING_UNICODE);
+
+	error = FT_Set_Char_Size(g_face, 50 * 64, 0, 100, 0); 
+	FT_Set_Pixel_Sizes(g_face, 24, 0);
+
+	FT_Load_Char(g_face, 880, FT_LOAD_RENDER);
+
+
+	FT_GlyphSlot glyphSlot = g_face->glyph;
+
+	glGenTextures(1, &g_ftx);    // Using your API here
+	glBindTexture(GL_TEXTURE_2D, g_ftx);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	// Setup some parameters for texture filters and mipmapping 
+
+	GLint alignment;
+	glGetIntegerv(GL_UNPACK_ALIGNMENT, &alignment);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	GLint fmt = GL_RED;
+	glTexImage2D(GL_TEXTURE_2D, 0, fmt, glyphSlot->bitmap.width, glyphSlot->bitmap.rows,
+		0, fmt, GL_UNSIGNED_BYTE, glyphSlot->bitmap.buffer);
+	//glTexSubImage2D(,)
+	glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
+	*/
+
 	return GLUS_TRUE;
 }
+
 static int redisplay_interval;
 
 GLUSvoid reshape(GLUSint width, GLUSint height)
@@ -54,24 +97,18 @@ GLUSvoid reshape(GLUSint width, GLUSint height)
 
 GLUSboolean update(GLUSfloat time)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	glClearColor(0.0, 0.0, 0.0, 0.5);
-
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	auto app = GameApp::getInstance();
 	app->update(time);
 	if (app->isReLoadView())
 	{
 		app->reshape();
 	}
-
 	app->visit(biasMatrix, app->isReLoadView());
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClearColor(1.0, 1.0, 1.0, 0.5);
 	GameApp::getInstance()->rander();
 
-	
 	return GLUS_TRUE;
 }
 

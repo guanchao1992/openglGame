@@ -18,28 +18,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Shader\rendershadow.frag.glsl">
-      <Filter>资源文件</Filter>
-    </None>
-    <None Include="..\Shader\rendershadow.vert.glsl">
-      <Filter>资源文件</Filter>
-    </None>
-    <None Include="..\Shader\useshadow.frag.glsl">
-      <Filter>资源文件</Filter>
-    </None>
-    <None Include="..\Shader\useshadow.vert.glsl">
-      <Filter>资源文件</Filter>
-    </None>
     <None Include="..\Shader\filldraw.frag.glsl">
       <Filter>资源文件</Filter>
     </None>
     <None Include="..\Shader\filldraw.vert.glsl">
-      <Filter>资源文件</Filter>
-    </None>
-    <None Include="..\Shader\default.frag.glsl">
-      <Filter>资源文件</Filter>
-    </None>
-    <None Include="..\Shader\default.vert.glsl">
       <Filter>资源文件</Filter>
     </None>
     <None Include="..\Shader\texture.frag.glsl">
@@ -102,6 +84,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="control\TimerController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\FontDrawNode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="control\FontController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -200,6 +191,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="control\TimerController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\FontDrawNode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\VertexBuffers.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\FontController.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

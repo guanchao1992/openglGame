@@ -26,6 +26,7 @@ public:
 	void init();
 	void resetType(BlockType bt);
 	void resetDir(int dir);
+	void setColor(const Vector4&);
 
 	BlockType _blockType;
 	int _pos[4][2];

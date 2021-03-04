@@ -10,10 +10,11 @@
 #include "dexode/EventBus.hpp"
 #include "GameEvent.h"
 #include "base/ControllerBase.hpp"
+#include "GameUI.h"
 
 using namespace std;
 
-class GameApp : public Node
+class GameApp
 {
 public: 
 	//SingletonClase(GameApp);
@@ -21,7 +22,7 @@ public:
 	static shared_ptr<GameApp> getInstance() 
 	{ 
 		static shared_ptr<GameApp> instance = make_shared<GameApp>();
-		instance->record(instance);
+		//instance->record(instance);
 		return instance;
 	}
 
@@ -32,8 +33,10 @@ public:
 	int initShader();
 	int removeAllShader();
 
-	virtual void init();
-	virtual void reshape();
+	void init();
+	void reshape();
+	void visit(const GLfloat *parentTransform, GLboolean parentFlag);
+	void rander();		
 	//做一些绘制之外的其他操作
 	void update(float time);
 
@@ -73,5 +76,6 @@ protected:
 	shared_ptr<ControllerMaster> _controllerMaster;
 public:
 	shared_ptr<GameStart> _start;
+	shared_ptr<GameUI> _ui;
 };
 

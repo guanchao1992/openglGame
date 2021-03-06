@@ -2,6 +2,7 @@
 #include "2d/Node.h"
 #include "2d/FillDrawNode.h"
 #include "EgameController.h"
+#include "box2d.h"
 
 
 StatementNode(GameStart)
@@ -10,6 +11,8 @@ class GameStart :public Node
 	StatementCreate(GameStart)
 public:
 	void init();
+	void initListen();
+	void initWorld();
 	virtual void update(GLfloat time);
 public:
 
@@ -22,6 +25,8 @@ public:
 	void onRotateR(bool keyPress);
 	
 	void onAddBlockDown();
+
+	void onAddBox(Vector2 pos, Size size);
 public:
 
 	SPNode _test;
@@ -29,6 +34,7 @@ public:
 
 	SPBlock _block;
 
+	shared_ptr<b2World> _world;
 private:
 	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
 };

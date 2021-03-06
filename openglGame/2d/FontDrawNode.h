@@ -35,6 +35,10 @@ public:
 	void setText(const wchar_t*str);
 	void setFontSize(int fontSize);
 private:
+	static int g_vertexLocation;
+	static int g_textCoordLocation;
+	static int g_texture0Location;
+	static int g_makeColorLocation;
 
 	GLuint _verticesVBO = -1;
 	GLuint _verticesVAO = -1;

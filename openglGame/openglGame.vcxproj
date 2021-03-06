@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(SolutionDir)OpenGL_Libs\glew-2.1.0\lib\$(Platform);$(SolutionDir)OpenGL_Libs\glfw-3.3.2.bin.WIN32\lib-vc2017;$(SolutionDir)OpenGL_Libs\GLUS\lib;$(SolutionDir)OpenGL_Libs\libpng\lib;$(SolutionDir)OpenGL_Libs\freetype2\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir);$(ProjectDir);$(SolutionDir)OpenGL_Libs\glew-2.1.0\include;$(SolutionDir)OpenGL_Libs\glfw-3.3.2.bin.WIN32\include;$(SolutionDir)OpenGL_Libs\GLUS\include;$(SolutionDir)OpenGL_Libs\libpng\include;$(SolutionDir)OpenGL_Libs\freetype2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)OpenGL_Libs\glew-2.1.0\lib\$(Platform);$(SolutionDir)OpenGL_Libs\glfw-3.3.2.bin.WIN32\lib-vc2017;$(SolutionDir)OpenGL_Libs\GLUS\lib;$(SolutionDir)OpenGL_Libs\libpng\lib;$(SolutionDir)OpenGL_Libs\freetype2\lib;$(SolutionDir)OpenGL_Libs\box2d\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir);$(ProjectDir);$(SolutionDir)OpenGL_Libs\glew-2.1.0\include;$(SolutionDir)OpenGL_Libs\glfw-3.3.2.bin.WIN32\include;$(SolutionDir)OpenGL_Libs\GLUS\include;$(SolutionDir)OpenGL_Libs\libpng\include;$(SolutionDir)OpenGL_Libs\freetype2\include;$(SolutionDir)OpenGL_Libs\box2d\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -98,7 +98,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;GLUS.lib;libpng.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;GLUS.lib;libpng.lib;freetype.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\OpenGL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

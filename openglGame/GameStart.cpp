@@ -6,11 +6,31 @@
 #include "control/TimerController.h"
 #include <math.h>
 
+#define WORLD_SCALE 10	//世界坐标系与物理坐标系比例
 
 void GameStart::init()
 {
-	_listener = GameApp::getInstance()->createListenerSP();
+	initListen();
+	initWorld();
 
+	auto fd = Block::create();
+	addChild(fd,200);
+
+	fd->setPosition(Vector2(100, 100));
+	_block = fd;
+	fd->setTag(1001);
+
+	/*
+	addTimer(0.1, -1, [&](float time) {
+		onAddBlockDown();
+		return false;
+	});
+	*/
+}
+
+void GameStart::initListen()
+{
+	_listener = GameApp::getInstance()->createListenerSP();
 	_listener->listen([&](const KeyEvent& et) {
 		if (et._isDown)
 		{
@@ -42,27 +62,80 @@ void GameStart::init()
 		}
 	});
 
-	auto fd = Block::create();
-	addChild(fd,200);
-
-	fd->setPosition(Vector2(100, 100));
-	_block = fd;
-	fd->setTag(1001);
-
-	/*
-	*/
-	addTimer(0.1, -1, [&](float time) {
-		onAddBlockDown();
-		return false;
+	_listener->listen([&](const MouseMoveEvent& et) {
+		printf("x:%.2f,y:%.2f,bts:%d\n", et._x, et._y, et._buttons);
 	});
 }
+
+void GameStart::initWorld()
+{
+	
+	b2Vec2 gravity(0.0f, -10.0f);
+	_world = make_shared<b2World>(gravity);
+
+	//创建地面
+	{
+		auto w = 100.f;
+		auto h = 1.f;
+		auto ground1 = FillDrawNode::create();
+		ground1->addVertex(-w * WORLD_SCALE, h * WORLD_SCALE);
+		ground1->addVertex(w * WORLD_SCALE, h * WORLD_SCALE);
+		ground1->addVertex(w * WORLD_SCALE, -h * WORLD_SCALE);
+		ground1->addVertex(-w * WORLD_SCALE, -h * WORLD_SCALE);
+		ground1->setColor(1, 0, 0, 1);
+		addChild(ground1);
+
+		b2BodyDef groundBodyDef;
+		groundBodyDef.position.Set(50.0f, 1.0f);
+		groundBodyDef.userData._node = ground1.get();
+		b2Body* groundBody = _world->CreateBody(&groundBodyDef);
+
+		b2PolygonShape groundBox;
+		groundBox.SetAsBox(w, h);
+		groundBody->CreateFixture(&groundBox, 0.0f);
+	}
+
+
+	for (size_t i = 0; i < 200; i++)
+	{
+		onAddBox(Vector2(10.0f + i / 10 * 4, 10.0f + i % 10 * 4), Size(2, 4));
+	}
+
+	/*
+	addTimer(0.1, -1, [&](float time) {
+		return false;
+	});
+	*/
+
+}
+
+const float timeStep = 1.0f / 60.0f;
+const int32 velocityIterations = 6;
+const int32 positionIterations = 2;
 
 void GameStart::update(GLfloat time)
 {
 	static float s_t = 0;
 	s_t += time;
 	_block->resetType(BlockType(((int)s_t) % 7));
-	
+
+	if (time > timeStep)
+	{
+		time = timeStep;
+	}
+	_world->Step(time, velocityIterations, positionIterations);
+
+	auto body = _world->GetBodyList();
+	while (body)
+	{
+		auto pos = body->GetPosition();
+		auto angle = body->GetAngle();
+		auto node = body->GetUserData()._node;
+		node->setPosition(pos.x * WORLD_SCALE, pos.y * WORLD_SCALE);
+		node->setEulerAngle(angle);
+
+		body = body->GetNext();
+	}
 }
 
 void GameStart::onUp(bool keyPress)
@@ -131,4 +204,33 @@ void GameStart::onAddBlockDown()
 		;
 		return false;
 	});
+}
+
+//传入的参数是相对于物理坐标系的
+void GameStart::onAddBox(Vector2 pos, Size size)
+{
+	auto box1 = FillDrawNode::create();
+	box1->addVertex(size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
+	box1->addVertex(size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
+	box1->addVertex(-size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
+	box1->addVertex(-size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
+	box1->setColor(0, 1, 0, 1);
+	addChild(box1);
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(pos._x, pos._y);
+	bodyDef.linearVelocity = b2Vec2(10, 0); //指定初始线性速度
+	bodyDef.userData._node = box1.get();
+	b2Body* body = _world->CreateBody(&bodyDef);
+
+	b2PolygonShape dynamicBox;	//设置形状
+	dynamicBox.SetAsBox(size.m_width / 2, size.m_height / 2);
+
+	b2FixtureDef fixtureDef;	//设置物体的各种参数
+	fixtureDef.shape = &dynamicBox;
+	fixtureDef.density = 0.1f;
+	fixtureDef.friction = 0.4f;
+
+	body->CreateFixture(&fixtureDef);
 }

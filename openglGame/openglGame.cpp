@@ -153,6 +153,16 @@ int main(int argc, char* argv[])
 	glusWindowSetKeyFunc([](const GLUSboolean pressed, const GLUSint key) {
 		GameApp::getInstance()->getEventBus()->postpone(KeyEvent{ EVENT_KEY,key,(bool)pressed });
 	});
+	glusWindowSetMouseFunc(
+		[](const GLUSboolean pressed, const GLUSint button, const GLUSint xPos, const GLUSint yPos) {
+		GameApp::getInstance()->getEventBus()->postpone(MouseKeyEvent{ EVENT_MOUSEKEY,(float)xPos,(float)yPos ,button ,(bool)pressed });
+	});
+	glusWindowSetMouseMoveFunc([](const GLUSint buttons, const GLUSint xPos, const GLUSint yPos) {
+		GameApp::getInstance()->getEventBus()->postpone(MouseMoveEvent{ EVENT_MOUSEMOUSE,(float)xPos,(float)yPos ,buttons });
+	});
+	glusWindowSetMouseWheelFunc([](const GLUSint buttons, const GLUSint ticks, const GLUSint xPos, const GLUSint yPos) {
+		GameApp::getInstance()->getEventBus()->postpone(MouseWheelEvent{ EVENT_MOUSEWheel,(float)xPos,(float)yPos,ticks ,buttons });
+	});
 
 	if (!glusWindowCreate("GLUS Example Window", VIEW_WIDTH, VIEW_HEIGHT, GLUS_FALSE, GLUS_FALSE, eglConfigAttributes, eglContextAttributes, 0))
 	{

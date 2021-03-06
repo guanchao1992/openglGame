@@ -6,6 +6,8 @@
 
 GLint FillDrawNode::g_vertexLocation = -1;
 GLint FillDrawNode::g_colorLocation = -1;
+GLint FillDrawNode::g_makeColorLocation = -1;
+
 
 void FillDrawNode::initProgram()
 {
@@ -14,6 +16,7 @@ void FillDrawNode::initProgram()
 
 	g_vertexLocation = glGetAttribLocation(program, "a_vertex");
 	g_colorLocation = glGetAttribLocation(program, "a_color");
+	g_makeColorLocation = glGetUniformLocation(program, "u_makeColor");
 
 
 	//GLfloat colorV4[] = { 1.0f,0.0f,0.0f,1.0f };
@@ -52,10 +55,24 @@ void FillDrawNode::randerOne()
 
 	GLint g_projectMatrix = glGetUniformLocation(program, "u_projectMatrix");
 	glUniformMatrix4fv(g_projectMatrix, 1, GL_FALSE, _projectTransform);
+
+	glUniform4f(g_makeColorLocation, _color._r, _color._g, _color._b, _color._l);
 	
 	glBindVertexArray(_verticesVAO);
 
-	glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexs.size());
+	if (_signs.size() > 0)
+	{
+		int lastIndex = 0;
+		for (int i = 0; i < _signs.size(); ++i)
+		{
+			glDrawArrays(_signs[i].second, lastIndex, _signs[i].first - lastIndex + 1);
+			lastIndex = _signs[i].first + 1;
+		}
+	}
+	else
+	{
+		glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexs.size());
+	}
 
 	glBindVertexArray(0);
 
@@ -93,10 +110,11 @@ void FillDrawNode::onDraw()
 		pVectexs[i].vertexs[2] = 0.0f;
 		pVectexs[i].vertexs[3] = 1.0f;
 
-		pVectexs[i].colors[0] = _color._r;
-		pVectexs[i].colors[1] = _color._g;
-		pVectexs[i].colors[2] = _color._b;
-		pVectexs[i].colors[3] = _color._l;
+		auto& color = _colors[i];
+		pVectexs[i].colors[0] = color._r;
+		pVectexs[i].colors[1] = color._g;
+		pVectexs[i].colors[2] = color._b;
+		pVectexs[i].colors[3] = color._l;
 		i = i + 1;
 	}
 
@@ -126,9 +144,29 @@ void FillDrawNode::clearAllVertex()
 	_revertexs = true;
 }
 
-void FillDrawNode::addVertex(const Vector2&pos)
+void FillDrawNode::addVertex(const Vector2&pos, const Vector4&color)
 {
 	_vertexs.push_back(pos);
+	_colors.push_back(color);
 	_redraw = true;
 	_revertexs = true;
+}
+
+void FillDrawNode::addVertex(float x, float y, const Vector4&color)
+{
+	addVertex(Vector2(x, y), color);
+}
+
+void FillDrawNode::addVertexs(const Vector2*poss, int size, const Vector4&color, GLenum drawType)
+{
+	for (int i = 0; i < size; ++i)
+	{
+		addVertex(poss[i], color);
+	}
+	signDraw(drawType);
+}
+
+void FillDrawNode::signDraw(GLenum drawType)
+{
+	_signs.push_back(pair<int, int>(_vertexs.size() - 1, drawType));
 }

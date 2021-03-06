@@ -7,6 +7,11 @@
 #include "VertexBuffers.hpp"
 
 
+int FontDrawNode::g_vertexLocation = -1;
+int FontDrawNode::g_textCoordLocation = -1;
+int FontDrawNode::g_texture0Location = -1;
+int FontDrawNode::g_makeColorLocation = -1;
+
 FontDrawNode::~FontDrawNode()
 {
 	if (_verticesVBO != -1)
@@ -24,13 +29,12 @@ FontDrawNode::~FontDrawNode()
 
 void FontDrawNode::initProgram()
 {
-	/*
 	auto app = GameApp::getInstance();
 	auto program = app->getProgram("texture");
 	g_vertexLocation = glGetAttribLocation(program, "a_vertex");
 	g_textCoordLocation = glGetAttribLocation(program, "a_texCoord");
 	g_texture0Location = glGetUniformLocation(program, "CC_Texture0");
-	*/
+	g_makeColorLocation = glGetUniformLocation(program, "u_makeColor");
 }
 
 void FontDrawNode::init(const char*fontFile)
@@ -55,11 +59,13 @@ void FontDrawNode::randerOne()
 
 	glBindVertexArray(_verticesVAO);
 
+	glUniform4f(g_makeColorLocation, _color._r, _color._g, _color._b, _color._l);
+
 	auto num = _vertexs.size() / 4;
 	for (int i = 0; i < num; ++i)
 	{
 		glBindTexture(GL_TEXTURE_2D, _textureIds[i]);
-		glUniform1i(TextureNode::g_texture0Location, 0);
+		glUniform1i(g_texture0Location, 0);
 		glDrawArrays(GL_TRIANGLE_FAN, i * 4, 4);
 	}
 
@@ -115,11 +121,11 @@ void FontDrawNode::onDraw()
 
 	glBindVertexArray(_verticesVAO);
 
-	glVertexAttribPointer(TextureNode::g_vertexLocation, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)offsetof(TNVertex, vertexs));
-	glEnableVertexAttribArray(TextureNode::g_vertexLocation);
+	glVertexAttribPointer(g_vertexLocation, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)offsetof(TNVertex, vertexs));
+	glEnableVertexAttribArray(g_vertexLocation);
 
-	glVertexAttribPointer(TextureNode::g_textCoordLocation, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)offsetof(TNVertex, texCoord));
-	glEnableVertexAttribArray(TextureNode::g_textCoordLocation);
+	glVertexAttribPointer(g_textCoordLocation, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)offsetof(TNVertex, texCoord));
+	glEnableVertexAttribArray(g_textCoordLocation);
 }
 
 void FontDrawNode::clearAllVertex()

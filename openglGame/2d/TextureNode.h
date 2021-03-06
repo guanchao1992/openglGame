@@ -28,6 +28,7 @@ public:
 	static int g_vertexLocation;
 	static int g_textCoordLocation;
 	static int g_texture0Location;
+	static int g_makeColorLocation;
 private:
 
 	GLuint _verticesVBO = -1;

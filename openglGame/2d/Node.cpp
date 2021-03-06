@@ -125,9 +125,16 @@ void Node::setPosition(float x, float y)
 	_revisit = true;
 }
 
+const float PI = 3.141592653589793238f;
+
+void Node::setEulerAngle(float angleZ)
+{
+	this->setAngleCoordinate(_angleX, _angleY, angleZ / PI * 180);
+}
+
 void Node::setAngle(float angle)
 {
-	this->setAngleCoordinate(_angleX, _angleY, _angleZ);
+	this->setAngleCoordinate(_angleX, _angleY, angle);
 }
 
 void Node::setAngleCoordinate(float angleX, float angleY, float angleZ)
@@ -290,3 +297,15 @@ void Node::killAllTimer()
 	}
 	_timerids->clear();
 }
+
+
+int Node::getAllChildNum()
+{
+	auto size = 1;
+	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	{
+		size += (*it)->getAllChildNum();
+	}
+	return size;
+}
+

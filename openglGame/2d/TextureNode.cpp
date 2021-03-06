@@ -8,6 +8,8 @@
 int TextureNode::g_vertexLocation = -1;
 int TextureNode::g_textCoordLocation = -1;
 int TextureNode::g_texture0Location = -1;
+int TextureNode::g_makeColorLocation = -1;
+
 
 void TextureNode::initProgram()
 {
@@ -16,6 +18,7 @@ void TextureNode::initProgram()
 	g_vertexLocation = glGetAttribLocation(program, "a_vertex");
 	g_textCoordLocation = glGetAttribLocation(program, "a_texCoord");
 	g_texture0Location = glGetUniformLocation(program, "CC_Texture0");
+	g_makeColorLocation = glGetUniformLocation(program, "u_makeColor");
 
 }
 
@@ -51,6 +54,7 @@ void TextureNode::randerOne()
 	glActiveTexture(GL_TEXTURE0 + 0);
 	glBindTexture(GL_TEXTURE_2D, _textureId);
 	glUniform1i(g_texture0Location, 0);//这里的0和glActiveTexture后面的0是一个意思
+	glUniform4f(g_makeColorLocation, _color._r, _color._g, _color._b, _color._l);
 
 	GLint g_projectMatrix = glGetUniformLocation(program, "u_projectMatrix");
 	glUniformMatrix4fv(g_projectMatrix, 1, GL_FALSE, _projectTransform);

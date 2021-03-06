@@ -55,6 +55,7 @@ public:
 	GLfloat getProjectWidth() { return _viewWidth; }
 	GLfloat getProjectHeight() { return _viewHeight; }
 
+	int getNodeCount();
 protected:
 	shared_ptr<map<string, SPShader>> _shaders = make_shared<map<string, SPShader>>();
 

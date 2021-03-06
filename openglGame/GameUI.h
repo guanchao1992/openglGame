@@ -24,5 +24,7 @@ private:
 	SPNode _center;
 
 	SPNode _debug;
+
+	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
 };
 

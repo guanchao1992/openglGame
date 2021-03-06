@@ -54,6 +54,7 @@ public:
 	SPNode getChildByTag(int tag);			//找到子节点中第一个匹配tag的项
 	void setPosition(const Vector2&pos);
 	void setPosition(float x, float y);
+	void setEulerAngle(float angleZ);
 	void setAngle(float angleZ);			//2d游戏默认的是绕Z轴旋转
 	void setAngleCoordinate(float angleX, float angleY, float angleZ);		//分别绕着坐标轴X轴，Y轴，Z轴各旋转一次。
 	void setRotateAxis(Vector3 vec, float angle);		//设置一个向量，以该向量为轴旋转。
@@ -84,6 +85,10 @@ public:
 	int addTimer(float interval, int num, TimerCallback callback);
 	void killTimer(int killId);
 	void killAllTimer();
+
+	//debug
+	//获得所有子节点数量
+	int getAllChildNum();
 protected:
 
 	SPShader _shader = nullptr;
@@ -102,7 +107,7 @@ protected:
 	float _scaleX = 1.0f;
 	float _scaleY = 1.0f;
 
-	Vector4 _color = Vector4(0.f, 0.f, 0.f, 0.f);
+	Vector4 _color = Vector4(1.f, 1.f, 1.f, 1.f);
 	Node* _parent = nullptr;
 
 	shared_ptr<vector<SPNode>> _childs = make_shared<vector<SPNode>>();

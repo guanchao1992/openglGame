@@ -35,27 +35,29 @@ void GameApp::init()
 
 
 	//»­¸ñ×Ó
+	auto fd = FillDrawNode::create();
+	fd->setPosition(0, 0);
+	_start->addChild(fd, -1000);
 	for (int x = 0; x < 5; ++x)
 	{
 		for (int y = 0; y < 10; ++y)
 		{
-			auto fd = FillDrawNode::create();
-			fd->addVertex(Vector2(0, 0));
-			fd->addVertex(Vector2(120, 0));
-			fd->addVertex(Vector2(120, 120));
-			fd->addVertex(Vector2(0, 120));
-
-			fd->setPosition(Vector2(120 * x, 120 * y));
 			if ((x + y) % 2 == 0)
 			{
-				fd->setColor(Vector4(0.2, 0.2, 0.2, 1));
+				fd->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
+				fd->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
+				fd->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
+				fd->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
+				fd->signDraw(GL_TRIANGLE_FAN);
 			}
 			else
 			{
-				fd->setColor(Vector4(0.3, 0.3, 0.3, 1));
+				fd->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
+				fd->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
+				fd->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
+				fd->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
+				fd->signDraw(GL_TRIANGLE_FAN);
 			}
-
-			_start->addChild(fd);
 		}
 	}
 
@@ -77,7 +79,7 @@ void GameApp::init()
 			tn->setTextureID(pt->_textureId);
 
 			tn->setPosition(Vector2(120 * x, 120 * y));
-			_start->addChild(tn);
+			_start->addChild(tn, -1000);
 		}
 	}
 
@@ -101,6 +103,7 @@ int GameApp::initShader()
 
 	FillDrawNode::initProgram();
 	TextureNode::initProgram();
+	FontDrawNode::initProgram();
 
 
 	return 0;
@@ -219,3 +222,7 @@ shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> GameApp::createLi
 	return make_shared<dexode::eventbus::Listener<dexode::eventbus::Bus>>(_events);
 }
 
+int GameApp::getNodeCount()
+{
+	return _ui->getAllChildNum() + _start->getAllChildNum();
+}

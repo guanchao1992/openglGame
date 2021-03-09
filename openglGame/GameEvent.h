@@ -8,7 +8,7 @@ enum EventType : unsigned int
 	EVENT_KEY = 2,				//键盘消息
 	EVENT_MOUSEKEY = 3,			//鼠标按键消息
 	EVENT_MOUSEMOUSE = 4,		//鼠标移动
-	EVENT_MOUSEWheel = 5,		//鼠标滚轮滚动
+	EVENT_MOUSEWHEEL = 5,		//鼠标滚轮滚动
 
 	EVENT_CUSTOM = 100,			//100以上是其他的自定义消息
 };

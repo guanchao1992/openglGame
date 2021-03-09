@@ -49,7 +49,7 @@ void TxcBoxNode::init()
 	addVertex(Vector2(40, 0), Vector2(0, 1));
 	addVertex(Vector2(40, 40), Vector2(1, 1));
 	addVertex(Vector2(0, 40), Vector2(1, 0));
-	auto texture = TextureController::getInstance()->loadPng("d:/pngtest3.png");
+	auto texture = TextureController::getInstance()->loadPng(".\\res\\test (1).png");
 	setTextureID(texture->_textureId);
 	resetBoxType(BOX_1);
 }

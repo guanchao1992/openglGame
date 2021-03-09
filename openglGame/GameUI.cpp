@@ -100,7 +100,7 @@ void GameUI::initDebug()
 {
 	{
 		auto text1 = FontDrawNode::create(DEFAULTE_FONT_FILE);
-		text1->setFontSize(20);
+		text1->setFontSize(30);
 		_debug->addChild(text1);
 		text1->setText(L"这里是debug信息");
 		text1->setPosition(0, 0);
@@ -109,15 +109,15 @@ void GameUI::initDebug()
 	}
 	{
 		auto text1 = FontDrawNode::create(DEFAULTE_FONT_FILE);
-		text1->setFontSize(20);
+		text1->setFontSize(30);
 		_debug->addChild(text1);
 		text1->setText(L"这里是debug信息");
-		text1->setPosition(0, 20);
+		text1->setPosition(0, 30);
 		text1->setScale(1, 1);
 		text1->setTag(1);
 		_listener->listen([&, text1](const MouseMoveEvent& et) {
 			wchar_t s[256];
-			swprintf(s, 256, L"x:%.2f,y:%.2f,bts:%d\n", et._x, et._y, et._buttons);
+			swprintf(s, 256, L"x:%.2f,y:%.2f,bts:%d", et._x, et._y, et._buttons);
 			text1->setText(s);
 		});
 	}

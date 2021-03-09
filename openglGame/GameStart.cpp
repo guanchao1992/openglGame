@@ -5,6 +5,11 @@
 #include "GameApp.h"
 #include "control/TimerController.h"
 #include <math.h>
+#include "nlohmann/json.hpp"
+#include <iostream> 
+#include <fstream> 
+
+using namespace nlohmann;
 
 #define WORLD_SCALE 10	//世界坐标系与物理坐标系比例
 
@@ -19,6 +24,21 @@ void GameStart::init()
 	fd->setPosition(Vector2(100, 100));
 	_block = fd;
 	fd->setTag(1001);
+
+	
+	/*
+	// read a JSON file
+	std::ifstream i("file.json");
+	json j;
+	i >> j;
+	*/
+
+
+	json j = { {"2",21} ,{"test","efw"} };
+
+	// write prettified JSON to another file
+	std::ofstream o("pretty.json");
+	o << j << std::endl;
 
 	/*
 	addTimer(0.1, -1, [&](float time) {
@@ -65,13 +85,20 @@ void GameStart::initListen()
 	_listener->listen([&](const MouseMoveEvent& et) {
 		printf("x:%.2f,y:%.2f,bts:%d\n", et._x, et._y, et._buttons);
 	});
+	_listener->listen([&](const MouseKeyEvent& et) {
+		if ((et.button & 4) && et._isDown)
+		{
+			onAddBox(Vector2(et._x / WORLD_SCALE, et._y / WORLD_SCALE), Size(4, 4), Vector4(0.5, 0.1, 0, 1));
+		}
+	});
 }
 
 void GameStart::initWorld()
 {
-	
 	b2Vec2 gravity(0.0f, -10.0f);
 	_world = make_shared<b2World>(gravity);
+
+	//_world->SetDebugDraw();
 
 	//创建地面
 	{
@@ -98,9 +125,15 @@ void GameStart::initWorld()
 
 	for (size_t i = 0; i < 200; i++)
 	{
-		onAddBox(Vector2(10.0f + i / 10 * 4, 10.0f + i % 10 * 4), Size(2, 4));
+		//onAddBox(Vector2(10.0f + i / 10 * 4, 10.0f + i % 10 * 4), Size(2, 4), Vector4(0.1, 0.5, 0.8, 1));
 	}
 
+	static int time_i = 0;
+	addTimer(0.1, 200, [&](float time) {
+		//onAddBox(Vector2(10.0f + time_i / 10 * 4, 10.0f + time_i % 10 * 4), Size(2, 4), Vector4(0.1, 0.5, 0.8, 1));
+		time_i++;
+		return false;
+	});
 	/*
 	addTimer(0.1, -1, [&](float time) {
 		return false;
@@ -207,14 +240,14 @@ void GameStart::onAddBlockDown()
 }
 
 //传入的参数是相对于物理坐标系的
-void GameStart::onAddBox(Vector2 pos, Size size)
+void GameStart::onAddBox(const Vector2& pos, const Size& size, const Vector4& color)
 {
 	auto box1 = FillDrawNode::create();
 	box1->addVertex(size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
 	box1->addVertex(size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
 	box1->addVertex(-size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
 	box1->addVertex(-size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
-	box1->setColor(0, 1, 0, 1);
+	box1->setColor(color);
 	addChild(box1);
 
 	b2BodyDef bodyDef;

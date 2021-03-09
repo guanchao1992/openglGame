@@ -9,6 +9,9 @@
 #include <synchapi.h>
 #include <math.h>
 #include <2d/FontDrawNode.h>
+#include "nlohmann/json.hpp"
+#include <iostream> 
+#include <fstream> 
 
 GameApp::GameApp()
 {

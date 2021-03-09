@@ -145,14 +145,14 @@ void FontDrawNode::setText(const wchar_t*str)
 	{
 		auto char_texture = _font->getTextChar(str[i]);
 
-		_vertexs.push_back(Vector2(str_w, 0));
-		_vertexs.push_back(Vector2(str_w, char_texture->_height));
-		_vertexs.push_back(Vector2(str_w + char_texture->_width, char_texture->_height));
-		_vertexs.push_back(Vector2(str_w + char_texture->_width, 0));
+		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x, char_texture->_delta_y));
+		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x, char_texture->_height + char_texture->_delta_y));
+		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x + char_texture->_width, char_texture->_height + char_texture->_delta_y));
+		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x + char_texture->_width, char_texture->_delta_y));
 		_textureIds.push_back(char_texture->_texID);
 
-		str_w += char_texture->_width;
-	} 
+		str_w += char_texture->_adv_x;
+	}
 }
 
 void FontDrawNode::setFontSize(int fontSize)

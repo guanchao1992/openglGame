@@ -26,15 +26,14 @@ public:
 	
 	void onAddBlockDown();
 
-	void onAddBox(Vector2 pos, Size size);
+	void onAddBox(const Vector2& pos, const Size& size, const Vector4& color = Vector4(1, 1, 1, 1));
 public:
-
 	SPNode _test;
-
 
 	SPBlock _block;
 
 	shared_ptr<b2World> _world;
+
 private:
 	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
 };

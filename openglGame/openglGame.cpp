@@ -155,13 +155,13 @@ int main(int argc, char* argv[])
 	});
 	glusWindowSetMouseFunc(
 		[](const GLUSboolean pressed, const GLUSint button, const GLUSint xPos, const GLUSint yPos) {
-		GameApp::getInstance()->getEventBus()->postpone(MouseKeyEvent{ EVENT_MOUSEKEY,(float)xPos,(float)yPos ,button ,(bool)pressed });
+		GameApp::getInstance()->getEventBus()->postpone(MouseKeyEvent{ EVENT_MOUSEKEY,(float)xPos,GameApp::getInstance()->getViewHeight() - yPos ,button ,(bool)pressed });
 	});
 	glusWindowSetMouseMoveFunc([](const GLUSint buttons, const GLUSint xPos, const GLUSint yPos) {
-		GameApp::getInstance()->getEventBus()->postpone(MouseMoveEvent{ EVENT_MOUSEMOUSE,(float)xPos,(float)yPos ,buttons });
+		GameApp::getInstance()->getEventBus()->postpone(MouseMoveEvent{ EVENT_MOUSEMOUSE,(float)xPos,GameApp::getInstance()->getViewHeight() - yPos ,buttons });
 	});
 	glusWindowSetMouseWheelFunc([](const GLUSint buttons, const GLUSint ticks, const GLUSint xPos, const GLUSint yPos) {
-		GameApp::getInstance()->getEventBus()->postpone(MouseWheelEvent{ EVENT_MOUSEWheel,(float)xPos,(float)yPos,ticks ,buttons });
+		GameApp::getInstance()->getEventBus()->postpone(MouseWheelEvent{ EVENT_MOUSEWHEEL,(float)xPos,GameApp::getInstance()->getViewHeight() - yPos,ticks ,buttons });
 	});
 
 	if (!glusWindowCreate("GLUS Example Window", VIEW_WIDTH, VIEW_HEIGHT, GLUS_FALSE, GLUS_FALSE, eglConfigAttributes, eglContextAttributes, 0))

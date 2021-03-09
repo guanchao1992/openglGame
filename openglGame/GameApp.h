@@ -33,6 +33,8 @@ public:
 	int initShader();
 	int removeAllShader();
 
+	void saveIni();
+
 	void init();
 	void reshape();
 	void visit(const GLfloat *parentTransform, GLboolean parentFlag);

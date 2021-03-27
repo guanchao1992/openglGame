@@ -62,11 +62,9 @@ void FillDrawNode::randerOne()
 
 	if (_signs.size() > 0)
 	{
-		int lastIndex = 0;
-		for (int i = 0; i < _signs.size(); ++i)
+		for (auto it = _signs.begin(); it != _signs.end(); it++)
 		{
-			glDrawArrays(_signs[i].second, lastIndex, _signs[i].first - lastIndex + 1);
-			lastIndex = _signs[i].first + 1;
+			glDrawArrays(it->first, it->second.first, it->second.second);
 		}
 	}
 	else
@@ -100,10 +98,10 @@ void FillDrawNode::onDraw()
 	for (auto it = _vertexs.begin(); it != _vertexs.end(); it++)
 	{
 		GLfloat mtx[] = {
-			1.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 1.0f, 0.0f,
-			it->_x ,it->_y , 0.0f, 1.0f };
+			1.0f,	0.0f,	0.0f,	0.0f,
+			0.0f,	1.0f,	0.0f,	0.0f,
+			0.0f,	0.0f,	1.0f,	0.0f,
+			it->_x,	it->_y,	0.0f,	1.0f };
 
 		pVectexs[i].vertexs[0] = mtx[12];
 		pVectexs[i].vertexs[1] = mtx[13];
@@ -122,6 +120,7 @@ void FillDrawNode::onDraw()
 	if (_revertexs)
 	{
 		glBufferData(GL_ARRAY_BUFFER, _vertexs.size() * (4 + 4) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_STATIC_DRAW);
+		_revertexs = false;
 	}
 
 	glBindVertexArray(_verticesVAO);
@@ -139,7 +138,10 @@ void FillDrawNode::onDraw()
 
 void FillDrawNode::clearAllVertex()
 {
+	_signs.clear();
+	_last_sign = 0;
 	_vertexs.clear();
+	_colors.clear();
 	_redraw = true;
 	_revertexs = true;
 }
@@ -168,5 +170,13 @@ void FillDrawNode::addVertexs(const Vector2*poss, int size, const Vector4&color,
 
 void FillDrawNode::signDraw(GLenum drawType)
 {
-	_signs.push_back(pair<int, int>(_vertexs.size() - 1, drawType));
+	if (_last_sign >= _vertexs.size())
+	{
+		//错误的顶点数据
+		_last_sign = _vertexs.size();
+		return;
+	}
+	_signs.push_back(pair<GLenum, pair<int, int>>(drawType, pair<int, int>(_last_sign, _vertexs.size() - _last_sign)));
+	_last_sign = _vertexs.size();
+	_revertexs = true;
 }

@@ -13,13 +13,14 @@ struct Timer
 	friend class TimerController;
 public:
 	Timer(float interval, int num, TimerCallback callback);
+
+	void resetTime();
 private:
 	void update(float time);
 	float			_interval = 1.0f;		//间隔
 	int				_num = 0;				//次数 (小于0表示不限次数)
 	float			_accumulatedTime = 0.f;	//累计时间
 	float			_accumulatedNum = 0.f;	//累计次数
-	float			_offsetTime = 0.f;		//偏差时间
 
 	bool			_stop = false;
 	bool			_pause = false;
@@ -44,6 +45,7 @@ public:
 	int addTimer(float interval, int num, TimerCallback callback);
 	void killTimer(int id);
 
+	void resetTime(int timeid);
 private:
 	shared_ptr<map<int, SPTimer>> _timers = make_shared<map<int, shared_ptr<Timer>>>();
 	int _nextIndex = 1;

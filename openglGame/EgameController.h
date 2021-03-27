@@ -8,7 +8,8 @@
 
 enum BlockType
 {
-	BLOCK_1 = 0,
+	BLOCK_NULL = 0,
+	BLOCK_1 = 1,
 	BLOCK_2,
 	BLOCK_3,
 	BLOCK_4,
@@ -17,21 +18,26 @@ enum BlockType
 	BLOCK_7,
 };
 
+typedef const int BLOCK_ST[4][2];
+
 StatementNode(Block)
 class Block:public Node
 {
 	StatementCreate(Block)
 public:
 	~Block();
+	static const Vector4& getBlockColor(BlockType);
 	void init();
 	void resetType(BlockType bt);
 	void resetDir(int dir);
+	void setBlocks(const BLOCK_ST* block, int size);
 	void setColor(const Vector4&);
+	const BLOCK_ST& getCurBlockST();
+	const BLOCK_ST& getBlockST(int dir);
 
 	BlockType _blockType;
-	int _pos[4][2];
-	const int(*_tarPos)[4][2];
-	int _tarSize;
+	BLOCK_ST* _tarPoss;
+	int _blockSize;
 	int _dir;
 };
 

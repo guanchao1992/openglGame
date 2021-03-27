@@ -1,51 +1,51 @@
 #include "EgameController.h"
 #include <assert.h>
 
+
 //椅子
-const static int block_1[][4][2] = {
+const static BLOCK_ST block_1[] = {
 	{ {0, 1}, { 0,0 },{1,0} ,{1,-1} },
 	{ {-1, -1}, { 0,-1 },{0,0} ,{1,0} }
 };
 //7
-const static int block_2[][4][2] = {
+const static BLOCK_ST block_2[] = {
 	{ {0, 2}, { 0,1 },{0,0} ,{1,0} },
 	{ {2, 0}, { 1,0 },{0,0} ,{0,-1} },
 	{ {0, -2}, { 0,-1 },{0,0} ,{-1,0} },
 	{ {-2, 0}, { -1,0 },{0,0} ,{0,1} },
 };
 //山
-const static int block_3[][4][2] = {
+const static BLOCK_ST block_3[] = {
 	{ {0, 1}, { 0,0 },{0,-1} ,{1,0} },
 	{ {-1, 0}, { 0,0 },{1,0} ,{0,-1} },
 	{ {0, 1}, { 0,0 },{0,-1} ,{-1,0} },
 	{ {-1, 0}, { 0,0 },{1,0} ,{0,1} },
 };
 //田
-const static int block_4[][4][2] = {
+const static BLOCK_ST block_4[] = {
 	{ {0, 0}, { 1,0 },{1,1} ,{0,1} },
 };
 
 //椅子，反向
-const static int block_5[][4][2] = {
+const static BLOCK_ST block_5[] = {
 	{ {-1, -1}, { -1,0 },{0,0} ,{0,1} },
 	{ {-1, 1}, { 0,1 },{0,0} ,{1,0} }
 };
 //7,反向
-const static int block_6[][4][2] = {
+const static BLOCK_ST block_6[] = {
 	{ {0, 2}, { 0,1 },{0,0} ,{-1,0} },
 	{ {2, 0}, { 1,0 },{0,0} ,{0,1} },
 	{ {0, -2}, { 0,-1 },{0,0} ,{1,0} },
 	{ {-2, 0}, { -1,0 },{0,0} ,{0,-1} },
 };
 //1
-const static int block_7[][4][2] = {
+const static BLOCK_ST block_7[] = {
 	{ {0, 2}, { 0,1 },{0,0} ,{0,-1} },
 	{ {-2, 0}, { -1,0 },{0,0} ,{1,0} },
 };
 
 Block::~Block()
 {
-
 }
 
 void Block::init()
@@ -66,18 +66,56 @@ void Block::init()
 	resetType(BLOCK_1);
 }
 
+void Block::setBlocks(const BLOCK_ST* blocks, int size)
+{
+	_tarPoss = blocks;
+	_blockSize = size;
+}
+
+const BLOCK_ST& Block::getCurBlockST()
+{
+	BLOCK_ST& poss = _tarPoss[_dir % _blockSize];
+	return poss;
+}
+
+const BLOCK_ST& Block::getBlockST(int dir)
+{
+	BLOCK_ST& poss = _tarPoss[dir % _blockSize];
+	return poss;
+}
+
+const Vector4 s_block_color[] = {
+	Vector4{0.1, 0.1, 0.2, 0.3},
+	Vector4{0.7, 0.1, 0.2, 1},
+	Vector4{0.3, 0.4, 0.2, 1},
+	Vector4{0.1, 0.7, 0.3, 1},
+	Vector4{0.7, 0.2, 0.4, 1},
+	Vector4{0.2, 0.5, 0.5, 1},
+	Vector4{0.1, 0.9, 0.6, 1},
+	Vector4{0.1, 0.7, 0.7, 1},
+};
+
+const Vector4& Block::getBlockColor(BlockType bt)
+{
+	if ((int)bt > 8 || (int)bt <0)
+	{
+		bt = (BlockType)0;
+	}
+	return s_block_color[(int)bt];
+}
+
 void Block::resetType(BlockType bt)
 {
 	_blockType = bt;
 	switch (bt)
 	{
-	case BLOCK_1: _tarPos = block_1; _tarSize = sizeof(block_1) / sizeof(*block_1); setColor(Vector4(0.8, 0.1, 0.1, 1)); break;
-	case BLOCK_2: _tarPos = block_2; _tarSize = sizeof(block_2) / sizeof(*block_2); setColor(Vector4(0.3, 0.4, 0.2, 1)); break;
-	case BLOCK_3: _tarPos = block_3; _tarSize = sizeof(block_3) / sizeof(*block_3); setColor(Vector4(0.1, 0.7, 0.3, 1)); break;
-	case BLOCK_4: _tarPos = block_4; _tarSize = sizeof(block_4) / sizeof(*block_4); setColor(Vector4(0.7, 0.2, 0.4, 1)); break;
-	case BLOCK_5: _tarPos = block_5; _tarSize = sizeof(block_5) / sizeof(*block_5); setColor(Vector4(0.2, 0.5, 0.5, 1)); break;
-	case BLOCK_6: _tarPos = block_6; _tarSize = sizeof(block_6) / sizeof(*block_6); setColor(Vector4(0.1, 0.9, 0.6, 1)); break;
-	case BLOCK_7: _tarPos = block_7; _tarSize = sizeof(block_7) / sizeof(*block_7); setColor(Vector4(0.1, 0.7, 0.7, 1)); break;
+	case BLOCK_1: setBlocks(block_1, sizeof(block_1) / sizeof(*block_1)); setColor(getBlockColor(bt)); break;
+	case BLOCK_2: setBlocks(block_2, sizeof(block_2) / sizeof(*block_2)); setColor(getBlockColor(bt)); break;
+	case BLOCK_3: setBlocks(block_3, sizeof(block_3) / sizeof(*block_3)); setColor(getBlockColor(bt)); break;
+	case BLOCK_4: setBlocks(block_4, sizeof(block_4) / sizeof(*block_4)); setColor(getBlockColor(bt)); break;
+	case BLOCK_5: setBlocks(block_5, sizeof(block_5) / sizeof(*block_5)); setColor(getBlockColor(bt)); break;
+	case BLOCK_6: setBlocks(block_6, sizeof(block_6) / sizeof(*block_6)); setColor(getBlockColor(bt)); break;
+	case BLOCK_7: setBlocks(block_7, sizeof(block_7) / sizeof(*block_7)); setColor(getBlockColor(bt)); break;
 	default:
 		assert(true, "未定义的方块类型");
 		//错误
@@ -93,22 +131,21 @@ void Block::setColor(const Vector4& color) {
 	{
 		childs[i]->setColor(color);
 	}
+	Node::setColor(color);
 }
 
 void Block::resetDir(int dir)
 {
 	_dir = dir;
 	auto childs = getChilds();
-	//childs[0]->setPosition();
-	auto dirSize = sizeof(_tarPos) / sizeof(*_tarPos);
-	//auto poss = _tarPos[_dir % dirSize];
-	auto poss = _tarPos[_dir % _tarSize];
+	auto poss = _tarPoss[_dir % _blockSize];
 
 	for (int i = 0; i < 4; ++i)
 	{
 		childs[i]->setPosition(poss[i][0] * 40, poss[i][1] * 40);
 	}
 }
+
 
 void EgameController::restart(int width, int height)
 {

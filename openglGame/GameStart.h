@@ -13,6 +13,7 @@ public:
 	void init();
 	void initListen();
 	void initWorld();
+	void initBlock();
 	virtual void update(GLfloat time);
 public:
 
@@ -28,11 +29,13 @@ public:
 
 	void onAddBox(const Vector2& pos, const Size& size, const Vector4& color = Vector4(1, 1, 1, 1));
 public:
-	SPNode _test;
 
-	SPBlock _block;
+	SPBlock _curblock;
+	SPFillDrawNode _filldraw;
+
 
 	shared_ptr<b2World> _world;
+
 
 private:
 	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;

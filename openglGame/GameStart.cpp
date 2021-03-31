@@ -5,11 +5,10 @@
 #include "GameApp.h"
 #include "control/TimerController.h"
 #include <math.h>
-#include "nlohmann/json.hpp"
-#include <iostream> 
-#include <fstream> 
+#include "control/TableController.h"
 
-using namespace nlohmann;
+#include "tables/ItemTable.h"
+
 
 #define WORLD_SCALE 10	//世界坐标系与物理坐标系比例
 
@@ -29,19 +28,15 @@ void GameStart::init()
 
 	_filldraw = FillDrawNode::create();
 	
+	//TableController::getInstance()->reset();
 	/*
-	// read a JSON file
-	std::ifstream i("file.json");
-	json j;
-	i >> j;
+	auto item1 = ItemTableDatas::getData(10001);
+	auto item2 = ItemTableDatas::getData(10006);
+	auto item3 = ItemTableDatas::getData(10008);
+	printf(item1->_name.c_str());
+	printf(item2->_name.c_str());
+	printf(item3->_name.c_str());
 	*/
-
-
-	json j = { {"2",21} ,{"test","efw"} };
-
-	// write prettified JSON to another file
-	std::ofstream o("res/pretty.json");
-	o << j << std::endl;
 
 	/*
 	addTimer(0.1, -1, [&](float time) {

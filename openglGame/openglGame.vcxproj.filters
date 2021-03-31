@@ -95,6 +95,9 @@
     <ClCompile Include="control\FontController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="control\TableController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -203,6 +206,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="control\FontController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\TableController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tables\ItemTable.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

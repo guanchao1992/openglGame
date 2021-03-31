@@ -30,7 +30,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -176,6 +176,7 @@
     <ClCompile Include="base\ControllerBase.cpp" />
     <ClCompile Include="base\Shader.cpp" />
     <ClCompile Include="control\FontController.cpp" />
+    <ClCompile Include="control\TableController.cpp" />
     <ClCompile Include="control\TextureController.cpp" />
     <ClCompile Include="control\TimerController.cpp" />
     <ClCompile Include="EgameController.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="base\Vector3.h" />
     <ClInclude Include="base\Vector4.h" />
     <ClInclude Include="control\FontController.h" />
+    <ClInclude Include="control\TableController.h" />
     <ClInclude Include="control\TextureController.h" />
     <ClInclude Include="control\TimerController.h" />
     <ClInclude Include="EgameController.h" />
@@ -221,6 +223,7 @@
     <ClInclude Include="GameStart.h" />
     <ClInclude Include="GameUI.h" />
     <ClInclude Include="ShaderFiles.h" />
+    <ClInclude Include="tables\ItemTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

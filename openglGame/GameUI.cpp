@@ -7,6 +7,7 @@
 #include <math.h>
 #include <2d/FontDrawNode.h>
 #include <corecrt_wstdio.h>
+#include "tables/ItemTable.h"
 
 
 void GameUI::init()
@@ -24,6 +25,15 @@ void GameUI::init()
 	addChild(_rightBottom);
 	addChild(_rightTop);
 	addChild(_center);
+
+	auto fontNode = FontDrawNode::create(DEFAULTE_FONT_FILE);
+	fontNode->setFontSize(30);
+	addChild(fontNode);
+	fontNode->setPosition(200, 100);
+	fontNode->setScale(1, 1);
+	fontNode->setTag(1);
+	auto item1 = ItemTableDatas::getData(10001);
+	fontNode->setText(item1->_name);
 
 	_debug = Node::create();
 	_leftBottom->addChild(_debug, 1000);

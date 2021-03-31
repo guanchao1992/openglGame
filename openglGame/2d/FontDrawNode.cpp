@@ -5,6 +5,7 @@
 #include <string>
 #include <freetype/ftglyph.h>
 #include "VertexBuffers.hpp"
+#include "base/Tools.h"
 
 
 int FontDrawNode::g_vertexLocation = -1;
@@ -133,6 +134,17 @@ void FontDrawNode::clearAllVertex()
 	_vertexs.clear();
 	_textureIds.clear();
 	_redraw = true;
+}
+
+void FontDrawNode::setText(const std::string&str)
+{
+	//setText(A2W(str.c_str()));
+	setText(s2ws(str));
+}
+
+void FontDrawNode::setText(const std::wstring&wstr)
+{
+	setText(wstr.c_str());
 }
 
 void FontDrawNode::setText(const wchar_t*str)

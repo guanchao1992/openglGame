@@ -32,6 +32,8 @@ public:
 public:
 	static void initProgram();
 
+	void setText(const std::string&str);
+	void setText(const std::wstring&wstr);
 	void setText(const wchar_t*str);
 	void setFontSize(int fontSize);
 private:

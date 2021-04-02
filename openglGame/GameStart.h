@@ -13,8 +13,10 @@ public:
 	void init();
 	void initListen();
 	void initWorld();
-	void initBlock();
 	virtual void update(GLfloat time);
+
+public:
+	void restartBlock();
 public:
 
 	void onUp(bool keyPress);

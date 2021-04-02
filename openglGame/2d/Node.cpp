@@ -32,7 +32,7 @@ void Node::rander()
 {
 	if (!_visible)
 	{
-	//	return;
+		return;
 	}
 	for (auto it = _visitLeft->begin(); it != _visitLeft->end(); it++)
 	{
@@ -54,7 +54,7 @@ void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 {
 	if (!_visible)
 	{
-		//return;
+		return;
 	}
 	if (_revisit || parentFlag)
 	{

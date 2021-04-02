@@ -5,6 +5,8 @@
 #include "dexode/EventBus.hpp"
 #include "base/ControllerBase.hpp"
 #include <nlohmann/json.hpp>
+#include "GameEvent.h"
+#include "dexode/eventbus/Bus.hpp"
 
 typedef int BLOCK_ST[4][2];
 
@@ -18,7 +20,6 @@ public:
 	void init();
 	void resetType(int blocktype);
 	void resetDir(int dir);
-	void setBlocks(const BLOCK_ST* block, int size);
 	void setColor(const Vector4&);
 	const nlohmann::json& getCurBlockST();
 	const nlohmann::json& getBlockST(int dir);
@@ -43,15 +44,39 @@ class EgameController :public ControllerBaseT<EgameController>
 {
 public:
 
-	void restart(int width, int height);
 	void update(float time);
 
+	void restartBlock();
+private:
+	void updatePos();
+	void setDir(int dir);
+	void rectrBlock();
+	bool checkCan(int mx, int my, int dir);
+	bool moveBlock(int mx, int my);
+	void redrawAll();
+	int checkEliminate();
+	void setBlockPlace(const SPBlock&sp);
+	bool updateBlockTimer(float time);
+	void handlerKeyEvent(const KeyEvent& et);
 private:
 
-	vector<BlockRow> _vecBlocks;
-	int _widthSize = 10;
-	int _heightSize = 10;
 
-	dexode::eventbus::Listener<dexode::EventBus> _listener;
+private:
+	int _max_x = 14;	//0~max
+	int _max_y = 16;
+	int _place[15][25] = { 0 };
+	int _block_scale = 40;
+	int _move_type = 0; //0²»¶¯£¬1×ó2ÓÒ4ÏÂ¡£
+	SPBlock _cur_block = nullptr;
+	int _cur_x = 5;
+	int _cur_y = 20;
+	int _cur_dir = 0;
+	SPNode _game_node = nullptr;
+	SPFillDrawNode _place_draw = nullptr;
+	int _update_timer = -1;
+	int _move_timer_left = -1;
+	int _move_timer_right = -1;
+	int _move_timer_down = -1;
+	shared_ptr<dexode::eventbus::Listener<dexode::eventbus::Bus>> _block_listener;
 };
 

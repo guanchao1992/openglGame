@@ -30,6 +30,10 @@ void Node::reshape()
 
 void Node::rander()
 {
+	if (!_visible)
+	{
+	//	return;
+	}
 	for (auto it = _visitLeft->begin(); it != _visitLeft->end(); it++)
 	{
 		(*it)->rander();
@@ -48,6 +52,10 @@ void Node::randerOne()
 
 void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 {
+	if (!_visible)
+	{
+		//return;
+	}
 	if (_revisit || parentFlag)
 	{
 		parentFlag = true;
@@ -108,7 +116,7 @@ void Node::removeFromParent()
 	}
 }
 
-vector<SPNode> Node::getChilds()
+const vector<SPNode>& Node::getChilds()
 {
 	return *_childs;
 }
@@ -298,6 +306,10 @@ void Node::killAllTimer()
 	_timerids->clear();
 }
 
+void Node::setVisible(bool visible)
+{
+	_visible = false;
+}
 
 int Node::getAllChildNum()
 {

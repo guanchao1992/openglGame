@@ -4,21 +4,9 @@
 #include "2d/DrawBoxNode.h"
 #include "dexode/EventBus.hpp"
 #include "base/ControllerBase.hpp"
+#include <nlohmann/json.hpp>
 
-
-enum BlockType
-{
-	BLOCK_NULL = 0,
-	BLOCK_1 = 1,
-	BLOCK_2,
-	BLOCK_3,
-	BLOCK_4,
-	BLOCK_5,
-	BLOCK_6,
-	BLOCK_7,
-};
-
-typedef const int BLOCK_ST[4][2];
+typedef int BLOCK_ST[4][2];
 
 StatementNode(Block)
 class Block:public Node
@@ -26,17 +14,20 @@ class Block:public Node
 	StatementCreate(Block)
 public:
 	~Block();
-	static const Vector4& getBlockColor(BlockType);
+	static const Vector4& getBlockColor(int blocktype);
 	void init();
-	void resetType(BlockType bt);
+	void resetType(int blocktype);
 	void resetDir(int dir);
 	void setBlocks(const BLOCK_ST* block, int size);
 	void setColor(const Vector4&);
-	const BLOCK_ST& getCurBlockST();
-	const BLOCK_ST& getBlockST(int dir);
+	const nlohmann::json& getCurBlockST();
+	const nlohmann::json& getBlockST(int dir);
 
-	BlockType _blockType;
-	BLOCK_ST* _tarPoss;
+	//vector<vector<int[2]>> _blockST;
+	//vector<int[2]> _blockXY;
+	//vector<int[2]> _blockNXY;
+	nlohmann::json _blockST;	//具体格式在表中约定
+	int _blockType;
 	int _blockSize;
 	int _dir;
 };

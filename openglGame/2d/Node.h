@@ -50,7 +50,7 @@ public:
 	void addChild(SPNode node,int zOrder = 0);
 	void removeFromParent();
 	void removeAllChild();
-	vector<SPNode> getChilds();
+	const vector<SPNode>& getChilds();
 	SPNode getChildByTag(int tag);			//找到子节点中第一个匹配tag的项
 	void setPosition(const Vector2&pos);
 	void setPosition(float x, float y);
@@ -86,6 +86,8 @@ public:
 	void killTimer(int killId);
 	void killAllTimer();
 
+	void setVisible(bool visible);
+	bool isVisible() { return _visible; }
 	//debug
 	//获得所有子节点数量
 	int getAllChildNum();
@@ -125,6 +127,7 @@ protected:
 	bool _redraw = true;	//需要刷新缓冲区数据
 	bool _reorder = true;	//需要重新对子节点进行排序
 	bool _revertexs = true; //需要重新创建缓冲区
+	bool _visible = true;	//是否显示
 
 	shared_ptr<vector<int>> _timerids = make_shared<vector<int>>();
 };

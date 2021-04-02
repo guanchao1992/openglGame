@@ -26,6 +26,7 @@ void GameUI::init()
 	addChild(_rightTop);
 	addChild(_center);
 
+	/*
 	auto fontNode = FontDrawNode::create(DEFAULTE_FONT_FILE);
 	fontNode->setFontSize(30);
 	addChild(fontNode);
@@ -34,6 +35,15 @@ void GameUI::init()
 	fontNode->setTag(1);
 	auto item1 = ItemTableDatas::getData(10001);
 	fontNode->setText(item1->_name);
+	*/
+
+	/*
+	string curLocale = setlocale(LC_ALL, NULL);   //curLocale="C"
+	setlocale(LC_ALL, "zh_CN.UTF-8");
+	//string title = item1->_test_json.at("title");
+	//printf(title.c_str());
+	setlocale(LC_ALL, curLocale.c_str());
+	*/
 
 	_debug = Node::create();
 	_leftBottom->addChild(_debug, 1000);
@@ -51,7 +61,7 @@ void GameUI::initBk()
 	fd1->addVertex(Vector2(3, 3));
 	fd1->addVertex(Vector2(100, 3));
 	fd1->addVertex(Vector2(100, 0));
-	fd1->setColor(Vector4(1, 0, 0, 0.6));
+	fd1->setColor(Vector4(1, 0, 0, 0.4));
 	fd1->setPosition(30, 30);
 	_leftBottom->addChild(fd1);
 
@@ -62,7 +72,7 @@ void GameUI::initBk()
 	fd2->addVertex(Vector2(3, -3));
 	fd2->addVertex(Vector2(100, -3));
 	fd2->addVertex(Vector2(100, 0));
-	fd2->setColor(Vector4(1, 0, 0, 0.6));
+	fd2->setColor(Vector4(1, 0, 0, 0.4));
 	fd2->setPosition(30, -30);
 	_leftTop->addChild(fd2);
 
@@ -73,7 +83,7 @@ void GameUI::initBk()
 	fd3->addVertex(Vector2(-3, 3));
 	fd3->addVertex(Vector2(-100, 3));
 	fd3->addVertex(Vector2(-100, 0));
-	fd3->setColor(Vector4(1, 0, 0, 0.6));
+	fd3->setColor(Vector4(1, 0, 0, 0.4));
 	fd3->setPosition(-30, 30);
 	_rightBottom->addChild(fd3);
 
@@ -84,7 +94,7 @@ void GameUI::initBk()
 	fd4->addVertex(Vector2(-3, -3));
 	fd4->addVertex(Vector2(-100, -3));
 	fd4->addVertex(Vector2(-100, 0));
-	fd4->setColor(Vector4(1, 0, 0, 0.6));
+	fd4->setColor(Vector4(1, 0, 0, 0.4));
 	fd4->setPosition(-30, -30);
 	_rightTop->addChild(fd4);
 
@@ -101,7 +111,7 @@ void GameUI::initBk()
 	fd5->addVertex(Vector2(-1, 1));
 	fd5->addVertex(Vector2(-1, 100));
 	fd5->addVertex(Vector2(1, 100));
-	fd5->setColor(Vector4(1, 0, 0, 0.6));
+	fd5->setColor(Vector4(1, 0, 0, 0.4));
 	fd5->setPosition(0, 0);
 	_center->addChild(fd5);
 }
@@ -116,6 +126,7 @@ void GameUI::initDebug()
 		text1->setPosition(0, 0);
 		text1->setScale(1,1);
 		text1->setTag(1);
+		text1->setColor(Vector4(1, 1, 1, 0.6));
 	}
 	{
 		auto text1 = FontDrawNode::create(DEFAULTE_FONT_FILE);
@@ -125,6 +136,7 @@ void GameUI::initDebug()
 		text1->setPosition(0, 30);
 		text1->setScale(1, 1);
 		text1->setTag(1);
+		text1->setColor(Vector4(1, 1, 1, 0.6));
 		_listener->listen([&, text1](const MouseMoveEvent& et) {
 			wchar_t s[256];
 			swprintf(s, 256, L"x:%.2f,y:%.2f,bts:%d", et._x, et._y, et._buttons);

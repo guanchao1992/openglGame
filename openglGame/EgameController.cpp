@@ -1,48 +1,8 @@
 #include "EgameController.h"
 #include <assert.h>
+#include "tables/BlockTypeTable.h"
+#include <nlohmann/detail/conversions/from_json.hpp>
 
-
-//椅子
-const static BLOCK_ST block_1[] = {
-	{ {0, 1}, { 0,0 },{1,0} ,{1,-1} },
-	{ {-1, -1}, { 0,-1 },{0,0} ,{1,0} }
-};
-//7
-const static BLOCK_ST block_2[] = {
-	{ {0, 2}, { 0,1 },{0,0} ,{1,0} },
-	{ {2, 0}, { 1,0 },{0,0} ,{0,-1} },
-	{ {0, -2}, { 0,-1 },{0,0} ,{-1,0} },
-	{ {-2, 0}, { -1,0 },{0,0} ,{0,1} },
-};
-//山
-const static BLOCK_ST block_3[] = {
-	{ {0, 1}, { 0,0 },{0,-1} ,{1,0} },
-	{ {-1, 0}, { 0,0 },{1,0} ,{0,-1} },
-	{ {0, 1}, { 0,0 },{0,-1} ,{-1,0} },
-	{ {-1, 0}, { 0,0 },{1,0} ,{0,1} },
-};
-//田
-const static BLOCK_ST block_4[] = {
-	{ {0, 0}, { 1,0 },{1,1} ,{0,1} },
-};
-
-//椅子，反向
-const static BLOCK_ST block_5[] = {
-	{ {-1, -1}, { -1,0 },{0,0} ,{0,1} },
-	{ {-1, 1}, { 0,1 },{0,0} ,{1,0} }
-};
-//7,反向
-const static BLOCK_ST block_6[] = {
-	{ {0, 2}, { 0,1 },{0,0} ,{-1,0} },
-	{ {2, 0}, { 1,0 },{0,0} ,{0,1} },
-	{ {0, -2}, { 0,-1 },{0,0} ,{1,0} },
-	{ {-2, 0}, { -1,0 },{0,0} ,{0,-1} },
-};
-//1
-const static BLOCK_ST block_7[] = {
-	{ {0, 2}, { 0,1 },{0,0} ,{0,-1} },
-	{ {-2, 0}, { -1,0 },{0,0} ,{1,0} },
-};
 
 Block::~Block()
 {
@@ -52,7 +12,8 @@ void Block::init()
 {
 	for (int i = 0; i < 4; ++i)
 	{
-		if (i == 0)
+		///if (i == 0)
+		if (false)
 		{
 			auto tb = TxcBoxNode::create();
 			addChild(tb);
@@ -63,25 +24,17 @@ void Block::init()
 			addChild(db);
 		}
 	}
-	resetType(BLOCK_1);
+	resetType(1);
 }
 
-void Block::setBlocks(const BLOCK_ST* blocks, int size)
+const nlohmann::json& Block::getCurBlockST()
 {
-	_tarPoss = blocks;
-	_blockSize = size;
+	return _blockST[_dir % _blockSize];
 }
 
-const BLOCK_ST& Block::getCurBlockST()
+const nlohmann::json& Block::getBlockST(int dir)
 {
-	BLOCK_ST& poss = _tarPoss[_dir % _blockSize];
-	return poss;
-}
-
-const BLOCK_ST& Block::getBlockST(int dir)
-{
-	BLOCK_ST& poss = _tarPoss[dir % _blockSize];
-	return poss;
+	return _blockST[dir % _blockSize];
 }
 
 const Vector4 s_block_color[] = {
@@ -95,39 +48,31 @@ const Vector4 s_block_color[] = {
 	Vector4{0.1, 0.7, 0.7, 1},
 };
 
-const Vector4& Block::getBlockColor(BlockType bt)
+const Vector4& Block::getBlockColor(int bt)
 {
-	if ((int)bt > 8 || (int)bt <0)
+	if (bt > 8 || bt <0)
 	{
-		bt = (BlockType)0;
+		bt = 0;
 	}
 	return s_block_color[(int)bt];
 }
 
-void Block::resetType(BlockType bt)
+void Block::resetType(int bt)
 {
 	_blockType = bt;
-	switch (bt)
-	{
-	case BLOCK_1: setBlocks(block_1, sizeof(block_1) / sizeof(*block_1)); setColor(getBlockColor(bt)); break;
-	case BLOCK_2: setBlocks(block_2, sizeof(block_2) / sizeof(*block_2)); setColor(getBlockColor(bt)); break;
-	case BLOCK_3: setBlocks(block_3, sizeof(block_3) / sizeof(*block_3)); setColor(getBlockColor(bt)); break;
-	case BLOCK_4: setBlocks(block_4, sizeof(block_4) / sizeof(*block_4)); setColor(getBlockColor(bt)); break;
-	case BLOCK_5: setBlocks(block_5, sizeof(block_5) / sizeof(*block_5)); setColor(getBlockColor(bt)); break;
-	case BLOCK_6: setBlocks(block_6, sizeof(block_6) / sizeof(*block_6)); setColor(getBlockColor(bt)); break;
-	case BLOCK_7: setBlocks(block_7, sizeof(block_7) / sizeof(*block_7)); setColor(getBlockColor(bt)); break;
-	default:
-		assert(true, "未定义的方块类型");
-		//错误
-		break;
-	}
+
+	auto spData = BlockTypeTableDatas::getData(_blockType);
+	_blockST = spData->_dirtype;
+	_blockSize = _blockST.size();
+
 	resetDir(_dir);
+
+	setColor(getBlockColor(bt));
 }
 
 void Block::setColor(const Vector4& color) {
-	auto childs = getChilds();
-
-	for (int i = 0; i < 4; ++i)
+	auto& childs = getChilds();
+	for (int i = 0; i < childs.size(); ++i)
 	{
 		childs[i]->setColor(color);
 	}
@@ -137,12 +82,21 @@ void Block::setColor(const Vector4& color) {
 void Block::resetDir(int dir)
 {
 	_dir = dir;
-	auto childs = getChilds();
-	auto poss = _tarPoss[_dir % _blockSize];
 
-	for (int i = 0; i < 4; ++i)
+	const nlohmann::json &bk = _blockST[_dir % _blockST.size()];
+
+	auto &childs = getChilds();
+	for (int i = 0; i < bk.size() - childs.size(); i++)
 	{
-		childs[i]->setPosition(poss[i][0] * 40, poss[i][1] * 40);
+		auto db = DrawBoxNode::create();
+		addChild(db);
+	}
+	for (int i = 0; i < childs.size(); ++i)
+	{
+		if (i < bk.size())
+		{
+			childs[i]->setPosition(bk[i][0].get<int>() * 40 , bk[i][1].get<int>() * 40 );
+		}
 	}
 }
 

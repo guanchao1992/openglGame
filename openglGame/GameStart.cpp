@@ -51,6 +51,7 @@ void GameStart::initListen()
 {
 	_listener = GameApp::getInstance()->createListenerSP();
 	_listener->listen([&](const KeyEvent& et) {
+		/*
 		if (et._isDown)
 		{
 			printf("event:%d按下了按键:%d\n", et._eventId, et._key);
@@ -59,6 +60,7 @@ void GameStart::initListen()
 		{
 			printf("event:%d放开了按键:%d\n", et._eventId, et._key);
 		}
+		*/
 		if (et._key == GLFW_KEY_UP || et._key == 'w' || et._key == 'W')
 		{
 			onUp(et._isDown);
@@ -82,7 +84,7 @@ void GameStart::initListen()
 	});
 
 	_listener->listen([&](const MouseMoveEvent& et) {
-		printf("x:%.2f,y:%.2f,bts:%d\n", et._x, et._y, et._buttons);
+		//printf("x:%.2f,y:%.2f,bts:%d\n", et._x, et._y, et._buttons);
 	});
 	_listener->listen([&](const MouseKeyEvent& et) {
 		if ((et.button & 4) && et._isDown)
@@ -163,9 +165,9 @@ void GameStart::initWorld()
 
 void GameStart::initBlock()
 {
-	static int max_x = 11;	//0~max
-	static int max_y = 14;
-	static int place[12][25] = { 0 };
+	static int max_x = 14;	//0~max
+	static int max_y = 16;
+	static int place[15][25] = { 0 };
 	static Vector2 off_pos = { 0,0 };
 	static int block_scale = 40;
 	static int _move_type = 0; //0不动，1左2右4下。
@@ -193,7 +195,7 @@ void GameStart::initBlock()
 		cur_x = 5;
 		cur_y = 20;
 		func_update_pos();
-		cur_block->resetType((BlockType)(rand()%7 + 1));
+		cur_block->resetType(rand()%7 + 1);
 		func_update_dir(cur_dir);
 	};
 
@@ -242,7 +244,7 @@ void GameStart::initBlock()
 			{
 				if (place[x][y] > 0)
 				{
-					auto color = Block::getBlockColor((BlockType)place[x][y]);
+					auto color = Block::getBlockColor(place[x][y]);
 					place_draw->addVertex(Vector2((x + 0) * block_scale, (y + 0)*block_scale), color);
 					place_draw->addVertex(Vector2((x + 1) * block_scale, (y + 0)*block_scale), color);
 					place_draw->addVertex(Vector2((x + 1) * block_scale, (y + 1)*block_scale), color);
@@ -491,7 +493,7 @@ void GameStart::onAddBlockDown()
 	auto block = Block::create();
 	block->setPosition(10 + rand() % 20 * 60, 500);
 	this->addChild(block, 20);
-	block->resetType((BlockType)(rand() % 7 + 1));
+	block->resetType((rand() % 7 + 1));
 
 	addTimer(0.0, -1, [&, block](float time) {
 		auto pos = block->getPosition();

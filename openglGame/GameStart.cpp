@@ -218,22 +218,6 @@ void GameStart::onRotateR(bool keyPress)
 
 void GameStart::onAddBlockDown()
 {
-	auto block = Block::create();
-	block->setPosition(10 + rand() % 20 * 60, 500);
-	this->addChild(block, 20);
-	block->resetType((rand() % 7 + 1));
-
-	addTimer(0.0, -1, [&, block](float time) {
-		auto pos = block->getPosition();
-		block->setPosition(pos._x, pos._y - 200 * time);
-		if (block->getPosition()._y < 100)
-		{
-			block->removeFromParent();
-			return true;
-		}
-		;
-		return false;
-	});
 }
 
 //传入的参数是相对于物理坐标系的

@@ -18,7 +18,7 @@ public:
 	~Block();
 	static const Vector4& getBlockColor(int blocktype);
 	void init();
-	void resetType(int blocktype);
+	void resetType(int blocktype,int dir);
 	void resetDir(int dir);
 	void setColor(const Vector4&);
 	const nlohmann::json& getCurBlockST();

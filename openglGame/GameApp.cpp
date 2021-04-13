@@ -64,7 +64,6 @@ void GameApp::init()
 		}
 	}
 
-
 	char path[256];
 	int index = 1;
 	//»­¸ñ×Ó

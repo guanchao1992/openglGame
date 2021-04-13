@@ -25,7 +25,7 @@ void Block::init()
 			addChild(db);
 		}
 	}
-	resetType(1);
+	resetType(1, 0);
 }
 
 const nlohmann::json& Block::getCurBlockST()
@@ -58,7 +58,7 @@ const Vector4& Block::getBlockColor(int bt)
 	return s_block_color[(int)bt];
 }
 
-void Block::resetType(int bt)
+void Block::resetType(int bt, int dir)
 {
 	_blockType = bt;
 
@@ -66,7 +66,9 @@ void Block::resetType(int bt)
 	_blockST = spData->_dirtype;
 	_blockSize = _blockST.size();
 
-	resetDir(_dir);
+	//std::cout << _blockST.dump() << std::endl;
+
+	resetDir(dir);
 
 	setColor(getBlockColor(bt));
 }
@@ -284,9 +286,11 @@ void EgameController::rectrBlock()
 	_cur_dir = 0;
 	_cur_x = 5;
 	_cur_y = 20;
+	_cur_block->resetType(rand() % 7 + 1, _cur_dir);
 	updatePos();
-	_cur_block->resetType(rand() % 7 + 1);
 
+	//std::cout << _cur_block->_blockST << std::endl;
+	//std::cout << _cur_block->getCurBlockST() << std::endl;
 }
 
 bool EgameController::checkCan(int mx, int my, int dir)
@@ -301,9 +305,10 @@ bool EgameController::checkCan(int mx, int my, int dir)
 
 		if (temp_x + ix < 0 || temp_x + ix > _max_x || temp_y + iy < 0)
 		{
+			//std::cout << block;
 			return false;
 		}
-		if (_place[temp_x + ix][temp_y + iy] > 0)
+		if (_place[temp_x + ix][temp_y + iy] != 0)
 		{
 			return false;
 		}
@@ -333,7 +338,7 @@ void EgameController::redrawAll()
 	{
 		for (int x = 0; x <= _max_x; ++x)
 		{
-			if (_place[x][y] > 0)
+			if (_place[x][y] != 0)
 			{
 				auto color = Block::getBlockColor(_place[x][y]);
 				_place_draw->addVertex(Vector2((x + 0) * _block_scale, (y + 0)*_block_scale), color);
@@ -409,7 +414,8 @@ void EgameController::setBlockPlace(const SPBlock&sp)
 
 	if (checkEliminate() > 0)
 	{
-		redrawAll();
+		//redrawAll();
 	}
+	redrawAll();
 }
 

@@ -1,5 +1,4 @@
 #include "GameStart.h"
-#include "2d/FillDrawNode.h"
 #include "EgameController.h"
 #include "GameEvent.h"
 #include "GameApp.h"
@@ -8,6 +7,7 @@
 #include "control/TableController.h"
 
 #include "tables/ItemTable.h"
+#include "component/DrawRanderComponent.h"
 
 
 #define WORLD_SCALE 10	//世界坐标系与物理坐标系比例
@@ -25,7 +25,9 @@ void GameStart::init()
 	fd->setTag(1001);
 	*/
 
-	_filldraw = FillDrawNode::create();
+	_filldraw = Node::create();
+	auto com = Component::createComponent<DrawRanderComponent>();
+	_filldraw->addComponent(com);
 	
 	//TableController::getInstance()->reset();
 	/*
@@ -108,11 +110,13 @@ void GameStart::initWorld()
 	{
 		auto w = 100.f;
 		auto h = 1.f;
-		auto ground1 = FillDrawNode::create();
-		ground1->addVertex(-w * WORLD_SCALE, h * WORLD_SCALE);
-		ground1->addVertex(w * WORLD_SCALE, h * WORLD_SCALE);
-		ground1->addVertex(w * WORLD_SCALE, -h * WORLD_SCALE);
-		ground1->addVertex(-w * WORLD_SCALE, -h * WORLD_SCALE);
+		auto ground1 = Node::create();
+		auto com = Component::createComponent<DrawRanderComponent>();
+		ground1->addComponent(com);
+		com->addVertex(-w * WORLD_SCALE, h * WORLD_SCALE);
+		com->addVertex(w * WORLD_SCALE, h * WORLD_SCALE);
+		com->addVertex(w * WORLD_SCALE, -h * WORLD_SCALE);
+		com->addVertex(-w * WORLD_SCALE, -h * WORLD_SCALE);
 		ground1->setColor(1, 0, 0, 1);
 		addChild(ground1);
 
@@ -223,11 +227,13 @@ void GameStart::onAddBlockDown()
 //传入的参数是相对于物理坐标系的
 void GameStart::onAddBox(const Vector2& pos, const Size& size, const Vector4& color)
 {
-	auto box1 = FillDrawNode::create();
-	box1->addVertex(size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
-	box1->addVertex(size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
-	box1->addVertex(-size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
-	box1->addVertex(-size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
+	auto box1 = Node::create();
+	auto com = Component::createComponent<DrawRanderComponent>();
+	box1->addComponent(com);
+	com->addVertex(size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
+	com->addVertex(size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
+	com->addVertex(-size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
+	com->addVertex(-size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
 	box1->setColor(color);
 	addChild(box1);
 

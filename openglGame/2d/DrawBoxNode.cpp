@@ -1,6 +1,8 @@
 #include "DrawBoxNode.h"
 #include "GameApp.h"
 #include <control/TextureController.h>
+#include "component/DrawRanderComponent.h"
+#include "component/TextureRanderComponent.h"
 
 
 DrawBoxNode:: ~DrawBoxNode()
@@ -10,11 +12,13 @@ DrawBoxNode:: ~DrawBoxNode()
 
 void DrawBoxNode::init()
 {
-	_shader = GameApp::getInstance()->getShader("filldraw");
-	addVertex(Vector2(0, 0));
-	addVertex(Vector2(40, 0));
-	addVertex(Vector2(40, 40));
-	addVertex(Vector2(0, 40));
+//	_shader = GameApp::getInstance()->getShader("filldraw");
+	auto com = make_shared<DrawRanderComponent>();
+	addComponent(com);
+	com->addVertex(Vector2(0, 0));
+	com->addVertex(Vector2(40, 0));
+	com->addVertex(Vector2(40, 40));
+	com->addVertex(Vector2(0, 40));
 	resetBoxType(BOX_1);
 }
 
@@ -44,13 +48,12 @@ void DrawBoxNode::resetBoxType(BoxType bt) {
 
 void TxcBoxNode::init()
 {
-	_shader = GameApp::getInstance()->getShader("texture");
-	addVertex(Vector2(0, 0), Vector2(0, 0));
-	addVertex(Vector2(40, 0), Vector2(0, 1));
-	addVertex(Vector2(40, 40), Vector2(1, 1));
-	addVertex(Vector2(0, 40), Vector2(1, 0));
+	//_shader = GameApp::getInstance()->getShader("texture");
+	auto com = Component::createComponent<TextureRanderComponent>();
+	addComponent(com);
+	com->setSize(Size(40, 40));
 	auto texture = TextureController::getInstance()->loadPng(".\\res\\test (1).png");
-	setTextureID(texture->_textureId);
+	com->setTextureID(texture->_textureId);
 	resetBoxType(BOX_1);
 }
 

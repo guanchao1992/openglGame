@@ -2,8 +2,6 @@
 
 #include "Node.h"
 #include "base/Vector3.h"
-#include "FillDrawNode.h"
-#include "TextureNode.h"
 
 enum BoxType
 {
@@ -15,7 +13,7 @@ enum BoxType
 };
 
 StatementNode(DrawBoxNode)
-class DrawBoxNode :public FillDrawNode
+class DrawBoxNode :public Node
 {
 	StatementCreate(DrawBoxNode);
 public:
@@ -29,7 +27,7 @@ private:
 
 
 StatementNode(TxcBoxNode)
-class TxcBoxNode :public TextureNode
+class TxcBoxNode :public Node
 {
 	StatementCreate(TxcBoxNode);
 public:

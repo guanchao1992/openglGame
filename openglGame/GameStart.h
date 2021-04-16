@@ -1,6 +1,5 @@
 #pragma once
 #include "2d/Node.h"
-#include "2d/FillDrawNode.h"
 #include "EgameController.h"
 #include "box2d.h"
 
@@ -33,7 +32,7 @@ public:
 public:
 
 	SPBlock _curblock;
-	SPFillDrawNode _filldraw;
+	SPNode _filldraw;
 
 
 	shared_ptr<b2World> _world;

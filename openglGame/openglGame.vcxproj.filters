@@ -35,13 +35,7 @@
     <ClCompile Include="2d\DrawBoxNode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="2d\FillDrawNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="2d\Node.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="2d\TextureNode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="base\Shader.cpp">
@@ -86,9 +80,6 @@
     <ClCompile Include="control\TimerController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="2d\FontDrawNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="GameUI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -98,18 +89,33 @@
     <ClCompile Include="control\TableController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="component\TouchComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\Object.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\Component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\RanderComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\DrawRanderComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\TextureRanderComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\FontRanderComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="2d\FillDrawNode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="2d\Node.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="2d\TextureNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="base\Shader.h">
@@ -196,9 +202,6 @@
     <ClInclude Include="control\TimerController.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="2d\FontDrawNode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="2d\VertexBuffers.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -212,6 +215,30 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="tables\ItemTable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\Component.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\TouchComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\RanderComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\DrawRanderComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ComponentUtils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\TextureRanderComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\FontRanderComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\Object.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

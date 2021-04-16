@@ -8,9 +8,13 @@
 #include "base/Shader.h"
 #include "base/Vector4.h"
 #include "control/TimerController.h"
+#include "Object.hpp"
 
 using namespace std;
 
+class Component;
+class Object;
+class RanderComponent;
 
 //Node的子类需要在外部使用宏StatementNode做好准备工作
 #define	StatementNode(ClassType);	class ClassType;typedef shared_ptr<ClassType> SP##ClassType;
@@ -29,23 +33,21 @@ using namespace std;
 										node->record(node); node->init(N1,N2); return node; }
 
 StatementNode(Node)
-class Node
+class Node : public Object
 {
 	StatementCreate(Node)
 protected:
 public:
-	//Node() {};
-	~Node(); 
+	~Node();
 	void record(SPNode selfNode); //记录智能指针。该记录会在removeFromParent中删除。
 public:
 	virtual void init() {};
 	virtual void reshape();
-	void rander();		
-	virtual void randerOne();
-
+	void rander();
+	//virtual void randerOne();
 	virtual void visit(const GLfloat *parentTransform, GLboolean parentFlag);
-	virtual void onDraw();
-	GLint getProgram() { return _shader->getProgram(); };
+	//virtual void onDraw();
+	//GLint getProgram() { return _shader->getProgram(); };
 
 	void addChild(SPNode node,int zOrder = 0);
 	void removeFromParent();
@@ -91,9 +93,12 @@ public:
 	//debug
 	//获得所有子节点数量
 	int getAllChildNum();
-protected:
 
-	SPShader _shader = nullptr;
+	//
+	GLfloat* getProjectTransform() { return _projectTransform; }
+protected:
+	//SPShader _shader = nullptr;
+
 	Size _contentSize = Size(10.f, 10.f);	//暂时未用到
 	Vector2 _position = Vector2(0.f, 0.f);
 
@@ -124,12 +129,12 @@ protected:
 	GLfloat _transform[16]; // transform to parent
 
 	bool _revisit = true;	//需要重新计算变换矩阵
-	bool _redraw = true;	//需要刷新缓冲区数据
+	//bool _redraw = true;	//需要刷新缓冲区数据
 	bool _reorder = true;	//需要重新对子节点进行排序
-	bool _revertexs = true; //需要重新创建缓冲区
+	//bool _revertexs = true; //需要重新创建缓冲区
 	bool _visible = true;	//是否显示
 
 	shared_ptr<vector<int>> _timerids = make_shared<vector<int>>();
-};
 
+};
 

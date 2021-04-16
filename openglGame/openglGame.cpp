@@ -16,8 +16,6 @@
 
 #include "ft2build.h"
 #include "freetype/freetype.h"
-#include <2d/TextureNode.h>
-#include <2d/FontDrawNode.h>
 
 #define VIEW_WIDTH 1000
 #define VIEW_HEIGHT 800

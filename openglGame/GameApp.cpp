@@ -1,17 +1,16 @@
 #include "GameApp.h"
 #include<iostream>
-#include "2d/FillDrawNode.h"
-#include "2d/TextureNode.h"
 #include "ShaderFiles.h"
 #include "control/TextureController.h"
 #include "glm/glm.hpp"
 #include "glm/gtx/transform.hpp"
 #include <synchapi.h>
 #include <math.h>
-#include <2d/FontDrawNode.h>
 #include "nlohmann/json.hpp"
 #include <iostream> 
 #include <fstream> 
+#include "component/DrawRanderComponent.h"
+#include "component/TextureRanderComponent.h"
 
 GameApp::GameApp()
 {
@@ -38,7 +37,8 @@ void GameApp::init()
 
 
 	//»­¸ñ×Ó
-	auto fd = FillDrawNode::create();
+	auto fd = Node::create();
+	auto drawCom = fd->addComponent<DrawRanderComponent>();
 	fd->setPosition(0, 0);
 	_start->addChild(fd, -1000);
 	for (int x = 0; x < 5; ++x)
@@ -47,19 +47,19 @@ void GameApp::init()
 		{
 			if ((x + y) % 2 == 0)
 			{
-				fd->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
-				fd->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
-				fd->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
-				fd->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
-				fd->signDraw(GL_TRIANGLE_FAN);
+				drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
+				drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
+				drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
+				drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
+				drawCom->signDraw(GL_TRIANGLE_FAN);
 			}
 			else
 			{
-				fd->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
-				fd->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
-				fd->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
-				fd->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
-				fd->signDraw(GL_TRIANGLE_FAN);
+				drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
+				drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
+				drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
+				drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
+				drawCom->signDraw(GL_TRIANGLE_FAN);
 			}
 		}
 	}
@@ -71,14 +71,12 @@ void GameApp::init()
 	{
 		for (int y = 0; y < 10; ++y)
 		{
-			auto tn = TextureNode::create();
-			tn->addVertex(Vector2(0, 0), Vector2(0, 0));
-			tn->addVertex(Vector2(0, 120), Vector2(0, 1));
-			tn->addVertex(Vector2(120, 120), Vector2(1, 1));
-			tn->addVertex(Vector2(120, 0), Vector2(1, 0));
+			auto tn = Node::create();
+			auto textureCom = tn->addComponent<TextureRanderComponent>();
+			textureCom->setSize(Size(120, 120));
 			sprintf_s(path, 256, ".\\res\\test (%d).png", index++);
 			auto pt = TextureController::getInstance()->loadPng(path);
-			tn->setTextureID(pt->_textureId);
+			textureCom->setTextureID(pt->_textureId);
 
 			tn->setPosition(Vector2(120 * x, 120 * y));
 			_start->addChild(tn, -1000);
@@ -102,10 +100,6 @@ int GameApp::initShader()
 		
 		_shaders->insert(map<string, SPShader>::value_type(shaderName, shader));
 	}
-
-	FillDrawNode::initProgram();
-	TextureNode::initProgram();
-	FontDrawNode::initProgram();
 
 
 	return 0;

@@ -4,6 +4,7 @@
 #include "glm/gtx/transform.hpp"
 #include <algorithm>
 #include "control/TimerController.h"
+#include "component/RanderComponent.h"
 
 Node::~Node()
 {
@@ -23,7 +24,10 @@ void Node::reshape()
 		(*it)->reshape();
 	}
 	_revisit = true;
-	_redraw = true;
+	if (_randerComponent)
+	{
+		_randerComponent->reDraw();
+	}
 
 	//do something
 }
@@ -38,16 +42,15 @@ void Node::rander()
 	{
 		(*it)->rander();
 	}
-	this->randerOne();
+	
+	if (_randerComponent)
+	{
+		_randerComponent->rander();
+	}
 	for (auto it = _visitRight->begin(); it != _visitRight->end(); it++)
 	{
 		(*it)->rander();
 	}
-}
-
-void Node::randerOne()
-{
-	//do something
 }
 
 void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
@@ -70,19 +73,14 @@ void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 		_reorder = false;
 		refreshOrder();
 	}
-	this->onDraw();
-
+	if (_randerComponent)
+	{
+		_randerComponent->draw();
+	}
 	for (auto it = _childs->begin(); it != _childs->end(); it++)
 	{
 		(*it)->visit(_projectTransform, parentFlag);
 	}
-}
-
-//只有在模型发生变化的时候才需要调用
-void Node::onDraw()
-{
-	//do something
-	_redraw = false;
 }
 
 void Node::addChild(SPNode node, int zOrder)
@@ -320,4 +318,3 @@ int Node::getAllChildNum()
 	}
 	return size;
 }
-

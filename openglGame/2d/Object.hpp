@@ -38,6 +38,4 @@ public:
 
 private:
 	shared_ptr<map<string, shared_ptr<Component>>> _components_map = make_shared<map<string, shared_ptr<Component>>>();
-protected:
-	shared_ptr<RanderComponent> _randerComponent = nullptr;	//特殊的，用于显示
 };

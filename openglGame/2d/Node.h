@@ -15,6 +15,7 @@ using namespace std;
 class Component;
 class Object;
 class RanderComponent;
+class MouseKeyComponent;
 
 //Node的子类需要在外部使用宏StatementNode做好准备工作
 #define	StatementNode(ClassType);	class ClassType;typedef shared_ptr<ClassType> SP##ClassType;
@@ -44,10 +45,7 @@ public:
 	virtual void init() {};
 	virtual void reshape();
 	void rander();
-	//virtual void randerOne();
 	virtual void visit(const GLfloat *parentTransform, GLboolean parentFlag);
-	//virtual void onDraw();
-	//GLint getProgram() { return _shader->getProgram(); };
 
 	void addChild(SPNode node,int zOrder = 0);
 	void removeFromParent();
@@ -96,6 +94,10 @@ public:
 
 	//
 	GLfloat* getProjectTransform() { return _projectTransform; }
+
+public:
+	void setRanderComponent(RanderComponent* com);
+	void setMouseKeyComponent(MouseKeyComponent* com);
 protected:
 	//SPShader _shader = nullptr;
 
@@ -118,9 +120,11 @@ protected:
 	Node* _parent = nullptr;
 
 	shared_ptr<vector<SPNode>> _childs = make_shared<vector<SPNode>>();
-
 	shared_ptr<vector<SPNode>> _visitLeft = make_shared<vector<SPNode>>();
 	shared_ptr<vector<SPNode>> _visitRight = make_shared<vector<SPNode>>();
+
+
+
 
 	int _localZOrder = 0;
 	int _tag = 0;
@@ -129,12 +133,13 @@ protected:
 	GLfloat _transform[16]; // transform to parent
 
 	bool _revisit = true;	//需要重新计算变换矩阵
-	//bool _redraw = true;	//需要刷新缓冲区数据
 	bool _reorder = true;	//需要重新对子节点进行排序
-	//bool _revertexs = true; //需要重新创建缓冲区
 	bool _visible = true;	//是否显示
 
 	shared_ptr<vector<int>> _timerids = make_shared<vector<int>>();
 
+protected:
+	RanderComponent* _randerComponent = nullptr;		//特殊的，用于显示
+	MouseKeyComponent* _mouseKeyComponent = nullptr;	//特殊的，用于鼠标按键事件
 };
 

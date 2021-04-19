@@ -318,3 +318,13 @@ int Node::getAllChildNum()
 	}
 	return size;
 }
+
+void Node::setRanderComponent(RanderComponent* com)
+{
+	_randerComponent = com;
+}
+
+void Node::setMouseKeyComponent(MouseKeyComponent* com)
+{
+	_mouseKeyComponent = com;
+}

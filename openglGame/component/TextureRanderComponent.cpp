@@ -5,6 +5,7 @@
 
 void TextureRanderComponent::doBegin()
 {
+	__super::doBegin();
 	auto app = GameApp::getInstance();
 	_program = app->getProgram("texture");
 	_vertexLocation = glGetAttribLocation(_program, "a_vertex");
@@ -24,6 +25,7 @@ void TextureRanderComponent::doBegin()
 
 void TextureRanderComponent::doEnd()
 {
+	__super::doEnd();
 
 }
 
@@ -34,6 +36,8 @@ void TextureRanderComponent::update()
 
 void TextureRanderComponent::rander()
 {
+	if (!_active)
+		return;
 	Node* node = (Node*)_object;
 	if (!node)
 		return;
@@ -62,6 +66,8 @@ void TextureRanderComponent::rander()
 
 void TextureRanderComponent::draw()
 {
+	if (!_active)
+		return;
 	if (!_redraw)
 		return;
 	_redraw = false;

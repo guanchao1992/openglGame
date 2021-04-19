@@ -13,20 +13,24 @@ shared_ptr<Component> Object::addComponent(shared_ptr<Component> com)
 		return nullptr;
 	}
 	_components_map->insert(map<string, shared_ptr<Component>>::value_type(name, com));
+	/*
 	if (com->getType() == COMPONENT_RANDER)
 	{
 		_randerComponent = dynamic_pointer_cast<RanderComponent>(com);
 	}
+	*/
 	com->setObject(this);
 	com->doBegin();
 	return com;
 }
 void Object::removeComponent(shared_ptr<Component> com)
 {
+	/*
 	if (_randerComponent == com)
 	{
 		_randerComponent = nullptr;
 	}
+	*/
 	com->doEnd();
 	com->setObject(nullptr);
 

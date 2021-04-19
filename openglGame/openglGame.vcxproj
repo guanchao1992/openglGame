@@ -178,8 +178,9 @@
     <ClCompile Include="component\FontRanderComponent.cpp" />
     <ClCompile Include="component\RanderComponent.cpp" />
     <ClCompile Include="component\TextureRanderComponent.cpp" />
-    <ClCompile Include="component\TouchComponent.cpp" />
+    <ClCompile Include="component\MouseKeyComponent.cpp" />
     <ClCompile Include="control\FontController.cpp" />
+    <ClCompile Include="control\MouseKeysController.cpp" />
     <ClCompile Include="control\TableController.cpp" />
     <ClCompile Include="control\TextureController.cpp" />
     <ClCompile Include="control\TimerController.cpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameStart.cpp" />
     <ClCompile Include="GameUI.cpp" />
+    <ClCompile Include="NodeTree.cpp" />
     <ClCompile Include="openglGame.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -221,8 +223,9 @@
     <ClInclude Include="component\FontRanderComponent.h" />
     <ClInclude Include="component\RanderComponent.h" />
     <ClInclude Include="component\TextureRanderComponent.h" />
-    <ClInclude Include="component\TouchComponent.h" />
+    <ClInclude Include="component\MouseKeyComponent.h" />
     <ClInclude Include="control\FontController.h" />
+    <ClInclude Include="control\MouseKeysController.h" />
     <ClInclude Include="control\TableController.h" />
     <ClInclude Include="control\TextureController.h" />
     <ClInclude Include="control\TimerController.h" />
@@ -231,6 +234,7 @@
     <ClInclude Include="GameEvent.h" />
     <ClInclude Include="GameStart.h" />
     <ClInclude Include="GameUI.h" />
+    <ClInclude Include="NodeTree.h" />
     <ClInclude Include="ShaderFiles.h" />
     <ClInclude Include="tables\ItemTable.h" />
   </ItemGroup>

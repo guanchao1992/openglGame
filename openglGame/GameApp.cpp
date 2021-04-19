@@ -11,6 +11,8 @@
 #include <fstream> 
 #include "component/DrawRanderComponent.h"
 #include "component/TextureRanderComponent.h"
+#include <functional>
+#include "control/MouseKeysController.h"
 
 GameApp::GameApp()
 {
@@ -113,6 +115,20 @@ int GameApp::removeAllShader()
 	}
 	_shaders->clear();
 	return 0;
+}
+
+int GameApp::initTouchUI()
+{
+	_listener = GameApp::getInstance()->createListenerSP();
+	//_listener->listen([&](const MouseKeyEvent& et) { });
+	_listener->listen<MouseKeyEvent>(std::bind(&GameApp::onTouchHandler, this, std::placeholders::_1));
+	return 0;
+}
+
+void GameApp::onTouchHandler(const MouseKeyEvent& et)
+{
+	//_ui->onTouchHandler(et);
+	//this->_ui->onTouchHandler();
 }
 
 //getSprogram(const char*name);
@@ -222,3 +238,4 @@ int GameApp::getNodeCount()
 {
 	return _ui->getAllChildNum() + _start->getAllChildNum();
 }
+

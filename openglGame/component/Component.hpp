@@ -37,6 +37,7 @@ public:
 	shared_ptr<Component> getComponent(ComponentType type);
 
 	inline void setObject(Object*obj) { _object = obj; }
+	inline Object*getObject() { return _object; }
 public:
 	/*
 	template <class T>
@@ -57,8 +58,11 @@ public:
 		T* t = dynamic_cast<T*>(this);
 		return t != NULL;
 	}
+	inline void setActive(bool active) { _active = active; }
+	inline bool isActive() { return _active; }
 protected:
 	Object* _object = nullptr;
 	string _name;
+	bool _active = true;
 };
 

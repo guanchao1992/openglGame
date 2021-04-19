@@ -33,6 +33,9 @@ public:
 	int initShader();
 	int removeAllShader();
 
+	int initTouchUI();
+	void onTouchHandler(const MouseKeyEvent& et);
+
 	void init();
 	void reshape();
 	void visit(const GLfloat *parentTransform, GLboolean parentFlag);

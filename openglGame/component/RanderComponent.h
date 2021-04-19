@@ -10,6 +10,7 @@ public:
 	virtual ComponentType getType() { return ComponentType::COMPONENT_RANDER; }
 
 	virtual void doBegin();
+	virtual void doEnd();
 
 	virtual void rander() = 0;
 	virtual void draw() = 0;

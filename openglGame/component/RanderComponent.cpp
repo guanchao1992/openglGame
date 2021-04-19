@@ -1,4 +1,5 @@
 #include "RanderComponent.h"
+#include "2d/Node.h"
 
 
 RanderComponent::~RanderComponent()
@@ -19,8 +20,22 @@ RanderComponent::~RanderComponent()
 void RanderComponent::doBegin()
 {
 	__super::doBegin();
+	Node* node = (Node*)(_object);
+	if (node)
+	{
+		node->setRanderComponent(this);
+	}
 }
 
+void RanderComponent::doEnd()
+{
+	__super::doEnd();
+	Node* node = (Node*)(_object);
+	if (node)
+	{
+		node->setRanderComponent(nullptr);
+	}
+}
 
 void RanderComponent::genBuffer()
 {

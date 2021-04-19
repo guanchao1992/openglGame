@@ -11,6 +11,7 @@ void FontRanderComponent::setFont(const string& fontFile)
 
 void FontRanderComponent::doBegin()
 {
+	__super::doBegin();
 	auto app = GameApp::getInstance();
 	_program = app->getProgram("texture");
 	_vertexLocation = glGetAttribLocation(_program, "a_vertex");
@@ -22,7 +23,7 @@ void FontRanderComponent::doBegin()
 
 void FontRanderComponent::doEnd()
 {
-
+	__super::doEnd();
 }
 
 void FontRanderComponent::update()
@@ -32,6 +33,8 @@ void FontRanderComponent::update()
 
 void FontRanderComponent::rander()
 {
+	if (!_active)
+		return;
 	Node* node = (Node*)_object;
 	if (!node)
 		return;
@@ -64,6 +67,8 @@ void FontRanderComponent::rander()
 
 void FontRanderComponent::draw()
 {
+	if (!_active)
+		return;
 	if (!_redraw)
 		return;
 	_redraw = false;

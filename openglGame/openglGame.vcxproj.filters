@@ -89,9 +89,6 @@
     <ClCompile Include="control\TableController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="component\TouchComponent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="2d\Object.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -108,6 +105,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="component\FontRanderComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\MouseKeyComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="control\MouseKeysController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeTree.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -220,9 +226,6 @@
     <ClInclude Include="component\Component.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="component\TouchComponent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="component\RanderComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -239,6 +242,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="2d\Object.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\MouseKeyComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\MouseKeysController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeTree.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

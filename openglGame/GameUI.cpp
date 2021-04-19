@@ -6,9 +6,10 @@
 #include <math.h>
 #include <corecrt_wstdio.h>
 #include "tables/ItemTable.h"
-#include "component/TouchComponent.h"
+#include "component/MouseKeyComponent.h"
 #include "component/DrawRanderComponent.h"
 #include "component/FontRanderComponent.h"
+#include "2d/Node.h"
 
 
 void GameUI::init()
@@ -27,6 +28,29 @@ void GameUI::init()
 	addChild(_rightTop);
 	addChild(_center);
 
+	auto com1 = _leftBottom->addComponent<MouseKeyComponent>();
+	com1->setMouseKeyFunc([&](MouseKeyComponent&com, const MouseKeyEvent&et) {
+		if (et._isDown)
+		{
+			Node *node = (Node*)com.getObject();
+			if (node)
+			{
+				node->setPosition(et._x, et._y);
+			}
+		}
+	});
+
+	auto com2 = _rightBottom->addComponent<MouseKeyComponent>();
+	com2->setMouseKeyFunc([&](MouseKeyComponent&com, const MouseKeyEvent&et) {
+		if (et._isDown)
+		{
+			Node *node = (Node*)com.getObject();
+			if (node)
+			{
+				node->setPosition(et._x, et._y);
+			}
+		}
+	});
 	/*
 	auto fontNode = FontDrawNode::create(DEFAULTE_FONT_FILE);
 	fontNode->setFontSize(30);
@@ -49,7 +73,7 @@ void GameUI::init()
 	_debug = Node::create();
 	_leftBottom->addChild(_debug, 1000);
 
-	auto touchCom = _debug->addComponent<TouchComponent>();
+	//auto touchCom = _debug->addComponent<MouseKeyComponent>();
 
 	initBk();
 	initDebug();

@@ -28,6 +28,7 @@ void DrawRanderComponent::update()
 
 void DrawRanderComponent::rander()
 {
+	__super::rander();
 	if (!_active)
 		return;
 	Node* node = (Node*)_object;
@@ -58,6 +59,7 @@ void DrawRanderComponent::rander()
 
 void DrawRanderComponent::draw()
 {
+	__super::draw();
 	if (!_active)
 		return;
 	if (!_redraw)

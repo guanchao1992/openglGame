@@ -116,6 +116,12 @@
     <ClCompile Include="NodeTree.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="component\AreaComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\OutlineBoxComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -251,6 +257,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="NodeTree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\AreaComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\OutlineBoxComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

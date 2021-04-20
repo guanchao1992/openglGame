@@ -31,10 +31,8 @@ public:
 	virtual void doEnd() {}
 	virtual void update() {}
 public:
-	//void addComponent(shared_ptr<Component> com);
-	//void removeComponent(shared_ptr<Component> com);
-	//shared_ptr<Component> getComponent(const string&name);
-	shared_ptr<Component> getComponent(ComponentType type);
+
+
 
 	inline void setObject(Object*obj) { _object = obj; }
 	inline Object*getObject() { return _object; }
@@ -52,6 +50,24 @@ public:
 		auto com = make_shared<T>();
 		return com;
 	}
+	/*
+
+	template <class T>
+	shared_ptr<T> addComponent() {
+		if (!_object)
+			return nullptr;
+		return _object->addComponent<T>();
+	}
+	template <class T>
+	shared_ptr<T> getComponent() {
+		if (!_object)
+			return nullptr;
+		return _object->getComponent<T>();
+	}
+
+	*/
+
+	shared_ptr<Component> getComponent(ComponentType type);
 
 	template <class T>
 	bool isComponent() {

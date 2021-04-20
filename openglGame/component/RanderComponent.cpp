@@ -1,5 +1,6 @@
 #include "RanderComponent.h"
 #include "2d/Node.h"
+#include "OutlineBoxComponent.h"
 
 
 RanderComponent::~RanderComponent()
@@ -22,8 +23,14 @@ void RanderComponent::doBegin()
 	__super::doBegin();
 	Node* node = (Node*)(_object);
 	if (node)
-	{
-		node->setRanderComponent(this);
+	{ 
+		switch (getType())
+		{
+		case COMPONENT_RANDER:
+			node->setRanderComponent(this);
+		default:
+			break;
+		} 
 	}
 }
 
@@ -33,7 +40,13 @@ void RanderComponent::doEnd()
 	Node* node = (Node*)(_object);
 	if (node)
 	{
-		node->setRanderComponent(nullptr);
+		switch (getType())
+		{
+		case COMPONENT_RANDER:
+			node->setRanderComponent(nullptr);
+		default:
+			break;
+		}
 	}
 }
 
@@ -48,4 +61,25 @@ void RanderComponent::genBuffer()
 		// Create the VAO for the program.
 		glGenVertexArrays(1, &_verticesVAO);
 	}
+}
+
+void RanderComponent::rander()
+{
+	if (_outlineBoxCom)
+	{
+		_outlineBoxCom->rander();
+	}
+}
+
+void RanderComponent::draw()
+{
+	if (_outlineBoxCom)
+	{
+		_outlineBoxCom->draw();
+	}
+}
+
+void RanderComponent::setOutlineBoxComponent(OutlineBoxComponent*com)
+{
+	_outlineBoxCom = com;
 }

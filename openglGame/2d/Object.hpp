@@ -14,9 +14,7 @@ class Object
 public:
 	template <class T>
 	shared_ptr<T> addComponent() {
-		auto com = make_shared<T>();
-		addComponent(com);
-		return com;
+		return dynamic_pointer_cast<T>(addComponent(make_shared<T>()));
 	}
 
 	shared_ptr<Component> addComponent(shared_ptr<Component> com);
@@ -27,7 +25,7 @@ public:
 	template <class T>
 	shared_ptr<T> getComponent() {
 		auto name = typeid(T).name();
-		printf("getComponent:%s\n", name);
+		//printf("getComponent:%s\n", name);
 		auto it = _components_map->find(name);
 		if (it == _components_map->end())
 		{

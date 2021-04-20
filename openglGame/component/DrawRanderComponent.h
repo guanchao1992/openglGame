@@ -31,8 +31,6 @@ public:
 	//标记一个绘制节点,并指定绘制方式，将addVertex添加的节点绘制成图像
 	void signDraw(GLenum drawType);
 private:
-	SPShader _shader = nullptr;
-
 	GLint _vertexLocation = -1;
 	GLint _colorLocation = -1;
 	GLint _makeColorLocation = -1;

@@ -173,9 +173,11 @@
     <ClCompile Include="2d\Object.cpp" />
     <ClCompile Include="base\ControllerBase.cpp" />
     <ClCompile Include="base\Shader.cpp" />
+    <ClCompile Include="component\AreaComponent.cpp" />
     <ClCompile Include="component\Component.cpp" />
     <ClCompile Include="component\DrawRanderComponent.cpp" />
     <ClCompile Include="component\FontRanderComponent.cpp" />
+    <ClCompile Include="component\OutlineBoxComponent.cpp" />
     <ClCompile Include="component\RanderComponent.cpp" />
     <ClCompile Include="component\TextureRanderComponent.cpp" />
     <ClCompile Include="component\MouseKeyComponent.cpp" />
@@ -217,10 +219,12 @@
     <ClInclude Include="base\Vector2.h" />
     <ClInclude Include="base\Vector3.h" />
     <ClInclude Include="base\Vector4.h" />
+    <ClInclude Include="component\AreaComponent.h" />
     <ClInclude Include="component\Component.hpp" />
     <ClInclude Include="component\ComponentUtils.h" />
     <ClInclude Include="component\DrawRanderComponent.h" />
     <ClInclude Include="component\FontRanderComponent.h" />
+    <ClInclude Include="component\OutlineBoxComponent.h" />
     <ClInclude Include="component\RanderComponent.h" />
     <ClInclude Include="component\TextureRanderComponent.h" />
     <ClInclude Include="component\MouseKeyComponent.h" />

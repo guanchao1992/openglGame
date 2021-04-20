@@ -2,6 +2,8 @@
 #include "component/Component.hpp"
 #include <GL/glew.h>
 
+class OutlineBoxComponent;
+
 class RanderComponent : public Component
 {
 public:
@@ -12,16 +14,21 @@ public:
 	virtual void doBegin();
 	virtual void doEnd();
 
-	virtual void rander() = 0;
-	virtual void draw() = 0;
+	virtual void rander();
+	virtual void draw();
 
 	void genBuffer();
 	inline void reDraw() { _redraw = true; }
+
+	void setOutlineBoxComponent(OutlineBoxComponent*com);
 protected:
 	GLint _program = -1;
 	GLuint _verticesVBO = -1;
 	GLuint _verticesVAO = -1;
 
 	bool _redraw = true;
+
+
+	OutlineBoxComponent* _outlineBoxCom;	//√Ë±ﬂ
 };
 

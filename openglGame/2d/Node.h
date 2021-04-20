@@ -66,6 +66,7 @@ public:
 	void setContentSize(const Size&size);
 
 	void refreshTransformParent(); //更新 _transform
+	GLfloat* getTransformParent();
 	void refreshOrder();	//刷新 节点顺序
 
 	void setColor(const Vector4&color);
@@ -73,7 +74,6 @@ public:
 
 	const Vector4& getColor() { return _color; }
 	const Vector2& getPosition() { return _position; }
-	const Size& getContentSize() { return _contentSize; }
 	Node* getParent() { return _parent; }
 
 	void setZOrder(int localZOrder);
@@ -99,9 +99,7 @@ public:
 	void setRanderComponent(RanderComponent* com);
 	void setMouseKeyComponent(MouseKeyComponent* com);
 protected:
-	//SPShader _shader = nullptr;
 
-	Size _contentSize = Size(10.f, 10.f);	//暂时未用到
 	Vector2 _position = Vector2(0.f, 0.f);
 
 	//旋转顺序是ZYX
@@ -122,9 +120,6 @@ protected:
 	shared_ptr<vector<SPNode>> _childs = make_shared<vector<SPNode>>();
 	shared_ptr<vector<SPNode>> _visitLeft = make_shared<vector<SPNode>>();
 	shared_ptr<vector<SPNode>> _visitRight = make_shared<vector<SPNode>>();
-
-
-
 
 	int _localZOrder = 0;
 	int _tag = 0;

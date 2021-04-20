@@ -33,6 +33,7 @@ void FontRanderComponent::update()
 
 void FontRanderComponent::rander()
 {
+	__super::rander();
 	if (!_active)
 		return;
 	Node* node = (Node*)_object;
@@ -67,6 +68,7 @@ void FontRanderComponent::rander()
 
 void FontRanderComponent::draw()
 {
+	__super::draw();
 	if (!_active)
 		return;
 	if (!_redraw)

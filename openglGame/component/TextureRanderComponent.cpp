@@ -36,6 +36,7 @@ void TextureRanderComponent::update()
 
 void TextureRanderComponent::rander()
 {
+	__super::rander();
 	if (!_active)
 		return;
 	Node* node = (Node*)_object;
@@ -61,11 +62,11 @@ void TextureRanderComponent::rander()
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 	glUseProgram(0);
-
 }
 
 void TextureRanderComponent::draw()
 {
+	__super::draw();
 	if (!_active)
 		return;
 	if (!_redraw)

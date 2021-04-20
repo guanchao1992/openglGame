@@ -28,8 +28,6 @@ void Node::reshape()
 	{
 		_randerComponent->reDraw();
 	}
-
-	//do something
 }
 
 void Node::rander()
@@ -178,12 +176,6 @@ void Node::setScale(float scaleX, float scaleY)
 	_revisit = true;
 }
 
-void Node::setContentSize(const Size&size)
-{
-	_contentSize = size;
-	_revisit = true;
-}
-
 void Node::refreshTransformParent()
 {
 	glm::mat4 transformMat(1.0f);
@@ -210,6 +202,12 @@ void Node::refreshTransformParent()
 			_transform[index] = transformMat[i][j];
 		}
 	}
+}
+
+GLfloat* Node::getTransformParent()
+{
+	refreshTransformParent();
+	return _transform;
 }
 
 void Node::setColor(const Vector4&color)

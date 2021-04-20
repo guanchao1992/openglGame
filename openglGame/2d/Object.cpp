@@ -6,19 +6,14 @@
 shared_ptr<Component> Object::addComponent(shared_ptr<Component> com)
 {
 	auto name = typeid(*com.get()).name();
-	printf("addComponent:%s\n", name);
-	if (_components_map->find(name) != _components_map->end())
+	auto it = _components_map->find(name);
+	if (it != _components_map->end())
 	{
 		printf("不允许重复添加组件:%s！\n", name);
-		return nullptr;
+		return it->second;
 	}
 	_components_map->insert(map<string, shared_ptr<Component>>::value_type(name, com));
-	/*
-	if (com->getType() == COMPONENT_RANDER)
-	{
-		_randerComponent = dynamic_pointer_cast<RanderComponent>(com);
-	}
-	*/
+
 	com->setObject(this);
 	com->doBegin();
 	return com;

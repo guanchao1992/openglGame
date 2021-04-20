@@ -239,3 +239,19 @@ int GameApp::getNodeCount()
 	return _ui->getAllChildNum() + _start->getAllChildNum();
 }
 
+Vector2 GameApp::convertToWorld(Node*node, const Vector2&pos)
+{
+	GLfloat projectTransform[] = {
+	1.0f, 0.0f, 0.0f, 0.0f,
+	0.0f, 1.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, 1.0f, 0.0f,
+	pos._x, pos._y, 0.0f, 1.0f };
+
+	Node* parent = node->getParent();
+	while (parent)
+	{
+		auto transform = node->getTransformParent();
+		glusMatrix4x4Multiplyf(projectTransform, projectTransform, transform);
+	}
+	return Vector2(projectTransform[12], projectTransform[13]);
+}

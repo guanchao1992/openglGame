@@ -10,6 +10,8 @@
 #include "component/DrawRanderComponent.h"
 #include "component/FontRanderComponent.h"
 #include "2d/Node.h"
+#include "component/OutlineBoxComponent.h"
+#include "component/AreaComponent.h"
 
 
 void GameUI::init()
@@ -28,15 +30,34 @@ void GameUI::init()
 	addChild(_rightTop);
 	addChild(_center);
 
+	_listener->listen([&](const KeyEvent& et) {
+		if (et._isDown)
+		{
+			static int angle = 0;
+			static int l = 10;
+			switch (et._key)
+			{
+			case GLFW_KEY_SPACE:
+				angle += 10;
+				l += 10;
+				_center->setAngle(angle);
+				auto fd5 = _center->getChildByTag(50);
+				if (fd5)
+				{
+					fd5->getComponent<AreaComponent>()->setSize(Size(l, l));
+				}
+				break;
+			}
+		}
+	});
+	/*
 	auto com1 = _leftBottom->addComponent<MouseKeyComponent>();
 	com1->setMouseKeyFunc([&](MouseKeyComponent&com, const MouseKeyEvent&et) {
 		if (et._isDown)
 		{
-			Node *node = (Node*)com.getObject();
-			if (node)
-			{
-				node->setPosition(et._x, et._y);
-			}
+			static int angle = 0;
+			angle = angle + 10;
+			_center->setAngle(angle);
 		}
 	});
 
@@ -51,6 +72,8 @@ void GameUI::init()
 			}
 		}
 	});
+
+	*/
 	/*
 	auto fontNode = FontDrawNode::create(DEFAULTE_FONT_FILE);
 	fontNode->setFontSize(30);
@@ -90,7 +113,7 @@ void GameUI::initBk()
 		drawCom->addVertex(Vector2(3, 3));
 		drawCom->addVertex(Vector2(100, 3));
 		drawCom->addVertex(Vector2(100, 0));
-		fd1->setColor(Vector4(1, 0, 0, 0.4));
+		fd1->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
 		fd1->setPosition(30, 30);
 		_leftBottom->addChild(fd1);
 	}
@@ -104,7 +127,7 @@ void GameUI::initBk()
 		drawCom->addVertex(Vector2(3, -3));
 		drawCom->addVertex(Vector2(100, -3));
 		drawCom->addVertex(Vector2(100, 0));
-		fd2->setColor(Vector4(1, 0, 0, 0.4));
+		fd2->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
 		fd2->setPosition(30, -30);
 		_leftTop->addChild(fd2);
 	}
@@ -118,7 +141,7 @@ void GameUI::initBk()
 		drawCom->addVertex(Vector2(-3, 3));
 		drawCom->addVertex(Vector2(-100, 3));
 		drawCom->addVertex(Vector2(-100, 0));
-		fd3->setColor(Vector4(1, 0, 0, 0.4));
+		fd3->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
 		fd3->setPosition(-30, 30);
 		_rightBottom->addChild(fd3);
 	}
@@ -132,7 +155,7 @@ void GameUI::initBk()
 	drawCom->addVertex(Vector2(-3, -3));
 	drawCom->addVertex(Vector2(-100, -3));
 	drawCom->addVertex(Vector2(-100, 0));
-	fd4->setColor(Vector4(1, 0, 0, 0.4));
+	fd4->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
 	fd4->setPosition(-30, -30);
 	_rightTop->addChild(fd4);
 	}
@@ -152,8 +175,12 @@ void GameUI::initBk()
 		drawCom->addVertex(Vector2(-1, 1));
 		drawCom->addVertex(Vector2(-1, 100));
 		drawCom->addVertex(Vector2(1, 100));
-		fd5->setColor(Vector4(1, 0, 0, 0.4));
+		fd5->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
 		fd5->setPosition(0, 0);
+		fd5->setTag(50);
+
+		fd5->addComponent<OutlineBoxComponent>();
+
 		_center->addChild(fd5);
 	}
 }

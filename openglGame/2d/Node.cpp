@@ -176,6 +176,14 @@ void Node::setScale(float scaleX, float scaleY)
 	_revisit = true;
 }
 
+void Node::setScale(float scale)
+{
+	_scaleX = scale;
+	_scaleY = scale;
+
+	_revisit = true;
+}
+
 void Node::refreshTransformParent()
 {
 	glm::mat4 transformMat(1.0f);
@@ -322,7 +330,7 @@ void Node::setRanderComponent(RanderComponent* com)
 	_randerComponent = com;
 }
 
-void Node::setMouseKeyComponent(MouseKeyComponent* com)
+void Node::setMouseKeyComponent(MouseComponent* com)
 {
 	_mouseKeyComponent = com;
 }

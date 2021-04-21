@@ -1,6 +1,7 @@
 #include "TextureRanderComponent.h"
 #include "GameApp.h"
 #include <2d/VertexBuffers.hpp>
+#include "AreaComponent.h"
 
 
 void TextureRanderComponent::doBegin()
@@ -13,14 +14,6 @@ void TextureRanderComponent::doBegin()
 	_texture0Location = glGetUniformLocation(_program, "CC_Texture0");
 	_makeColorLocation = glGetUniformLocation(_program, "u_makeColor");
 
-	_vertexs.push_back(Vector2(0, 0));
-	_vertexs.push_back(Vector2(1, 0));
-	_vertexs.push_back(Vector2(1, 1));
-	_vertexs.push_back(Vector2(0, 1));
-	_texCoords.push_back(Vector2(0, 0));
-	_texCoords.push_back(Vector2(0, 1));
-	_texCoords.push_back(Vector2(1, 1));
-	_texCoords.push_back(Vector2(1, 0));
 }
 
 void TextureRanderComponent::doEnd()
@@ -57,7 +50,7 @@ void TextureRanderComponent::rander()
 	glUniformMatrix4fv(g_projectMatrix, 1, GL_FALSE, projectTransform);
 
 	glBindVertexArray(_verticesVAO);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexs.size());
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
@@ -75,32 +68,25 @@ void TextureRanderComponent::draw()
 
 	genBuffer();
 
-	auto pVectexs = getVectexBuffer<TNVertex>(_vertexs.size());
-	int i = 0;
-	for (auto it = _vertexs.begin(); it != _vertexs.end(); it++)
+	auto size = _object->getComponent<AreaComponent>()->getSize();
+	auto pVectexs = getVectexBuffer<TNVertex>(4);
+	Vector2 vec[] = { {0,0},{1,0},{1,1},{0,1} };
+	for (int i = 0; i < 4; i++)
 	{
-		GLfloat mtx[] = {
-			1.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 1.0f, 0.0f,
-			it->_x ,it->_y , 0.0f, 1.0f };
-
-		pVectexs[i].vertexs[0] = mtx[12] * _size.m_width;
-		pVectexs[i].vertexs[1] = mtx[13] * _size.m_height;
+		pVectexs[i].vertexs[0] = vec[i]._x * size._width;
+		pVectexs[i].vertexs[1] = vec[i]._y * size._height;
 		pVectexs[i].vertexs[2] = 0.0f;
 		pVectexs[i].vertexs[3] = 1.0f;
 
-		const auto &texCoord = _texCoords[i];
-		pVectexs[i].texCoord[0] = texCoord._x;
-		pVectexs[i].texCoord[1] = texCoord._y;
-		i = i + 1;
+		pVectexs[i].texCoord[0] = vec[i]._x;
+		pVectexs[i].texCoord[1] = vec[i]._y;
 	}
 
 	// Basic blending equation.
 	glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
 
 	//重新创建缓冲区
-	glBufferData(GL_ARRAY_BUFFER, _vertexs.size() * (4 + 2) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 4 * (4 + 2) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_STATIC_DRAW);
 
 	glBindVertexArray(_verticesVAO);
 
@@ -109,17 +95,10 @@ void TextureRanderComponent::draw()
 
 	glVertexAttribPointer(_textCoordLocation, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)offsetof(TNVertex, texCoord));
 	glEnableVertexAttribArray(_textCoordLocation);
-
-}
-
-void TextureRanderComponent::setSize(const Size& size)
-{
-	_size = size;
 }
 
 void TextureRanderComponent::setTextureID(GLint id)
 {
 	_textureId = id;
-	_redraw = true;
 }
 

@@ -18,7 +18,6 @@ class TextureRanderComponent : public RanderComponent
 	virtual void draw();
 
 public:
-	void setSize(const Size& size);
 	void setTextureID(GLint id);
 
 private:
@@ -28,9 +27,6 @@ private:
 	int _makeColorLocation;
 
 private:
-	vector<Vector2> _vertexs;
-	vector<Vector2> _texCoords;
 	GLint _textureId;
-	Size _size;
 };
 

@@ -82,14 +82,8 @@ void FontRanderComponent::draw()
 	static Vector2 texCoords[] = { {0,0},{0,1},{1,1},{1,0} };
 	for (auto it = _vertexs.begin(); it != _vertexs.end(); it++)
 	{
-		GLfloat mtx[] = {
-			1.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 1.0f, 0.0f,
-			it->_x ,it->_y , 0.0f, 1.0f };
-
-		pVectexs[i].vertexs[0] = mtx[12];
-		pVectexs[i].vertexs[1] = mtx[13];
+		pVectexs[i].vertexs[0] = it->_x;
+		pVectexs[i].vertexs[1] = it->_y;
 		pVectexs[i].vertexs[2] = 0.0f;
 		pVectexs[i].vertexs[3] = 1.0f;
 

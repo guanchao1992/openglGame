@@ -1,6 +1,7 @@
 #include "RanderComponent.h"
 #include "2d/Node.h"
 #include "OutlineBoxComponent.h"
+#include "AreaComponent.h"
 
 
 RanderComponent::~RanderComponent()
@@ -21,9 +22,21 @@ RanderComponent::~RanderComponent()
 void RanderComponent::doBegin()
 {
 	__super::doBegin();
+	auto areaCom = _object->getComponent<AreaComponent>();
+	if (!areaCom)
+	{
+		areaCom = _object->addComponent<AreaComponent>();
+	}
+
+	auto outlineCom = _object->getComponent<OutlineBoxComponent>();
+	if (outlineCom)
+	{
+		setOutlineBoxComponent(_outlineBoxCom);
+	}
+
 	Node* node = (Node*)(_object);
 	if (node)
-	{ 
+	{
 		switch (getType())
 		{
 		case COMPONENT_RANDER:

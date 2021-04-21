@@ -48,6 +48,7 @@ public:
 	inline shared_ptr<dexode::EventBus> getEventBus() { return _events; }
 
 	Vector2 convertToWorld(Node*node, const Vector2&pos);
+	Vector2 convertViewToNode(Node*node, const Vector2&pos);
 public:
 	GLint getProgram(const char*name);
 	SPShader getShader(const char*name);

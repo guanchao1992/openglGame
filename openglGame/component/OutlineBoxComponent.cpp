@@ -24,15 +24,6 @@ void OutlineBoxComponent::doBegin()
 {
 	__super::doBegin();
 
-	auto app = GameApp::getInstance();
-	_program = app->getProgram("filldraw");
-
-	_vertexLocation = glGetAttribLocation(_program, "a_vertex");
-	_colorLocation = glGetAttribLocation(_program, "a_color");
-	_makeColorLocation = glGetUniformLocation(_program, "u_makeColor");
-	_projectMatrix = glGetUniformLocation(_program, "u_projectMatrix");
-
-
 	auto areaCom = _object->getComponent<AreaComponent>();
 	if (!areaCom)
 	{
@@ -45,6 +36,13 @@ void OutlineBoxComponent::doBegin()
 	}
 	randerCom->setOutlineBoxComponent(this);
 
+	auto app = GameApp::getInstance();
+	_program = app->getProgram("filldraw");
+
+	_vertexLocation = glGetAttribLocation(_program, "a_vertex");
+	_colorLocation = glGetAttribLocation(_program, "a_color");
+	_makeColorLocation = glGetUniformLocation(_program, "u_makeColor");
+	_projectMatrix = glGetUniformLocation(_program, "u_projectMatrix");
 }
 
 void OutlineBoxComponent::doEnd()
@@ -76,7 +74,15 @@ void OutlineBoxComponent::rander()
 	glUniformMatrix4fv(_projectMatrix, 1, GL_FALSE, projectTransform);
 	glUniform4f(_makeColorLocation, color._r, color._g, color._b, color._l);
 	glBindVertexArray(_verticesVAO);
-	glDrawArrays(GL_LINE_STRIP, 0, 5);
+
+	if (_fill)
+	{
+		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+	}
+	else
+	{
+		glDrawArrays(GL_LINE_STRIP, 0, 5);
+	}
 
 	glBindVertexArray(0);
 	glUseProgram(0);
@@ -90,18 +96,9 @@ void OutlineBoxComponent::draw()
 		return;
 	_redraw = false;
 
-	if (_verticesVBO == -1)
-	{
-		glGenBuffers(1, &_verticesVBO);
-	}
-	if (_verticesVAO == -1)
-	{
-		// Create the VAO for the program.
-		glGenVertexArrays(1, &_verticesVAO);
-	}
 
 	auto size = _object->getComponent<AreaComponent>()->getSize();
-	Vector2 vec[] = { {0,0},{size.m_width,0},{size.m_width,size.m_height},{0,size.m_height},{0,0} };
+	Vector2 vec[] = { {0,0},{size._width,0},{size._width,size._height},{0,size._height},{0,0} };
 	auto pVectexs = getVectexBuffer<FDVertex>(5);
 
 	for (int i = 0; i < 5; ++i)
@@ -117,8 +114,18 @@ void OutlineBoxComponent::draw()
 		pVectexs[i].colors[3] = _color._l;
 	}
 
+	if (_verticesVBO == -1)
+	{
+		glGenBuffers(1, &_verticesVBO);
+	}
+	if (_verticesVAO == -1)
+	{
+		// Create the VAO for the program.
+		glGenVertexArrays(1, &_verticesVAO);
+	}
 	glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
-	glBufferData(GL_ARRAY_BUFFER, 5 * (4 + 4) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_STATIC_DRAW);
+
+	glBufferData(GL_ARRAY_BUFFER, 5 * (4 + 4) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(_verticesVAO);
 

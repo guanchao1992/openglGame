@@ -39,7 +39,6 @@ private:
 
 	vector<Vector2> _vertexs;
 	vector<Vector4> _colors;
-	int _oldVertexNum = 0;
 	
 	int _last_sign = 0;
 	vector<pair<GLenum, pair<int, int>>> _signs; //pair<绘制方式,pair<顶点起点index，顶点数量>>

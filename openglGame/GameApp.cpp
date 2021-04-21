@@ -12,7 +12,8 @@
 #include "component/DrawRanderComponent.h"
 #include "component/TextureRanderComponent.h"
 #include <functional>
-#include "control/MouseKeysController.h"
+#include "control/MouseController.h"
+#include "component/AreaComponent.h"
 
 GameApp::GameApp()
 {
@@ -74,8 +75,8 @@ void GameApp::init()
 		for (int y = 0; y < 10; ++y)
 		{
 			auto tn = Node::create();
+			tn->addComponent<AreaComponent>()->setSize(Size(120, 120));
 			auto textureCom = tn->addComponent<TextureRanderComponent>();
-			textureCom->setSize(Size(120, 120));
 			sprintf_s(path, 256, ".\\res\\test (%d).png", index++);
 			auto pt = TextureController::getInstance()->loadPng(path);
 			textureCom->setTextureID(pt->_textureId);
@@ -245,13 +246,62 @@ Vector2 GameApp::convertToWorld(Node*node, const Vector2&pos)
 	1.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 1.0f, 0.0f,
-	pos._x, pos._y, 0.0f, 1.0f };
+	0.0f, 0.0f, 0.0f, 1.0f };
 
-	Node* parent = node->getParent();
-	while (parent)
+	vector<Node*> _quest_node;
+	Node*temp_node = node;
+	while (temp_node)
 	{
-		auto transform = node->getTransformParent();
+		_quest_node.push_back(temp_node);
+		temp_node = temp_node->getParent();
+	}
+	for (auto it = _quest_node.rbegin(); it != _quest_node.rend(); it++)
+	{
+		auto transform = (*it)->getTransformParent();
 		glusMatrix4x4Multiplyf(projectTransform, projectTransform, transform);
 	}
-	return Vector2(projectTransform[12], projectTransform[13]);
+
+	GLfloat transform[] = {
+	1.0f, 0.0f, 0.0f, 0.0f,
+	0.0f, 1.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, 1.0f, 0.0f,
+	pos._x, pos._y, 0.0f, 1.0f };
+
+	glusMatrix4x4Multiplyf(transform, projectTransform, transform);
+	
+	return Vector2(transform[12], transform[13]);
 }
+
+Vector2 GameApp::convertViewToNode(Node*node, const Vector2&pos)
+{
+	GLfloat projectTransform[] = {
+	1.0f, 0.0f, 0.0f, 0.0f,
+	0.0f, 1.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 0.0f, 1.0f };
+
+	vector<Node*> _quest_node;
+	Node*temp_node = node;
+	while (temp_node)
+	{
+		_quest_node.push_back(temp_node);
+		temp_node = temp_node->getParent();
+	}
+	for (auto it = _quest_node.rbegin(); it != _quest_node.rend(); it++)
+	{
+		auto transform = (*it)->getTransformParent();
+		glusMatrix4x4Multiplyf(projectTransform, projectTransform, transform);
+	}
+	glusMatrix4x4Inversef(projectTransform);
+
+	GLfloat transform[] = {
+	1.0f, 0.0f, 0.0f, 0.0f,
+	0.0f, 1.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, 1.0f, 0.0f,
+	pos._x, pos._y, 0.0f, 1.0f };
+
+	glusMatrix4x4Multiplyf(transform, projectTransform, transform);
+
+	return Vector2(transform[12], transform[13]);
+}
+

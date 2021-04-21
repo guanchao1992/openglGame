@@ -180,9 +180,9 @@
     <ClCompile Include="component\OutlineBoxComponent.cpp" />
     <ClCompile Include="component\RanderComponent.cpp" />
     <ClCompile Include="component\TextureRanderComponent.cpp" />
-    <ClCompile Include="component\MouseKeyComponent.cpp" />
+    <ClCompile Include="component\MouseComponent.cpp" />
     <ClCompile Include="control\FontController.cpp" />
-    <ClCompile Include="control\MouseKeysController.cpp" />
+    <ClCompile Include="control\MouseController.cpp" />
     <ClCompile Include="control\TableController.cpp" />
     <ClCompile Include="control\TextureController.cpp" />
     <ClCompile Include="control\TimerController.cpp" />
@@ -227,9 +227,9 @@
     <ClInclude Include="component\OutlineBoxComponent.h" />
     <ClInclude Include="component\RanderComponent.h" />
     <ClInclude Include="component\TextureRanderComponent.h" />
-    <ClInclude Include="component\MouseKeyComponent.h" />
+    <ClInclude Include="component\MouseComponent.h" />
     <ClInclude Include="control\FontController.h" />
-    <ClInclude Include="control\MouseKeysController.h" />
+    <ClInclude Include="control\MouseController.h" />
     <ClInclude Include="control\TableController.h" />
     <ClInclude Include="control\TextureController.h" />
     <ClInclude Include="control\TimerController.h" />

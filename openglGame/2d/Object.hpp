@@ -17,9 +17,7 @@ public:
 		return dynamic_pointer_cast<T>(addComponent(make_shared<T>()));
 	}
 
-	shared_ptr<Component> addComponent(shared_ptr<Component> com);
 	void removeComponent(shared_ptr<Component> com);
-	//shared_ptr<Component> getComponent(const string&name);
 	shared_ptr<Component> getComponent(ComponentType type);
 
 	template <class T>
@@ -34,6 +32,8 @@ public:
 		return dynamic_pointer_cast<T>(it->second);
 	}
 
+private:
+	shared_ptr<Component> addComponent(shared_ptr<Component> com);
 private:
 	shared_ptr<map<string, shared_ptr<Component>>> _components_map = make_shared<map<string, shared_ptr<Component>>>();
 };

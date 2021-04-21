@@ -68,13 +68,6 @@ void DrawRanderComponent::draw()
 
 	genBuffer();
 
-	bool revertexs = false;
-	if (_oldVertexNum != _vertexs.size())
-	{
-		revertexs = true;
-		_oldVertexNum = _vertexs.size();
-	}
-
 	auto pVectexs = getVectexBuffer<FDVertex>(_vertexs.size());
 	int i = 0;
 	for (auto it = _vertexs.begin(); it != _vertexs.end(); it++)
@@ -99,10 +92,7 @@ void DrawRanderComponent::draw()
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
-	if (revertexs)
-	{
-		glBufferData(GL_ARRAY_BUFFER, _vertexs.size() * (4 + 4) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_STATIC_DRAW);
-	}
+	glBufferData(GL_ARRAY_BUFFER, _vertexs.size() * (4 + 4) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(_verticesVAO);
 

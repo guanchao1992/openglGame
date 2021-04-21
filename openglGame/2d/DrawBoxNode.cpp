@@ -3,6 +3,7 @@
 #include <control/TextureController.h>
 #include "component/DrawRanderComponent.h"
 #include "component/TextureRanderComponent.h"
+#include "component/AreaComponent.h"
 
 
 DrawBoxNode:: ~DrawBoxNode()
@@ -13,8 +14,7 @@ DrawBoxNode:: ~DrawBoxNode()
 void DrawBoxNode::init()
 {
 //	_shader = GameApp::getInstance()->getShader("filldraw");
-	auto com = make_shared<DrawRanderComponent>();
-	addComponent(com);
+	auto com = addComponent<DrawRanderComponent>();
 	com->addVertex(Vector2(0, 0));
 	com->addVertex(Vector2(40, 0));
 	com->addVertex(Vector2(40, 40));
@@ -49,9 +49,8 @@ void DrawBoxNode::resetBoxType(BoxType bt) {
 void TxcBoxNode::init()
 {
 	//_shader = GameApp::getInstance()->getShader("texture");
-	auto com = Component::createComponent<TextureRanderComponent>();
-	addComponent(com);
-	com->setSize(Size(40, 40));
+	addComponent<AreaComponent>()->setSize(Size(40, 40));
+	auto com = addComponent<TextureRanderComponent>();
 	auto texture = TextureController::getInstance()->loadPng(".\\res\\test (1).png");
 	com->setTextureID(texture->_textureId);
 	resetBoxType(BOX_1);

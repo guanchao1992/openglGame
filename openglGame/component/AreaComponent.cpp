@@ -30,3 +30,12 @@ const Size& AreaComponent::getSize()
 	return _contentSize;
 }
 
+
+bool AreaComponent::isPosInArea(const Vector2& pos)
+{
+	if (pos._x<0 || pos._x>_contentSize._width || pos._y<0 || pos._y>_contentSize._height)
+	{
+		return false;
+	}
+	return true;
+}

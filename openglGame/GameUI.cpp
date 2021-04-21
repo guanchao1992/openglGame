@@ -6,7 +6,7 @@
 #include <math.h>
 #include <corecrt_wstdio.h>
 #include "tables/ItemTable.h"
-#include "component/MouseKeyComponent.h"
+#include "component/MouseComponent.h"
 #include "component/DrawRanderComponent.h"
 #include "component/FontRanderComponent.h"
 #include "2d/Node.h"
@@ -34,46 +34,45 @@ void GameUI::init()
 		if (et._isDown)
 		{
 			static int angle = 0;
-			static int l = 10;
 			switch (et._key)
 			{
 			case GLFW_KEY_SPACE:
+			{
 				angle += 10;
-				l += 10;
 				_center->setAngle(angle);
-				auto fd5 = _center->getChildByTag(50);
-				if (fd5)
-				{
-					fd5->getComponent<AreaComponent>()->setSize(Size(l, l));
-				}
 				break;
 			}
+			case 'v':
+			case 'V':
+			{
+				break;
+			}
+			}
+		}
+	});
+	_listener->listen([&](const MouseMoveEvent& et) {
+		if (et._buttons & 1)
+		{
+			//et._x
 		}
 	});
 	/*
-	auto com1 = _leftBottom->addComponent<MouseKeyComponent>();
-	com1->setMouseKeyFunc([&](MouseKeyComponent&com, const MouseKeyEvent&et) {
+	auto com1 = _leftBottom->addComponent<MouseComponent>();
+	com1->setMouseKeyFunc([&](MouseComponent&com, const MouseKeyEvent&et) {
 		if (et._isDown)
 		{
-			static int angle = 0;
-			angle = angle + 10;
-			_center->setAngle(angle);
 		}
 	});
 
-	auto com2 = _rightBottom->addComponent<MouseKeyComponent>();
-	com2->setMouseKeyFunc([&](MouseKeyComponent&com, const MouseKeyEvent&et) {
+	auto com2 = _rightBottom->addComponent<MouseComponent>();
+	com2->setMouseKeyFunc([&](MouseComponent&com, const MouseKeyEvent&et) {
 		if (et._isDown)
 		{
-			Node *node = (Node*)com.getObject();
-			if (node)
-			{
-				node->setPosition(et._x, et._y);
-			}
 		}
 	});
-
 	*/
+
+
 	/*
 	auto fontNode = FontDrawNode::create(DEFAULTE_FONT_FILE);
 	fontNode->setFontSize(30);
@@ -96,7 +95,7 @@ void GameUI::init()
 	_debug = Node::create();
 	_leftBottom->addChild(_debug, 1000);
 
-	//auto touchCom = _debug->addComponent<MouseKeyComponent>();
+	//auto touchCom = _debug->addComponent<MouseComponent>();
 
 	initBk();
 	initDebug();
@@ -161,8 +160,8 @@ void GameUI::initBk()
 	}
 
 	{
-		auto fd5 = Node::create();
-		auto drawCom = fd5->addComponent<DrawRanderComponent>();
+		auto fd = Node::create();
+		auto drawCom = fd->addComponent<DrawRanderComponent>();
 		drawCom->addVertex(Vector2(1, 1));
 		drawCom->addVertex(Vector2(100, 1));
 		drawCom->addVertex(Vector2(100, -1));
@@ -175,13 +174,32 @@ void GameUI::initBk()
 		drawCom->addVertex(Vector2(-1, 1));
 		drawCom->addVertex(Vector2(-1, 100));
 		drawCom->addVertex(Vector2(1, 100));
-		fd5->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
-		fd5->setPosition(0, 0);
-		fd5->setTag(50);
-
-		fd5->addComponent<OutlineBoxComponent>();
-
-		_center->addChild(fd5);
+		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
+		_center->addChild(fd);
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		auto fd = Node::create();
+		fd->setPosition(30 * i, 10 * i);
+		_center->addChild(fd);
+		fd->setTag(i);
+		fd->addComponent<AreaComponent>()->setSize(Size(100, 100));
+		fd->addComponent<OutlineBoxComponent>()->setFill(true);
+		auto com = fd->addComponent<MouseComponent>();
+		com->setMouseKeyFunc([&,fd](MouseComponent&com, const MouseKeyEvent&et) {
+			if (et._isDown)
+			{
+				printf("Êó±êµã»÷:%d\n", fd->getTag());
+			}
+		});
+		com->setMouseMoveInFunc([&, fd](MouseComponent&com, const MouseMoveEvent&et) {
+			fd->getComponent<OutlineBoxComponent>()->setColor(Vector4(0, 1, 0, 0.8));
+			fd->setScale(1.1);
+		});
+		com->setMouseMoveOutFunc([&, fd](MouseComponent&com, const MouseMoveEvent&et) {
+			fd->getComponent<OutlineBoxComponent>()->setColor(Vector4(1, 0, 0, 0.8));
+			fd->setScale(1.0);
+		});
 	}
 }
 
@@ -214,11 +232,6 @@ void GameUI::initDebug()
 		text1->setScale(1, 1);
 		text1->setTag(1);
 		text1->setColor(Vector4(1, 1, 1, 0.6));
-		_listener->listen([&, fontCom](const MouseMoveEvent& et) {
-			wchar_t s[256];
-			swprintf(s, 256, L"x:%.2f,y:%.2f,bts:%d", et._x, et._y, et._buttons);
-			fontCom->setText(s);
-		});
 	}
 }
 

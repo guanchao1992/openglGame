@@ -15,7 +15,7 @@ using namespace std;
 class Component;
 class Object;
 class RanderComponent;
-class MouseKeyComponent;
+class MouseComponent;
 
 //Node的子类需要在外部使用宏StatementNode做好准备工作
 #define	StatementNode(ClassType);	class ClassType;typedef shared_ptr<ClassType> SP##ClassType;
@@ -62,8 +62,7 @@ public:
 	void setScaleX(float scale);
 	void setScaleY(float scale);
 	void setScale(float scaleX, float scaleY);
-
-	void setContentSize(const Size&size);
+	void setScale(float scale);
 
 	void refreshTransformParent(); //更新 _transform
 	GLfloat* getTransformParent();
@@ -97,7 +96,7 @@ public:
 
 public:
 	void setRanderComponent(RanderComponent* com);
-	void setMouseKeyComponent(MouseKeyComponent* com);
+	void setMouseKeyComponent(MouseComponent* com);
 protected:
 
 	Vector2 _position = Vector2(0.f, 0.f);
@@ -135,6 +134,6 @@ protected:
 
 protected:
 	RanderComponent* _randerComponent = nullptr;		//特殊的，用于显示
-	MouseKeyComponent* _mouseKeyComponent = nullptr;	//特殊的，用于鼠标按键事件
+	MouseComponent* _mouseKeyComponent = nullptr;	//特殊的，用于鼠标按键事件
 };
 

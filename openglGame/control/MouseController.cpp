@@ -1,13 +1,13 @@
-#include "MouseKeysController.h"
+#include "MouseController.h"
 #include "GameApp.h"
 
 
-void MouseKeysController::init()
+void MouseController::init()
 {
 	_listener = GameApp::getInstance()->createListenerSP();
 	_listener->listen([&](const MouseKeyEvent& et) {
 		sortAllComs();
-		for (auto it : *_mouseKeyComs)
+		for (auto it : *_mouseComs)
 		{
 			if (it->onMouseKeyEvent(et))
 			{
@@ -15,11 +15,26 @@ void MouseKeysController::init()
 			}
 		}
 	});
+	_listener->listen([&](const MouseMoveEvent& et) {
+		sortAllComs();
+		bool cutoff = false;
+		for (auto it : *_mouseComs)
+		{
+			if (cutoff)
+			{
+				it->doMouseOut(et);
+			}
+			else if (it->onMouseMoveEvent(et))
+			{
+				cutoff = true;
+			}
+		}
+	});
 }
 
-void MouseKeysController::addMouseKeyComponent(shared_ptr<MouseKeyComponent> com)
+void MouseController::addMouseComponent(shared_ptr<MouseComponent> com)
 {
-	_mouseKeyComs->push_back(com);
+	_mouseComs->push_back(com);
 }
 
 int compareOrder(Node*a, Node*b)
@@ -61,12 +76,12 @@ int compareOrder(Node*a, Node*b)
 	return 0;
 }
 
-void MouseKeysController::sortAllComs()
+void MouseController::sortAllComs()
 {
 	auto app = GameApp::getInstance();
 	//_mouseKeyComs
 
-	sort(_mouseKeyComs->begin(), _mouseKeyComs->end(), [&](shared_ptr<MouseKeyComponent> a, shared_ptr<MouseKeyComponent> b) {
+	sort(_mouseComs->begin(), _mouseComs->end(), [&](shared_ptr<MouseComponent> a, shared_ptr<MouseComponent> b) {
 		Node *nodeA = (Node*)a->getObject();
 		Node *nodeB = (Node*)b->getObject();
 		if (!nodeA || !nodeB)

@@ -107,12 +107,6 @@
     <ClCompile Include="component\FontRanderComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="component\MouseKeyComponent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="control\MouseKeysController.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="NodeTree.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -120,6 +114,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="component\OutlineBoxComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\MouseComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="control\MouseController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -250,12 +250,6 @@
     <ClInclude Include="2d\Object.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="component\MouseKeyComponent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="control\MouseKeysController.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="NodeTree.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -263,6 +257,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="component\OutlineBoxComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\MouseComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\MouseController.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

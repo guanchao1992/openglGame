@@ -26,8 +26,7 @@ void GameStart::init()
 	*/
 
 	_filldraw = Node::create();
-	auto com = Component::createComponent<DrawRanderComponent>();
-	_filldraw->addComponent(com);
+	auto com = _filldraw->addComponent<DrawRanderComponent>();
 	
 	//TableController::getInstance()->reset();
 	/*
@@ -111,8 +110,7 @@ void GameStart::initWorld()
 		auto w = 100.f;
 		auto h = 1.f;
 		auto ground1 = Node::create();
-		auto com = Component::createComponent<DrawRanderComponent>();
-		ground1->addComponent(com);
+		auto com = ground1->addComponent<DrawRanderComponent>();
 		com->addVertex(-w * WORLD_SCALE, h * WORLD_SCALE);
 		com->addVertex(w * WORLD_SCALE, h * WORLD_SCALE);
 		com->addVertex(w * WORLD_SCALE, -h * WORLD_SCALE);
@@ -228,12 +226,11 @@ void GameStart::onAddBlockDown()
 void GameStart::onAddBox(const Vector2& pos, const Size& size, const Vector4& color)
 {
 	auto box1 = Node::create();
-	auto com = Component::createComponent<DrawRanderComponent>();
-	box1->addComponent(com);
-	com->addVertex(size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
-	com->addVertex(size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
-	com->addVertex(-size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
-	com->addVertex(-size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
+	auto com = box1->addComponent<DrawRanderComponent>();
+	com->addVertex(size._width / 2 * WORLD_SCALE, -size._height / 2 * WORLD_SCALE);
+	com->addVertex(size._width / 2 * WORLD_SCALE, size._height / 2 * WORLD_SCALE);
+	com->addVertex(-size._width / 2 * WORLD_SCALE, size._height / 2 * WORLD_SCALE);
+	com->addVertex(-size._width / 2 * WORLD_SCALE, -size._height / 2 * WORLD_SCALE);
 	box1->setColor(color);
 	addChild(box1);
 
@@ -247,7 +244,7 @@ void GameStart::onAddBox(const Vector2& pos, const Size& size, const Vector4& co
 	b2Body* body = _world->CreateBody(&bodyDef);
 
 	b2PolygonShape dynamicBox;	//设置形状
-	dynamicBox.SetAsBox(size.m_width / 2, size.m_height / 2);
+	dynamicBox.SetAsBox(size._width / 2, size._height / 2);
 
 	b2FixtureDef fixtureDef;	//设置物体的各种参数
 	fixtureDef.shape = &dynamicBox;

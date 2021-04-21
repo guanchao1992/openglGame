@@ -5,15 +5,15 @@ class Size
 public:
 
 	Size()
-		:m_width(.0f)
-		, m_height(.0f)
+		:_width(.0f)
+		, _height(.0f)
 	{
 	}
 
 	Size(float width, float height)
 	{
-		m_width = width;
-		m_height = height;
+		_width = width;
+		_height = height;
 	}
 
 	Size(const Size&size)
@@ -27,8 +27,8 @@ public:
 
 	inline void setSize(float width, float height)
 	{
-		m_width = width;
-		m_height = height;
+		_width = width;
+		_height = height;
 	}
 
 	inline void setSize(const Size&size)
@@ -38,52 +38,52 @@ public:
 
 	inline void setWidth(float width)
 	{
-		m_width = width;
+		_width = width;
 	}
 
 	inline void setHeight(float height)
 	{
-		m_height = height;
+		_height = height;
 	}
 
 	inline float getWidth() const
 	{
-		return m_width;
+		return _width;
 	}
 
 	inline float getHeight() const
 	{
-		return m_height;
+		return _height;
 	}
 
 	inline Size operator-() const
 	{
-		return Size(-this->m_width, -this->m_height);
+		return Size(-this->_width, -this->_height);
 	}
 
 	inline Size& operator=(const Size& size)
 	{
-		this->m_width = size.m_width;
-		this->m_height = size.m_height;
+		this->_width = size._width;
+		this->_height = size._height;
 		return *this;
 	}
 
 	inline Size operator+(const Size& size) const
 	{
-		return Size(this->m_width + size.m_width, this->m_height + size.m_height);
+		return Size(this->_width + size._width, this->_height + size._height);
 	}
 
 	inline Size operator-(const Size& size) const
 	{
-		return Size(this->m_width - size.m_width, this->m_height - size.m_height);
+		return Size(this->_width - size._width, this->_height - size._height);
 	}
 
 	inline bool operator==(const Size& size) const
 	{
-		return (this->m_width == size.m_width && this->m_height == size.m_height);
+		return (this->_width == size._width && this->_height == size._height);
 	}
 public:
-	float m_width;
-	float m_height;
+	float _width;
+	float _height;
 };
 

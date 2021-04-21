@@ -15,6 +15,7 @@ public:
 	bool onMouseMoveEvent(const MouseMoveEvent&et);
 
 	void setMouseKeyFunc(std::function<void(MouseComponent&, const MouseKeyEvent&)> func);
+	void setMouseClickFunc(std::function<void(MouseComponent&, const MouseKeyEvent&)> func);
 	void setMouseMoveFunc(std::function<void(MouseComponent&, const MouseMoveEvent&)> func);
 	void setMouseMoveInFunc(std::function<void(MouseComponent&, const MouseMoveEvent&)> func);
 	void setMouseMoveOutFunc(std::function<void(MouseComponent&, const MouseMoveEvent&)> func);
@@ -25,6 +26,7 @@ public:
 	inline void setThrough(bool through) {
 		_clickThrough = through;
 	}
+	inline bool isThisDown() { return _isThisDown; }
 public:
 	virtual ComponentType getType() { return ComponentType::COMPONENT_MOUSE_KEY; }
 	virtual void doBegin();
@@ -32,6 +34,7 @@ public:
 private:
 	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
 	std::function <void(MouseComponent&, const MouseKeyEvent&)> _funcMouseKey = nullptr;
+	std::function <void(MouseComponent&, const MouseKeyEvent&)> _funcMouseClick = nullptr;
 	std::function <void(MouseComponent&, const MouseMoveEvent&)> _funcMouseMove = nullptr;
 	std::function<void(MouseComponent&, const MouseMoveEvent&)> _funcMouseMoveIn = nullptr;
 	std::function<void(MouseComponent&, const MouseMoveEvent&)> _funcMouseMoveOut = nullptr;
@@ -39,4 +42,6 @@ private:
 	bool _doMove = false;
 	bool _isInArea = false;
 	bool _clickThrough = false;		//´©Í¸
+
+	bool _isThisDown = false;
 };

@@ -14,6 +14,13 @@ void MouseController::init()
 				return;
 			}
 		}
+		if (!et._isDown)
+		{
+			for (auto it : *_mouseComs)
+			{
+				it->_isThisDown = false;
+			}
+		}
 	});
 	_listener->listen([&](const MouseMoveEvent& et) {
 		sortAllComs();

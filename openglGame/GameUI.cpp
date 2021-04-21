@@ -12,6 +12,7 @@
 #include "2d/Node.h"
 #include "component/OutlineBoxComponent.h"
 #include "component/AreaComponent.h"
+#include "2d/Button.h"
 
 
 void GameUI::init()
@@ -179,27 +180,12 @@ void GameUI::initBk()
 	}
 	for (int i = 0; i < 10; i++)
 	{
-		auto fd = Node::create();
-		fd->setPosition(30 * i, 10 * i);
-		_center->addChild(fd);
-		fd->setTag(i);
-		fd->addComponent<AreaComponent>()->setSize(Size(100, 100));
-		fd->addComponent<OutlineBoxComponent>()->setFill(true);
-		auto com = fd->addComponent<MouseComponent>();
-		com->setMouseKeyFunc([&,fd](MouseComponent&com, const MouseKeyEvent&et) {
-			if (et._isDown)
-			{
-				printf("Êó±êµã»÷:%d\n", fd->getTag());
-			}
-		});
-		com->setMouseMoveInFunc([&, fd](MouseComponent&com, const MouseMoveEvent&et) {
-			fd->getComponent<OutlineBoxComponent>()->setColor(Vector4(0, 1, 0, 0.8));
-			fd->setScale(1.1);
-		});
-		com->setMouseMoveOutFunc([&, fd](MouseComponent&com, const MouseMoveEvent&et) {
-			fd->getComponent<OutlineBoxComponent>()->setColor(Vector4(1, 0, 0, 0.8));
-			fd->setScale(1.0);
-		});
+		auto btn = Button::create("BUTTON", ".\\res\\btn_normal.png", ".\\res\\btn_select.png");
+		btn->setPosition(30 * i, 10 * i);
+		_center->addChild(btn);
+		btn->setTag(i);
+		//btn->addComponent<AreaComponent>()->setSize(Size(100, 100));
+		//btn->addComponent<OutlineBoxComponent>()->setFill(true);
 	}
 }
 

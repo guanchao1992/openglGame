@@ -22,16 +22,8 @@ class MouseComponent;
 
 //Node的子类需要在类内部使用宏StatementCreateNode，创建相关的static create函数
 #define StatementCreate(ClassType); public: static shared_ptr<ClassType> create() \
-									{	shared_ptr<ClassType> node = make_shared<ClassType>();\
-										node->record(node); node->init(); return node; }
+									{	shared_ptr<ClassType> node = make_shared<ClassType>();node->init(); return node; }
 
-#define StatementCreateN1(ClassType,T1,N1); public: static shared_ptr<ClassType> create(T1 N1) \
-									{	shared_ptr<ClassType> node = make_shared<ClassType>();\
-										node->record(node); node->init(N1); return node; }
-
-#define StatementCreateN2(ClassType,T1,N1,T2,N2); public: static shared_ptr<ClassType> create(T1 N1,T2 N2) \
-									{	shared_ptr<ClassType> node = make_shared<ClassType>();\
-										node->record(node); node->init(N1,N2); return node; }
 
 StatementNode(Node)
 class Node : public Object
@@ -40,7 +32,6 @@ class Node : public Object
 protected:
 public:
 	~Node();
-	void record(SPNode selfNode); //记录智能指针。该记录会在removeFromParent中删除。
 public:
 	virtual void init() {};
 	virtual void reshape();

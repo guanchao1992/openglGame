@@ -13,7 +13,6 @@ DrawBoxNode:: ~DrawBoxNode()
 
 void DrawBoxNode::init()
 {
-//	_shader = GameApp::getInstance()->getShader("filldraw");
 	auto com = addComponent<DrawRanderComponent>();
 	com->addVertex(Vector2(0, 0));
 	com->addVertex(Vector2(40, 0));

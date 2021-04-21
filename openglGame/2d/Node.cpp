@@ -12,11 +12,6 @@ Node::~Node()
 	killAllTimer();
 }
 
-void Node::record(SPNode selfNode)
-{
-	//_this = selfNode;
-}
-
 void Node::reshape()
 {
 	for (auto it = _childs->begin(); it != _childs->end(); it++)

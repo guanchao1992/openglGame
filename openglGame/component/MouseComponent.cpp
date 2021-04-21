@@ -16,6 +16,21 @@ bool MouseComponent::onMouseKeyEvent(const MouseKeyEvent&et)
 		auto pos = GameApp::getInstance()->convertViewToNode(node, Vector2(et._x, et._y));
 		if (node->getComponent<AreaComponent>()->isPosInArea(pos))
 		{
+			if (et._isDown)
+			{
+				_isThisDown = true;
+			}
+			else
+			{
+				if (_isThisDown)
+				{
+					_isThisDown = false;
+					if (_funcMouseClick)
+					{
+						_funcMouseClick(*this, et);
+					}
+				}
+			}
 			_funcMouseKey(*this, et);
 			if (!_clickThrough)
 			{
@@ -57,6 +72,11 @@ bool MouseComponent::onMouseMoveEvent(const MouseMoveEvent&et)
 void MouseComponent::setMouseKeyFunc(std::function<void(MouseComponent&, const MouseKeyEvent&)> func)
 {
 	_funcMouseKey = func;
+}
+
+void MouseComponent::setMouseClickFunc(std::function<void(MouseComponent&, const MouseKeyEvent&)> func)
+{
+	_funcMouseClick = func;
 }
 
 void MouseComponent::setMouseMoveFunc(std::function<void(MouseComponent&, const MouseMoveEvent&)> func)

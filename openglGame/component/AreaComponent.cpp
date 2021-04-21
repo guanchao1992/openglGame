@@ -25,15 +25,25 @@ void AreaComponent::setSize(const Size&size)
 	}
 }
 
-const Size& AreaComponent::getSize()
+void AreaComponent::setAnchor(const Vector2&anchor)
 {
-	return _contentSize;
+	_anchor = anchor;
+	auto randerCom = dynamic_pointer_cast<RanderComponent>(getComponent(COMPONENT_RANDER));
+	if (randerCom)
+	{
+		randerCom->reDraw();
+	}
+	auto outlineCom = dynamic_pointer_cast<RanderComponent>(getComponent(COMPONENT_OUTLINE));
+	if (outlineCom)
+	{
+		outlineCom->reDraw();
+	}
 }
-
 
 bool AreaComponent::isPosInArea(const Vector2& pos)
 {
-	if (pos._x<0 || pos._x>_contentSize._width || pos._y<0 || pos._y>_contentSize._height)
+	Vector2 temp_pos(pos._x + _anchor._x * _contentSize._width, pos._y + _anchor._y * _contentSize._height);
+	if (temp_pos._x<0 || temp_pos._x>_contentSize._width || temp_pos._y<0 || temp_pos._y>_contentSize._height)
 	{
 		return false;
 	}

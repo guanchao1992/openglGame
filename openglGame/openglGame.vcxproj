@@ -168,6 +168,7 @@
     <ClCompile Include="..\dexode\eventbus\perk\PerkEventBus.cpp" />
     <ClCompile Include="..\dexode\eventbus\perk\TagPerk.cpp" />
     <ClCompile Include="..\dexode\eventbus\perk\WaitPerk.cpp" />
+    <ClCompile Include="2d\Button.cpp" />
     <ClCompile Include="2d\DrawBoxNode.cpp" />
     <ClCompile Include="2d\Node.cpp" />
     <ClCompile Include="2d\Object.cpp" />
@@ -190,7 +191,6 @@
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameStart.cpp" />
     <ClCompile Include="GameUI.cpp" />
-    <ClCompile Include="NodeTree.cpp" />
     <ClCompile Include="openglGame.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +208,7 @@
     <ClInclude Include="..\dexode\eventbus\permission\PostponeBus.hpp" />
     <ClInclude Include="..\dexode\eventbus\stream\EventStream.hpp" />
     <ClInclude Include="..\dexode\eventbus\stream\ProtectedEventStream.hpp" />
+    <ClInclude Include="2d\Button.h" />
     <ClInclude Include="2d\DrawBoxNode.h" />
     <ClInclude Include="2d\Node.h" />
     <ClInclude Include="2d\Object.hpp" />
@@ -238,7 +239,6 @@
     <ClInclude Include="GameEvent.h" />
     <ClInclude Include="GameStart.h" />
     <ClInclude Include="GameUI.h" />
-    <ClInclude Include="NodeTree.h" />
     <ClInclude Include="ShaderFiles.h" />
     <ClInclude Include="tables\ItemTable.h" />
   </ItemGroup>

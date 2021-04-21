@@ -1,6 +1,7 @@
 #include "DrawRanderComponent.h"
 #include "GameApp.h"
 #include <2d/VertexBuffers.hpp>
+#include "AreaComponent.h"
 
 
 void DrawRanderComponent::doBegin() 
@@ -68,6 +69,10 @@ void DrawRanderComponent::draw()
 
 	genBuffer();
 
+	auto areaCom = _object->getComponent<AreaComponent>();
+	auto size = areaCom->getSize();
+	auto anchor = areaCom->getAnchor();
+
 	auto pVectexs = getVectexBuffer<FDVertex>(_vertexs.size());
 	int i = 0;
 	for (auto it = _vertexs.begin(); it != _vertexs.end(); it++)
@@ -76,7 +81,7 @@ void DrawRanderComponent::draw()
 			1.0f,	0.0f,	0.0f,	0.0f,
 			0.0f,	1.0f,	0.0f,	0.0f,
 			0.0f,	0.0f,	1.0f,	0.0f,
-			it->_x,	it->_y,	0.0f,	1.0f };
+			it->_x - -anchor._x * size._width,it->_y - anchor._y * size._height, 0.0f, 1.0f };
 
 		pVectexs[i].vertexs[0] = mtx[12];
 		pVectexs[i].vertexs[1] = mtx[13];

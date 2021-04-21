@@ -96,15 +96,17 @@ void OutlineBoxComponent::draw()
 		return;
 	_redraw = false;
 
+	auto areaCom = _object->getComponent<AreaComponent>();
+	auto size = areaCom->getSize();
+	auto anchor = areaCom->getAnchor();
 
-	auto size = _object->getComponent<AreaComponent>()->getSize();
 	Vector2 vec[] = { {0,0},{size._width,0},{size._width,size._height},{0,size._height},{0,0} };
 	auto pVectexs = getVectexBuffer<FDVertex>(5);
 
 	for (int i = 0; i < 5; ++i)
 	{
-		pVectexs[i].vertexs[0] = vec[i]._x;
-		pVectexs[i].vertexs[1] = vec[i]._y;
+		pVectexs[i].vertexs[0] = vec[i]._x - anchor._x * size._width;
+		pVectexs[i].vertexs[1] = vec[i]._y - anchor._y * size._height;
 		pVectexs[i].vertexs[2] = 0.0f;
 		pVectexs[i].vertexs[3] = 1.0f;
 

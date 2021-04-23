@@ -15,7 +15,7 @@ public:
 	bool onMouseMoveEvent(const MouseMoveEvent&et);
 
 	void setMouseKeyFunc(std::function<void(MouseComponent&, const MouseKeyEvent&)> func);
-	void setMouseClickFunc(std::function<void(MouseComponent&, const MouseKeyEvent&)> func);
+	void setMouseClickFunc(std::function<void()> func);
 	void setMouseMoveFunc(std::function<void(MouseComponent&, const MouseMoveEvent&)> func);
 	void setMouseMoveInFunc(std::function<void(MouseComponent&, const MouseMoveEvent&)> func);
 	void setMouseMoveOutFunc(std::function<void(MouseComponent&, const MouseMoveEvent&)> func);
@@ -32,9 +32,9 @@ public:
 	virtual void doBegin();
 	virtual void doEnd(); 
 private:
-	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
+	//shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
 	std::function <void(MouseComponent&, const MouseKeyEvent&)> _funcMouseKey = nullptr;
-	std::function <void(MouseComponent&, const MouseKeyEvent&)> _funcMouseClick = nullptr;
+	std::function <void()> _funcMouseClick = nullptr;
 	std::function <void(MouseComponent&, const MouseMoveEvent&)> _funcMouseMove = nullptr;
 	std::function<void(MouseComponent&, const MouseMoveEvent&)> _funcMouseMoveIn = nullptr;
 	std::function<void(MouseComponent&, const MouseMoveEvent&)> _funcMouseMoveOut = nullptr;

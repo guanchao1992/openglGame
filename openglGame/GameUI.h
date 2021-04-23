@@ -14,6 +14,8 @@ public:
 	virtual void update(GLfloat time);
 	virtual void reshape();
 public:
+	void showStartUI();
+	void showGameUI();
 
 private:
 

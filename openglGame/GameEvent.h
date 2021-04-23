@@ -15,7 +15,7 @@ enum EventType : unsigned int
 
 struct Event 
 {
-	int _eventId = EventType::EVENT_NULL;
+	unsigned int _eventId = EventType::EVENT_NULL;
 };
 
 

@@ -5,16 +5,20 @@
 #include "GameEvent.h"
 #include "component/MouseComponent.h"
 
-shared_ptr<Button> Button::create(const char*title, const char*imgNormal, const char*imgSelect)
+Button::~Button()
+{
+
+}
+
+shared_ptr<Button> Button::create(const char*imgNormal, const char*imgSelect)
 {
 	shared_ptr<Button> node = make_shared<Button>();
-	node->init(title, imgNormal, imgSelect);
+	node->init(imgNormal, imgSelect);
 	return node;
 }
 
-void Button::init(const char*title, const char*imgNormal, const char*imgSelect)
+void Button::init(const char*imgNormal, const char*imgSelect)
 {
-	_title = title;
 	_imgNormal = imgNormal;
 	_imgSelect = imgSelect;
 
@@ -61,5 +65,39 @@ void Button::init(const char*title, const char*imgNormal, const char*imgSelect)
 
 void Button::setCallBack(std::function<void()>func)
 {
-	_funcCallBack = func;
+	getComponent<MouseComponent>()->setMouseClickFunc(func);
+}
+
+void Button::setContentSize(const Size&size)
+{
+	auto areaCom = getComponent<AreaComponent>();
+	areaCom->setSize(size);
+}
+
+void Button::setTitle(const string&str, const char*font, int fontSize)
+{
+	if (_title == nullptr)
+	{
+		_title = Text::create(str, font, fontSize);
+		addChild(_title);
+		_title->getComponent<AreaComponent>()->setAnchor(Vector2(0.5, 0.5));
+	}
+	else
+	{
+		_title->setString(str);
+	}
+}
+
+void Button::setTitle(const wstring&str, const char*font, int fontSize)
+{
+	if (_title == nullptr)
+	{
+		_title = Text::create(str, font, fontSize);
+		addChild(_title);
+		_title->getComponent<AreaComponent>()->setAnchor(Vector2(0.5, 0.5));
+	}
+	else
+	{
+		_title->setString(str);
+	}
 }

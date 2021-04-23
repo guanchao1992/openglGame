@@ -3,6 +3,11 @@
 #include <memory>
 #include "component/RanderComponent.h"
 
+Object::~Object()
+{
+	removeAllComponent();
+}
+
 shared_ptr<Component> Object::addComponent(shared_ptr<Component> com)
 {
 	auto name = typeid(*com.get()).name();
@@ -30,6 +35,16 @@ void Object::removeComponent(shared_ptr<Component> com)
 	com->setObject(nullptr);
 
 	_components_map->erase(typeid(com).name());
+}
+
+void Object::removeAllComponent()
+{
+	for (auto it = _components_map->begin(); it != _components_map->end(); it++)
+	{
+		it->second->doEnd();
+		it->second->setObject(nullptr);
+	}
+	_components_map->clear();
 }
 
 /*

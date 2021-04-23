@@ -39,9 +39,21 @@ void MouseController::init()
 	});
 }
 
-void MouseController::addMouseComponent(shared_ptr<MouseComponent> com)
+void MouseController::addMouseComponent(MouseComponent* com)
 {
 	_mouseComs->push_back(com);
+}
+
+void MouseController::removeMouseComponent(MouseComponent* com)
+{
+	for (auto it = _mouseComs->begin(); it != _mouseComs->end(); it++)
+	{
+		if (*it == com)
+		{
+			_mouseComs->erase(it);
+			break;
+		}
+	}
 }
 
 int compareOrder(Node*a, Node*b)
@@ -56,15 +68,18 @@ int compareOrder(Node*a, Node*b)
 		}
 		else
 		{
-			for (auto it : a->getParent()->getChilds())
+			if (a->getParent())
 			{
-				if (it.get() == a)
+				for (auto it : a->getParent()->getChilds())
 				{
-					return 1;
-				}
-				else if(it.get() == b)
-				{
-					return -1;
+					if (it.get() == a)
+					{
+						return 1;
+					}
+					else if (it.get() == b)
+					{
+						return -1;
+					}
 				}
 			}
 		}
@@ -88,7 +103,7 @@ void MouseController::sortAllComs()
 	auto app = GameApp::getInstance();
 	//_mouseKeyComs
 
-	sort(_mouseComs->begin(), _mouseComs->end(), [&](shared_ptr<MouseComponent> a, shared_ptr<MouseComponent> b) {
+	sort(_mouseComs->begin(), _mouseComs->end(), [&](MouseComponent* a, MouseComponent* b) {
 		Node *nodeA = (Node*)a->getObject();
 		Node *nodeB = (Node*)b->getObject();
 		if (!nodeA || !nodeB)

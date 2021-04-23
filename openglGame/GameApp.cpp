@@ -38,7 +38,6 @@ void GameApp::init()
 	_start = GameStart::create();
 	_ui = GameUI::create();
 
-
 	//画格子
 	auto fd = Node::create();
 	auto drawCom = fd->addComponent<DrawRanderComponent>();
@@ -67,6 +66,7 @@ void GameApp::init()
 		}
 	}
 
+	/*
 	char path[256];
 	int index = 1;
 	//画格子
@@ -86,7 +86,8 @@ void GameApp::init()
 		}
 	}
 
-	_events->postpone(Event{ EventType::EVENT_GAME_RESTART });
+	*/
+	postEvent(EVENT_GAME_RESTART);
 }
 
 int GameApp::initShader()
@@ -305,3 +306,7 @@ Vector2 GameApp::convertViewToNode(Node*node, const Vector2&pos)
 	return Vector2(transform[12], transform[13]);
 }
 
+void GameApp::postEvent(EventType type)
+{
+	_events->postpone(Event{ type });
+}

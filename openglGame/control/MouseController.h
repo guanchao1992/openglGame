@@ -10,10 +10,11 @@ class MouseController : public ControllerBaseT<MouseController>
 {
 public:
 	void init();
-	void addMouseComponent(shared_ptr<MouseComponent> com);
+	void addMouseComponent(MouseComponent* com);
+	void removeMouseComponent(MouseComponent* com);
 	void sortAllComs();
 private:
-	shared_ptr<vector<shared_ptr<MouseComponent>>> _mouseComs = make_shared<vector<shared_ptr<MouseComponent>>>();
+	shared_ptr<vector<MouseComponent*>> _mouseComs = make_shared<vector<MouseComponent*>>();
 
 	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
 };

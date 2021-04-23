@@ -172,11 +172,13 @@
     <ClCompile Include="2d\DrawBoxNode.cpp" />
     <ClCompile Include="2d\Node.cpp" />
     <ClCompile Include="2d\Object.cpp" />
+    <ClCompile Include="2d\Text.cpp" />
     <ClCompile Include="base\ControllerBase.cpp" />
     <ClCompile Include="base\Shader.cpp" />
     <ClCompile Include="component\AreaComponent.cpp" />
     <ClCompile Include="component\Component.cpp" />
     <ClCompile Include="component\DrawRanderComponent.cpp" />
+    <ClCompile Include="component\EventComponent.cpp" />
     <ClCompile Include="component\FontRanderComponent.cpp" />
     <ClCompile Include="component\OutlineBoxComponent.cpp" />
     <ClCompile Include="component\RanderComponent.cpp" />
@@ -212,6 +214,7 @@
     <ClInclude Include="2d\DrawBoxNode.h" />
     <ClInclude Include="2d\Node.h" />
     <ClInclude Include="2d\Object.hpp" />
+    <ClInclude Include="2d\Text.h" />
     <ClInclude Include="2d\VertexBuffers.hpp" />
     <ClInclude Include="base\ControllerBase.hpp" />
     <ClInclude Include="base\Shader.h" />
@@ -224,6 +227,7 @@
     <ClInclude Include="component\Component.hpp" />
     <ClInclude Include="component\ComponentUtils.h" />
     <ClInclude Include="component\DrawRanderComponent.h" />
+    <ClInclude Include="component\EventComponent.h" />
     <ClInclude Include="component\FontRanderComponent.h" />
     <ClInclude Include="component\OutlineBoxComponent.h" />
     <ClInclude Include="component\RanderComponent.h" />

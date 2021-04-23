@@ -62,6 +62,8 @@ public:
 	GLfloat getProjectHeight() { return _viewHeight; }
 
 	int getNodeCount();
+
+	void postEvent(EventType);	//只允许发普通的Event消息
 protected:
 	shared_ptr<map<string, SPShader>> _shaders = make_shared<map<string, SPShader>>();
 

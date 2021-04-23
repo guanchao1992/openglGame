@@ -10,6 +10,7 @@ class Font;
 
 class FontRanderComponent : public RanderComponent
 {
+
 public:
 	static string getComponentName() { return "FontRanderComponent"; }
 
@@ -26,8 +27,10 @@ public:
 	void setText(const std::wstring&wstr);
 	void setText(const wchar_t*str);
 	void setFontSize(int fontSize);
-public:
 	void setFont(const string& fontFile);
+	void setMaxWidth(unsigned int maxWidth);
+
+	void layout();
 
 private:
 	int _vertexLocation;
@@ -41,5 +44,6 @@ private:
 
 	shared_ptr<Font> _font;
 	wstring _text;
+	unsigned int _maxWidth = -1;
 };
 

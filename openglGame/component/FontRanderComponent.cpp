@@ -3,6 +3,7 @@
 #include <2d/VertexBuffers.hpp>
 #include <control/FontController.h>
 #include <base/Tools.h>
+#include "AreaComponent.h"
 
 void FontRanderComponent::setFont(const string& fontFile)
 {
@@ -77,18 +78,21 @@ void FontRanderComponent::draw()
 
 	genBuffer();
 
+	auto areaCom = _object->getComponent<AreaComponent>();
+	auto size = areaCom->getSize();
+	auto anchor = areaCom->getAnchor();
+
 	auto pVectexs = getVectexBuffer<TNVertex>(_vertexs.size());
 	int i = 0;
 	static Vector2 texCoords[] = { {0,0},{0,1},{1,1},{1,0} };
 	for (auto it = _vertexs.begin(); it != _vertexs.end(); it++)
 	{
-		pVectexs[i].vertexs[0] = it->_x;
-		pVectexs[i].vertexs[1] = it->_y;
+		pVectexs[i].vertexs[0] = it->_x - anchor._x * size._width;
+		pVectexs[i].vertexs[1] = it->_y - anchor._y * size._height + size._height;
 		pVectexs[i].vertexs[2] = 0.0f;
 		pVectexs[i].vertexs[3] = 1.0f;
 
 		const auto &texCoord = texCoords[i % 4];
-
 		pVectexs[i].texCoord[0] = texCoord._x;
 		pVectexs[i].texCoord[1] = texCoord._y;
 		i = i + 1;
@@ -126,28 +130,56 @@ void FontRanderComponent::setText(const std::wstring&wstr)
 	setText(wstr.c_str());
 }
 
-void FontRanderComponent::setText(const wchar_t*str)
-{
-	_text = str;
-	clearAllVertex();
-	size_t nLen = wcslen(str);
-	float str_w = 0;
-	for (int i = 0; i < nLen; ++i)
-	{
-		auto char_texture = _font->getTextChar(str[i]);
-
-		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x, char_texture->_delta_y));
-		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x, char_texture->_height + char_texture->_delta_y));
-		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x + char_texture->_width, char_texture->_height + char_texture->_delta_y));
-		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x + char_texture->_width, char_texture->_delta_y));
-		_textureIds.push_back(char_texture->_texID);
-
-		str_w += char_texture->_adv_x;
-	}
-}
-
 void FontRanderComponent::setFontSize(int fontSize)
 {
 	_font->_fontSize = fontSize;
 	setText(_text.c_str());
+}
+
+void FontRanderComponent::setText(const wchar_t*str)
+{
+	_text = str;
+	layout();
+}
+
+void FontRanderComponent::setMaxWidth(unsigned int maxWidth)
+{
+	_maxWidth = maxWidth;
+	layout();
+}
+
+void FontRanderComponent::layout()
+{
+	clearAllVertex();
+	size_t nLen = wcslen(_text.c_str());
+	unsigned int str_w = 0;
+	float size_w = 0;
+	int str_h = _font->_fontSize;
+	int off_y = _font->_fontSize*0.2;
+	for (int i = 0; i < nLen; ++i)
+	{
+		auto char_texture = _font->getTextChar(_text.c_str()[i]);
+
+		if (str_w + char_texture->_adv_x > _maxWidth)
+		{
+			str_w = 0;
+			str_h += _font->_fontSize;
+			size_w = _maxWidth;
+		}
+
+		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x, -str_h + off_y + char_texture->_delta_y));
+		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x, -str_h + off_y + char_texture->_height + char_texture->_delta_y));
+		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x + char_texture->_width, -str_h + off_y + char_texture->_height + char_texture->_delta_y));
+		_vertexs.push_back(Vector2(str_w + char_texture->_delta_x + char_texture->_width, -str_h + off_y + char_texture->_delta_y));
+		_textureIds.push_back(char_texture->_texID);
+
+		str_w += char_texture->_adv_x;
+	}
+	if (size_w < str_w)
+	{
+		size_w = str_w;
+	}
+
+	auto areaCom = _object->getComponent<AreaComponent>();
+	areaCom->setSize(Size(size_w, str_h));
 }

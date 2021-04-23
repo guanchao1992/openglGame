@@ -12,6 +12,8 @@ class RanderComponent;
 class Object
 {
 public:
+	~Object();
+public:
 	template <class T>
 	shared_ptr<T> addComponent() {
 		return dynamic_pointer_cast<T>(addComponent(make_shared<T>()));
@@ -21,7 +23,7 @@ public:
 	shared_ptr<Component> getComponent(ComponentType type);
 
 	template <class T>
-	shared_ptr<T> getComponent() {
+	T* getComponent() {
 		auto name = typeid(T).name();
 		//printf("getComponent:%s\n", name);
 		auto it = _components_map->find(name);
@@ -29,9 +31,10 @@ public:
 		{
 			return nullptr;
 		}
-		return dynamic_pointer_cast<T>(it->second);
+		return (T*)(it->second.get());
 	}
 
+	void removeAllComponent();
 private:
 	shared_ptr<Component> addComponent(shared_ptr<Component> com);
 private:

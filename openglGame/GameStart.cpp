@@ -78,10 +78,12 @@ void GameStart::initListen()
 		case GLFW_KEY_SPACE:
 			onRotate(et._isDown);
 			break;
+			/*
 		case 'r': case 'R':
 			if (et._isDown)
 				restartBlock();
 			break;
+			*/
 		default:
 			break;
 		}

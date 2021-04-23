@@ -122,6 +122,12 @@
     <ClCompile Include="2d\Button.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="2d\Text.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\EventComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -263,6 +269,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="2d\Button.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\Text.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\EventComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

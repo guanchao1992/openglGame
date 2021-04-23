@@ -27,10 +27,10 @@ wstring s2ws(const string& s)
 	setlocale(LC_ALL, "zh_CN.UTF-8");
 	const char* source = s.c_str();
 	size_t charNum = sizeof(char)*s.size() + 1;
-	//cout << "s.size():" << s.size() << endl;   //10 “123ABC你好”共10个字节
+	cout << "s.size():" << s.size() << endl;   //10 “123ABC你好”共10个字节
 	wchar_t* dest = new wchar_t[charNum];
 	auto error = mbstowcs_s(&convertedChars, dest, charNum, source, _TRUNCATE);
-	//cout << "s2ws_convertedChars:" << convertedChars << endl; //9 转换为9个字符 包括结束符
+	cout << "s2ws_convertedChars:" << convertedChars << endl; //9 转换为9个字符 包括结束符
 	wstring result = dest;
 	delete[] dest;
 	setlocale(LC_ALL, curLocale.c_str());

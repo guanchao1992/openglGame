@@ -27,7 +27,7 @@ bool MouseComponent::onMouseKeyEvent(const MouseKeyEvent&et)
 					_isThisDown = false;
 					if (_funcMouseClick)
 					{
-						_funcMouseClick(*this, et);
+						_funcMouseClick();
 					}
 				}
 			}
@@ -74,7 +74,7 @@ void MouseComponent::setMouseKeyFunc(std::function<void(MouseComponent&, const M
 	_funcMouseKey = func;
 }
 
-void MouseComponent::setMouseClickFunc(std::function<void(MouseComponent&, const MouseKeyEvent&)> func)
+void MouseComponent::setMouseClickFunc(std::function<void()> func)
 {
 	_funcMouseClick = func;
 }
@@ -128,7 +128,7 @@ void MouseComponent::doBegin()
 	if (node)
 	{
 		node->setMouseKeyComponent(this);
-		MouseController::getInstance()->addMouseComponent(node->getComponent<MouseComponent>());
+		MouseController::getInstance()->addMouseComponent(this);
 	}
 }
 
@@ -138,8 +138,8 @@ void MouseComponent::doEnd()
 	Node* node = (Node*)(_object);
 	if (node)
 	{
+		MouseController::getInstance()->removeMouseComponent(this);
 		node->setMouseKeyComponent(nullptr);
 	}
-	_listener->unlistenAll();
 }
 

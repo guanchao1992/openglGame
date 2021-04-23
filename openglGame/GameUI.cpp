@@ -13,6 +13,7 @@
 #include "component/OutlineBoxComponent.h"
 #include "component/AreaComponent.h"
 #include "2d/Button.h"
+#include "component/EventComponent.h"
 
 
 void GameUI::init()
@@ -31,75 +32,43 @@ void GameUI::init()
 	addChild(_rightTop);
 	addChild(_center);
 
-	_listener->listen([&](const KeyEvent& et) {
-		if (et._isDown)
+
+	auto eventCom = addComponent<EventComponent>();
+	eventCom->addEvent(EVENT_GAME_RESTART, [&](Object*obj, const Event&event) {
+		auto childs = getChilds();
+		for (auto child : childs)
 		{
-			static int angle = 0;
-			switch (et._key)
+			child->removeAllChild();
+		}
+		initBk();
+		initDebug();
+		showStartUI();
+	});
+	eventCom->addEvent(EVENT_KEY, [&](Object*obj, const Event&event) {
+		const KeyEvent& ke = (KeyEvent&)event;
+		if (ke._isDown)
+		{
+			switch (ke._key)
 			{
-			case GLFW_KEY_SPACE:
+			case 'r':
+			case 'R':
+				GameApp::getInstance()->postEvent(EVENT_GAME_RESTART);
+				break;
+			case 'q':
+			case 'Q':
 			{
-				angle += 10;
-				_center->setAngle(angle);
+				auto childs = getChilds();
+				for (auto child : childs)
+				{
+					child->removeAllChild();
+				}
+			}
+			break;
+			default:
 				break;
 			}
-			case 'v':
-			case 'V':
-			{
-				break;
-			}
-			}
 		}
 	});
-	_listener->listen([&](const MouseMoveEvent& et) {
-		if (et._buttons & 1)
-		{
-			//et._x
-		}
-	});
-	/*
-	auto com1 = _leftBottom->addComponent<MouseComponent>();
-	com1->setMouseKeyFunc([&](MouseComponent&com, const MouseKeyEvent&et) {
-		if (et._isDown)
-		{
-		}
-	});
-
-	auto com2 = _rightBottom->addComponent<MouseComponent>();
-	com2->setMouseKeyFunc([&](MouseComponent&com, const MouseKeyEvent&et) {
-		if (et._isDown)
-		{
-		}
-	});
-	*/
-
-
-	/*
-	auto fontNode = FontDrawNode::create(DEFAULTE_FONT_FILE);
-	fontNode->setFontSize(30);
-	addChild(fontNode);
-	fontNode->setPosition(200, 100);
-	fontNode->setScale(1, 1);
-	fontNode->setTag(1);
-	auto item1 = ItemTableDatas::getData(10001);
-	fontNode->setText(item1->_name);
-	*/
-
-	/*
-	string curLocale = setlocale(LC_ALL, NULL);   //curLocale="C"
-	setlocale(LC_ALL, "zh_CN.UTF-8");
-	//string title = item1->_test_json.at("title");
-	//printf(title.c_str());
-	setlocale(LC_ALL, curLocale.c_str());
-	*/
-
-	_debug = Node::create();
-	_leftBottom->addChild(_debug, 1000);
-
-	//auto touchCom = _debug->addComponent<MouseComponent>();
-
-	initBk();
-	initDebug();
 }
 
 void GameUI::initBk()
@@ -178,47 +147,20 @@ void GameUI::initBk()
 		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
 		_center->addChild(fd);
 	}
-	for (int i = 0; i < 10; i++)
-	{
-		auto btn = Button::create("BUTTON", ".\\res\\btn_normal.png", ".\\res\\btn_select.png");
-		btn->setPosition(30 * i, 10 * i);
-		_center->addChild(btn);
-		btn->setTag(i);
-		//btn->addComponent<AreaComponent>()->setSize(Size(100, 100));
-		//btn->addComponent<OutlineBoxComponent>()->setFill(true);
-	}
 }
 
 void GameUI::initDebug()
 {
-	{
-		auto text1 = Node::create();
-		auto fontCom = text1->addComponent<FontRanderComponent>();
-		fontCom->setFont(DEFAULTE_FONT_FILE);
-		fontCom->setFontSize(30);
-		fontCom->setText(L"这里是debug信息");
+	_debug = Node::create();
+	_leftBottom->addChild(_debug, 1000);
 
-		_debug->addChild(text1);
-
-		text1->setPosition(0, 0);
-		text1->setScale(1,1);
-		text1->setTag(1);
-		text1->setColor(Vector4(1, 1, 1, 0.6));
-	}
-	{
-		auto text1 = Node::create();
-		auto fontCom = text1->addComponent<FontRanderComponent>();
-		fontCom->setFont(DEFAULTE_FONT_FILE);
-		fontCom->setFontSize(30);
-		fontCom->setText(L"这里是debug信息");
-
-		_debug->addChild(text1);
-
-		text1->setPosition(0, 30);
-		text1->setScale(1, 1);
-		text1->setTag(1);
-		text1->setColor(Vector4(1, 1, 1, 0.6));
-	}
+	auto text1 = Text::create(L"这里是debug信息", DEFAULTE_FONT_FILE, 24);
+	text1->addComponent<OutlineBoxComponent>();
+	_debug->addChild(text1);
+	text1->setPosition(10, 10);
+	text1->setScale(1, 1);
+	text1->setTag(1);
+	text1->setColor(Vector4(1, 1, 1, 0.6));
 }
 
 void GameUI::reshape()
@@ -238,23 +180,72 @@ void GameUI::update(GLfloat time)
 	static float t_time = 0.f;
 	static int frame = 0;
 	static int timebase = 0;
-	//char s[256] = { 0 };
+	//static char s[256] = { 0 };
 	static wchar_t s[256] = { 0 };
 	frame++;
 	t_time = t_time + time;
 	if (t_time - timebase > 1) {
 		//sprintf_s(s, 256, "FPS:%4.2f", frame * 1.0 / (t_time - timebase));
 
-		swprintf(s, 256, L"FPS:%4.2f  node数量：%d", frame * 1.0 / (t_time - timebase), GameApp::getInstance()->getNodeCount());
+		swprintf_s(s, 256, L"FPS:%4.2f  node数量：%d", frame * 1.0 / (t_time - timebase), GameApp::getInstance()->getNodeCount());
+
 		timebase = t_time;
 		frame = 0;
 
 		//SPFontDrawNode txt = dynamic_pointer_cast<FontDrawNode>(_debug->getChildByTag(1));
 		auto txt_node = _debug->getChildByTag(1);
-		auto fontCom = txt_node->getComponent<FontRanderComponent>();
-		if (fontCom)
+		if (txt_node)
 		{
-			fontCom->setText(s);
+			auto fontCom = txt_node->getComponent<FontRanderComponent>();
+			if (fontCom)
+			{
+				fontCom->setText(s);
+			}
 		}
 	}
+}
+
+void GameUI::showStartUI()
+{
+	auto node_start_uis = Node::create();
+	_rightTop->addChild(node_start_uis);
+	{
+		auto btn_start = Button::create("./res/btn_normal.png", "./res/btn_select.png");
+		btn_start->setTitle(L"开始", DEFAULTE_FONT_FILE, 24);
+		node_start_uis->addChild(btn_start);
+		btn_start->setPosition(-200, -140);
+		btn_start->setCallBack([&]() {
+			printf("开始游戏");
+			//node_start_uis->removeFromParent();
+		});
+	}
+	{
+		auto btn_setting = Button::create("./res/btn_normal.png", "./res/btn_select.png");
+		btn_setting->setTitle(L"设置", DEFAULTE_FONT_FILE, 24);
+		node_start_uis->addChild(btn_setting);
+		btn_setting->setPosition(-200, -200);
+		btn_setting->setCallBack([]() {
+
+		});
+	}
+	{
+		auto btn_exit = Button::create("./res/btn_normal.png", "./res/btn_select.png");
+		btn_exit->setTitle(L"退出", DEFAULTE_FONT_FILE, 24);
+		node_start_uis->addChild(btn_exit);
+		btn_exit->setPosition(-200, -260);
+		btn_exit->setCallBack([]() {
+			exit(0);
+		});
+	}
+}
+
+void GameUI::showGameUI()
+{
+	auto game_ui_lt = Node::create();
+	_leftTop->addChild(game_ui_lt);
+	{
+		auto game_ui_lt = Node::create();
+		_leftTop->addChild(game_ui_lt);
+	}
+
 }

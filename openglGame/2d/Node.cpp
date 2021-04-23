@@ -9,6 +9,9 @@
 Node::~Node()
 {
 	_childs->clear();
+	_visitLeft->clear();
+	_visitRight->clear();
+	_parent = nullptr;
 	killAllTimer();
 }
 
@@ -88,6 +91,8 @@ void Node::addChild(SPNode node, int zOrder)
 void Node::removeAllChild()
 {
 	_childs->clear();
+	_visitLeft->clear();
+	_visitRight->clear();
 	_reorder = true;
 }
 

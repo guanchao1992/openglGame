@@ -25,7 +25,7 @@ void RanderComponent::doBegin()
 	auto areaCom = _object->getComponent<AreaComponent>();
 	if (!areaCom)
 	{
-		areaCom = _object->addComponent<AreaComponent>();
+		areaCom = _object->addComponent<AreaComponent>().get();
 	}
 
 	auto outlineCom = _object->getComponent<OutlineBoxComponent>();

@@ -68,6 +68,7 @@ void TextureRanderComponent::draw()
 
 	genBuffer();
 
+	auto node = (Node*)_object;
 	auto areaCom = _object->getComponent<AreaComponent>();
 	auto size = areaCom->getSize();
 	auto anchor = areaCom->getAnchor();
@@ -78,7 +79,7 @@ void TextureRanderComponent::draw()
 	{
 		pVectexs[i].vertexs[0] = (vec[i]._x - anchor._x) * size._width;
 		pVectexs[i].vertexs[1] = (vec[i]._y - anchor._y) * size._height;
-		pVectexs[i].vertexs[2] = 0.0f;
+		pVectexs[i].vertexs[2] = node->getPosition()._z;
 		pVectexs[i].vertexs[3] = 1.0f;
 
 		pVectexs[i].texCoord[0] = vec[i]._x;

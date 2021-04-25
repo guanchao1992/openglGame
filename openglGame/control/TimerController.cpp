@@ -12,16 +12,18 @@ void Timer::update(float time)
 	{
 		return;
 	}
+	_totalTime += time;
 	_accumulatedTime += time;
 	if (_accumulatedTime > _interval)
 	{
 		if (_function)
 		{
-			if (_function(_accumulatedTime))
+			if (_function(_totalTime - _lastTime))
 			{
 				_stop = true;
 			}
 		}
+		_lastTime = _totalTime;
 		_accumulatedTime = _accumulatedTime - _interval;
 		if (_num > 0 && ++_accumulatedNum >= _num)
 		{

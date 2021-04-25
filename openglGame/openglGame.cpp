@@ -91,6 +91,7 @@ GLUSvoid reshape(GLUSint width, GLUSint height)
 	app->reshape();
 
 	glViewport(0, 0, width, height);
+	//glOrtho(0.0, 1.5, 0.0, 1.5, -1000, 1000);
 }
 
 GLUSboolean update(GLUSfloat time)
@@ -103,8 +104,20 @@ GLUSboolean update(GLUSfloat time)
 	}
 	app->visit(biasMatrix, app->isReLoadView());
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 0.5);
+
+	/*
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(75, 1, 1, 4000000);
+	glOrtho();
+	//glMatrixMode(GL_MODELVIEW);
+	//glLoadIdentity();
+	gluLookAt(0, -2000000, 2000000, 0, 0, 0, 0, 0, 1);
+	*/
+
 	GameApp::getInstance()->rander();
 
 	return GLUS_TRUE;

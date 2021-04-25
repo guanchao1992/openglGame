@@ -8,6 +8,8 @@
 
 #include "tables/ItemTable.h"
 #include "component/DrawRanderComponent.h"
+#include "component/MouseComponent.h"
+#include "component/AreaComponent.h"
 
 
 #define WORLD_SCALE 10	//世界坐标系与物理坐标系比例
@@ -44,6 +46,21 @@ void GameStart::init()
 		return false;
 	});
 	*/
+
+	auto areaCom = addComponent<AreaComponent>();
+	areaCom->setSize(Size(10000, 10000));
+	areaCom->setAnchor(Vector2(0.5, 0.5));
+	auto mouseCom = addComponent<MouseComponent>();
+	mouseCom->setMouseKeyFunc([&](MouseComponent&mouseCon, const MouseKeyEvent&event) {
+	});
+	mouseCom->setMouseMoveFunc([&](MouseComponent&mouseCon, const MouseMoveEvent&event) {
+		if (event._buttons & 1)
+		{
+			//this->setAngleCoordinate(_angleX + (event._x - _oldDownPos._x)*0.001, _angleY + (event._y - _oldDownPos._y)*0.001, 0);
+			this->setAngleCoordinate(_angleX - (event._y - _oldDownPos._y)*0.1, _angleY + (event._x - _oldDownPos._x)*0.1, 0);
+		}
+		_oldDownPos = Vector2(event._x, event._y);
+	});
 }
 
 

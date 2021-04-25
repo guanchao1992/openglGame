@@ -32,7 +32,6 @@ void GameUI::init()
 	addChild(_rightTop);
 	addChild(_center);
 
-
 	auto eventCom = addComponent<EventComponent>();
 	eventCom->addEvent(EVENT_GAME_RESTART, [&](Object*obj, const Event&event) {
 		auto childs = getChilds();
@@ -74,59 +73,63 @@ void GameUI::init()
 void GameUI::initBk()
 {
 	{
-		auto fd1 = Node::create();
-		auto drawCom = fd1->addComponent<DrawRanderComponent>();
+		auto fd = Node::create();
+		auto drawCom = fd->addComponent<DrawRanderComponent>();
 		drawCom->addVertex(Vector2(0, 0));
 		drawCom->addVertex(Vector2(0, 100));
-		drawCom->addVertex(Vector2(3, 100));
-		drawCom->addVertex(Vector2(3, 3));
-		drawCom->addVertex(Vector2(100, 3));
+		drawCom->addVertex(Vector2(20, 100));
+		drawCom->addVertex(Vector2(20, 20));
+		drawCom->addVertex(Vector2(100, 20));
 		drawCom->addVertex(Vector2(100, 0));
-		fd1->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
-		fd1->setPosition(30, 30);
-		_leftBottom->addChild(fd1);
+		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
+		fd->setPosition(110, 110);
+		_leftBottom->addChild(fd);
+		fd->setTag(100);
 	}
 
 	{
-		auto fd2 = Node::create();
-		auto drawCom = fd2->addComponent<DrawRanderComponent>();
+		auto fd = Node::create();
+		auto drawCom = fd->addComponent<DrawRanderComponent>();
 		drawCom->addVertex(Vector2(0, 0));
 		drawCom->addVertex(Vector2(0, -100));
-		drawCom->addVertex(Vector2(3, -100));
-		drawCom->addVertex(Vector2(3, -3));
-		drawCom->addVertex(Vector2(100, -3));
+		drawCom->addVertex(Vector2(20, -100));
+		drawCom->addVertex(Vector2(20, -20));
+		drawCom->addVertex(Vector2(100, -20));
 		drawCom->addVertex(Vector2(100, 0));
-		fd2->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
-		fd2->setPosition(30, -30);
-		_leftTop->addChild(fd2);
+		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
+		fd->setPosition(110, -110);
+		_leftTop->addChild(fd);
+		fd->setTag(100);
 	}
 
 	{
-		auto fd3 = Node::create();
-		auto drawCom = fd3->addComponent<DrawRanderComponent>();
+		auto fd = Node::create();
+		auto drawCom = fd->addComponent<DrawRanderComponent>();
 		drawCom->addVertex(Vector2(0, 0));
 		drawCom->addVertex(Vector2(0, 100));
-		drawCom->addVertex(Vector2(-3, 100));
-		drawCom->addVertex(Vector2(-3, 3));
-		drawCom->addVertex(Vector2(-100, 3));
+		drawCom->addVertex(Vector2(-20, 100));
+		drawCom->addVertex(Vector2(-20, 20));
+		drawCom->addVertex(Vector2(-100, 20));
 		drawCom->addVertex(Vector2(-100, 0));
-		fd3->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
-		fd3->setPosition(-30, 30);
-		_rightBottom->addChild(fd3);
+		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
+		fd->setPosition(-110, 110);
+		_rightBottom->addChild(fd);
+		fd->setTag(100);
 	}
 
 	{
-	auto fd4 = Node::create();
-	auto drawCom = fd4->addComponent<DrawRanderComponent>();
-	drawCom->addVertex(Vector2(0, 0));
-	drawCom->addVertex(Vector2(0, -100));
-	drawCom->addVertex(Vector2(-3, -100));
-	drawCom->addVertex(Vector2(-3, -3));
-	drawCom->addVertex(Vector2(-100, -3));
-	drawCom->addVertex(Vector2(-100, 0));
-	fd4->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
-	fd4->setPosition(-30, -30);
-	_rightTop->addChild(fd4);
+		auto fd = Node::create();
+		auto drawCom = fd->addComponent<DrawRanderComponent>();
+		drawCom->addVertex(Vector2(0, 0));
+		drawCom->addVertex(Vector2(0, -100));
+		drawCom->addVertex(Vector2(-20, -100));
+		drawCom->addVertex(Vector2(-20, -20));
+		drawCom->addVertex(Vector2(-100, -20));
+		drawCom->addVertex(Vector2(-100, 0));
+		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
+		fd->setPosition(-110, -110);
+		_rightTop->addChild(fd);
+		fd->setTag(100);
 	}
 
 	{
@@ -146,7 +149,20 @@ void GameUI::initBk()
 		drawCom->addVertex(Vector2(1, 100));
 		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
 		_center->addChild(fd);
+		fd->setTag(100);
 	}
+
+
+	addTimer(0, -1, [&](float time) {
+		static float total_time = 0;
+		total_time = total_time + time;
+		_leftBottom->getChildByTag(100)->setAngleCoordinate(90 * total_time, 0, 0);
+		_leftTop->getChildByTag(100)->setAngleCoordinate(90 * total_time, 0, 0);
+		_rightBottom->getChildByTag(100)->setAngleCoordinate(90 * total_time, 0, 0);
+		_rightTop->getChildByTag(100)->setAngleCoordinate(90 * total_time, 0, 0);
+		_center->getChildByTag(100)->setAngleCoordinate(90 * total_time, 0, 0);
+		return false;
+	});
 }
 
 void GameUI::initDebug()
@@ -158,7 +174,7 @@ void GameUI::initDebug()
 	text1->addComponent<OutlineBoxComponent>();
 	_debug->addChild(text1);
 	text1->setPosition(10, 10);
-	text1->setScale(1, 1);
+	text1->setScale(1, 1, 1);
 	text1->setTag(1);
 	text1->setColor(Vector4(1, 1, 1, 0.6));
 }
@@ -213,17 +229,18 @@ void GameUI::showStartUI()
 		auto btn_start = Button::create("./res/btn_normal.png", "./res/btn_select.png");
 		btn_start->setTitle(L"开始", DEFAULTE_FONT_FILE, 24);
 		node_start_uis->addChild(btn_start);
-		btn_start->setPosition(-200, -140);
+		btn_start->setPosition(-130, -140);
 		btn_start->setCallBack([&]() {
 			printf("开始游戏");
 			//node_start_uis->removeFromParent();
 		});
+		btn_start->setAngleCoordinate(0, 1, 0);
 	}
 	{
 		auto btn_setting = Button::create("./res/btn_normal.png", "./res/btn_select.png");
 		btn_setting->setTitle(L"设置", DEFAULTE_FONT_FILE, 24);
 		node_start_uis->addChild(btn_setting);
-		btn_setting->setPosition(-200, -200);
+		btn_setting->setPosition(-130, -200);
 		btn_setting->setCallBack([]() {
 
 		});
@@ -232,7 +249,7 @@ void GameUI::showStartUI()
 		auto btn_exit = Button::create("./res/btn_normal.png", "./res/btn_select.png");
 		btn_exit->setTitle(L"退出", DEFAULTE_FONT_FILE, 24);
 		node_start_uis->addChild(btn_exit);
-		btn_exit->setPosition(-200, -260);
+		btn_exit->setPosition(-130, -260);
 		btn_exit->setCallBack([]() {
 			exit(0);
 		});

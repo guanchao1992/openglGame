@@ -84,6 +84,7 @@ protected:
 
 	shared_ptr<ControllerMaster> _controllerMaster;
 public:
+	SPNode	_appNode;
 	shared_ptr<GameStart> _start;
 	shared_ptr<GameUI> _ui;
 };

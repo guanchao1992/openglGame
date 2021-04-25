@@ -45,6 +45,8 @@ public:
 	SPNode getChildByTag(int tag);			//找到子节点中第一个匹配tag的项
 	void setPosition(const Vector2&pos);
 	void setPosition(float x, float y);
+	void setPosition(const Vector3&pos);
+	void setPosition(float x, float y, float z);
 	void setEulerAngle(float angleZ);
 	void setAngle(float angleZ);			//2d游戏默认的是绕Z轴旋转
 	void setAngleCoordinate(float angleX, float angleY, float angleZ);		//分别绕着坐标轴X轴，Y轴，Z轴各旋转一次。
@@ -52,7 +54,7 @@ public:
 
 	void setScaleX(float scale);
 	void setScaleY(float scale);
-	void setScale(float scaleX, float scaleY);
+	void setScale(float scaleX, float scaleY, float scaleZ);
 	void setScale(float scale);
 
 	void refreshTransformParent(); //更新 _transform
@@ -63,7 +65,7 @@ public:
 	void setColor(float r, float g, float b, float l);
 
 	const Vector4& getColor() { return _color; }
-	const Vector2& getPosition() { return _position; }
+	const Vector3& getPosition() { return _position; }
 	Node* getParent() { return _parent; }
 
 	void setZOrder(int localZOrder);
@@ -90,7 +92,7 @@ public:
 	void setMouseKeyComponent(MouseComponent* com);
 protected:
 
-	Vector2 _position = Vector2(0.f, 0.f);
+	Vector3 _position = Vector3(0.f, 0.f, 0.f);
 
 	//旋转顺序是ZYX
 	float _angleX = 0.0f;				//绕X轴旋转角度（临时计算数据）
@@ -103,6 +105,7 @@ protected:
 
 	float _scaleX = 1.0f;
 	float _scaleY = 1.0f;
+	float _scaleZ = 1.0f;
 
 	Vector4 _color = Vector4(1.f, 1.f, 1.f, 1.f);
 	Node* _parent = nullptr;

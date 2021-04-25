@@ -34,9 +34,11 @@ void GameApp::init()
 	});
 
 	this->initShader();
-
+	_appNode = Node::create();
 	_start = GameStart::create();
 	_ui = GameUI::create();
+	_appNode->addChild(_start, 0);
+	_appNode->addChild(_ui, 100);
 
 	//»­¸ñ×Ó
 	auto fd = Node::create();
@@ -164,12 +166,13 @@ void GameApp::reshape()
 	GLfloat viewMatrix[] = { 
 		2 / _viewWidth, 0.0f, 0.0f, 0.0f,
 		0.0f, 2 / _viewHeight, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.f, 0.0f,
-		-1, -1, 0.0f, 1.0f };
+		0.0f, 0.0f, 0.1 / _viewWidth, 0.2 / _viewWidth,
+		-1, -1, -0.5f, 1.0f };
 
 	glusMatrix4x4Copyf(_viewMatrix, viewMatrix, false);
 
 	glusMatrix4x4Multiplyf(_modelViewMatrix, _viewMatrix, _modelMatrix);
+	
 
 	for (auto it = _shaders->begin(); it != _shaders->end(); it++)
 	{

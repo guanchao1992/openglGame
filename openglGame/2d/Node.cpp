@@ -129,6 +129,19 @@ void Node::setPosition(float x, float y)
 	_revisit = true;
 }
 
+void Node::setPosition(const Vector3&pos)
+{
+	setPosition(pos._x, pos._y, pos._z);
+}
+
+void Node::setPosition(float x, float y, float z)
+{
+	_position._x = x;
+	_position._y = y;
+	_position._z = z;
+	_revisit = true;
+}
+
 const float PI = 3.141592653589793238f;
 
 void Node::setEulerAngle(float angleZ)
@@ -160,18 +173,19 @@ void Node::setRotateAxis(Vector3 vec, float angle)
 
 void Node::setScaleX(float scale)
 {
-	setScale(scale, _scaleY);
+	setScale(scale, _scaleY, _scaleZ);
 }
 
 void Node::setScaleY(float scale)
 {
-	setScale(_scaleX, scale);
+	setScale(_scaleX, scale, _scaleZ);
 }
 
-void Node::setScale(float scaleX, float scaleY)
+void Node::setScale(float scaleX, float scaleY, float scaleZ)
 {
 	_scaleX = scaleX;
 	_scaleY = scaleY;
+	_scaleZ = scaleZ;
 
 	_revisit = true;
 }
@@ -180,6 +194,7 @@ void Node::setScale(float scale)
 {
 	_scaleX = scale;
 	_scaleY = scale;
+	_scaleZ = scale;
 
 	_revisit = true;
 }
@@ -188,7 +203,7 @@ void Node::refreshTransformParent()
 {
 	glm::mat4 transformMat(1.0f);
 
-	transformMat = glm::translate(transformMat, _position._x, _position._y, 0.0f);
+	transformMat = glm::translate(transformMat, _position._x, _position._y, _position._z);
 
 	if (_angleZ != 0)
 		transformMat = glm::rotate(transformMat, _angleZ, 0.f, 0.f, 1.f);
@@ -199,8 +214,8 @@ void Node::refreshTransformParent()
 	if (_angleAxis != 0)
 		transformMat = glm::rotate(transformMat, _angleAxis, _rotateAxis._x, _rotateAxis._y, _rotateAxis._z);
 
-	if (_scaleX != 1.0f || _scaleY != 1.0f)
-		transformMat = glm::scale(transformMat, _scaleX, _scaleY, 1.0f);
+	if (_scaleX != 1.0f || _scaleY != 1.0f || _scaleZ != 1.0f)
+		transformMat = glm::scale(transformMat, _scaleX, _scaleY, _scaleZ);
 
 	for (int i = 0; i < 4; ++i)
 	{

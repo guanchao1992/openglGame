@@ -93,7 +93,7 @@ void Button::setTitle(const wstring&str, const char*font, int fontSize)
 	if (_title == nullptr)
 	{
 		_title = Text::create(str, font, fontSize);
-		addChild(_title);
+		addChild(_title, 10);
 		_title->getComponent<AreaComponent>()->setAnchor(Vector2(0.5, 0.5));
 	}
 	else

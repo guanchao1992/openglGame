@@ -11,7 +11,6 @@ public:
 	void init();
 	void initBk();
 	void initDebug();
-	virtual void update(GLfloat time);
 	virtual void reshape();
 public:
 	void showStartUI();

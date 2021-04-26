@@ -19,17 +19,36 @@ void GameStart::init()
 	initListen();
 	initWorld();
 
-	/*
-	auto fd = Block::create();
-	addChild(fd,200);
-	fd->setPosition(Vector2(100, 100));
-	_curblock = fd;
-	fd->setTag(1001);
-	*/
+	//»­¸ñ×Ó
+	{
+		auto fd = Node::create();
+		auto drawCom = fd->addComponent<DrawRanderComponent>();
+		fd->setPosition(0, 0);
+		addChild(fd, -1000);
+		for (int x = 0; x < 5; ++x)
+		{
+			for (int y = 0; y < 5; ++y)
+			{
+				if ((x + y) % 2 == 0)
+				{
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
+					drawCom->signDraw(GL_TRIANGLE_FAN);
+				}
+				else
+				{
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->signDraw(GL_TRIANGLE_FAN);
+				}
+			}
+		}
+	}
 
-	_filldraw = Node::create();
-	auto com = _filldraw->addComponent<DrawRanderComponent>();
-	
 	//TableController::getInstance()->reset();
 	/*
 	auto item1 = ItemTableDatas::getData(10001);
@@ -47,6 +66,8 @@ void GameStart::init()
 	});
 	*/
 
+	/*
+	*/
 	auto areaCom = addComponent<AreaComponent>();
 	areaCom->setSize(Size(10000, 10000));
 	areaCom->setAnchor(Vector2(0.5, 0.5));
@@ -58,6 +79,11 @@ void GameStart::init()
 		{
 			//this->setAngleCoordinate(_angleX + (event._x - _oldDownPos._x)*0.001, _angleY + (event._y - _oldDownPos._y)*0.001, 0);
 			this->setAngleCoordinate(_angleX - (event._y - _oldDownPos._y)*0.1, _angleY + (event._x - _oldDownPos._x)*0.1, 0);
+		}
+		else if (event._buttons & 2)
+		{
+			auto app = GameApp::getInstance();
+			this->setPosition(_position._x + (event._x - _oldDownPos._x) / app->getProScale(), _position._y + (event._y - _oldDownPos._y) / app->getProScale());
 		}
 		_oldDownPos = Vector2(event._x, event._y);
 	});
@@ -112,7 +138,8 @@ void GameStart::initListen()
 	_listener->listen([&](const MouseKeyEvent& et) {
 		if ((et.button & 4) && et._isDown)
 		{
-			onAddBox(Vector2(et._x / WORLD_SCALE, et._y / WORLD_SCALE), Size(4, 4), Vector4(0.5, 0.1, 0, 1));
+			auto pos = GameApp::getInstance()->convertViewToNode(this, Vector2(et._x, et._y));
+			onAddBox(Vector2(pos._x / WORLD_SCALE, pos._y / WORLD_SCALE), Size(4, 4), Vector4(0.5, 0.1, 0, 1));
 		}
 	});
 }
@@ -189,10 +216,6 @@ void GameStart::initWorld()
 void GameStart::restartBlock()
 {
 	EgameController::getInstance()->restartBlock();
-}
-
-void GameStart::update(GLfloat time)
-{
 }
 
 void GameStart::onUp(bool keyPress)

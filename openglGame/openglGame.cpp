@@ -16,15 +16,9 @@
 
 #include "ft2build.h"
 #include "freetype/freetype.h"
-
-#define VIEW_WIDTH 1000
-#define VIEW_HEIGHT 800
-
-const static GLfloat biasMatrix[] = {
-	1.0f, 0.0f, 0.0f, 0.0f,
-	0.0f, 1.0f, 0.0f, 0.0f,
-	0.0f, 0.0f, 1.0f, 0.0f,
-	0.0f, 0.0f, 0.0f, 1.0f };
+#include <nlohmann/json.hpp>
+#include <iostream> 
+#include <fstream> 
 
 FT_Library g_library;
 FT_Error error;
@@ -44,8 +38,7 @@ GLUSboolean init(GLUSvoid)
 	//glEnable(GL_CULL_FACE);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	app->visit(biasMatrix, false);
+	app->visit();
 
 	/*
 	auto error = FT_Init_FreeType(&g_library);					
@@ -87,11 +80,9 @@ static int redisplay_interval;
 GLUSvoid reshape(GLUSint width, GLUSint height)
 {
 	auto app = GameApp::getInstance();
-	app->setViewSize(width, height);
 	app->reshape();
-
+	app->setViewSize(width, height);
 	glViewport(0, 0, width, height);
-	//glOrtho(0.0, 1.5, 0.0, 1.5, -1000, 1000);
 }
 
 GLUSboolean update(GLUSfloat time)
@@ -102,7 +93,7 @@ GLUSboolean update(GLUSfloat time)
 	{
 		app->reshape();
 	}
-	app->visit(biasMatrix, app->isReLoadView());
+	app->visit();
 
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -132,7 +123,7 @@ GLUSvoid terminate(GLUSvoid)
 	GameApp::getInstance()->removeAllShader();
 }
 
-int main(int argc, char* argv[])
+int initWindow(GLUSint width, GLUSint height)
 {
 	EGLint eglConfigAttributes[] = {
 			EGL_RED_SIZE, 8,
@@ -151,15 +142,20 @@ int main(int argc, char* argv[])
 			EGL_CONTEXT_OPENGL_PROFILE_MASK, EGL_CONTEXT_OPENGL_CORE_PROFILE_BIT,
 			EGL_NONE
 	};
+	if (!glusWindowCreate("GLUS Example Window", width, height, GLUS_FALSE, GLUS_FALSE, eglConfigAttributes, eglContextAttributes, 0))
+	{
+		printf("Could not create window!\n");
+		return -1;
+	}
+	return 0;
+}
 
+int main(int argc, char* argv[])
+{
 	glusWindowSetInitFunc(init);
-
 	glusWindowSetReshapeFunc(reshape);
-
 	glusWindowSetUpdateFunc(update);
-
 	glusWindowSetTerminateFunc(terminate);
-
 	
 	glusWindowSetKeyFunc([](const GLUSboolean pressed, const GLUSint key) {
 		GameApp::getInstance()->getEventBus()->postpone(KeyEvent{ EVENT_KEY,key,(bool)pressed });
@@ -175,13 +171,28 @@ int main(int argc, char* argv[])
 		GameApp::getInstance()->getEventBus()->postpone(MouseWheelEvent{ EVENT_MOUSEWHEEL,(float)xPos,GameApp::getInstance()->getViewHeight() - yPos,ticks ,buttons });
 	});
 
-	if (!glusWindowCreate("GLUS Example Window", VIEW_WIDTH, VIEW_HEIGHT, GLUS_FALSE, GLUS_FALSE, eglConfigAttributes, eglContextAttributes, 0))
+	nlohmann::json setting_json;
+	std::ifstream iofile("./setting.json");
+	if (iofile)
 	{
-		printf("Could not create window!\n");
+		iofile >> setting_json;
+	}
+	else
+	{
+		setting_json["width"] = 1400;
+		setting_json["height"] = 900;
+		std::ofstream out_setting_json("./setting.json");
+		out_setting_json << setting_json << std::endl;
+	}
+	GameApp::getInstance()->setViewSize(setting_json["width"], setting_json["height"]);
+
+	if (initWindow(setting_json["width"], setting_json["height"]) == -1)
+	{
 		return -1;
 	}
 
 	glusWindowRun();
-
 	return 0;
 }
+
+

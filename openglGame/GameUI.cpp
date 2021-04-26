@@ -82,7 +82,7 @@ void GameUI::initBk()
 		drawCom->addVertex(Vector2(100, 20));
 		drawCom->addVertex(Vector2(100, 0));
 		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
-		fd->setPosition(110, 110);
+		fd->setPosition(10, 10);
 		_leftBottom->addChild(fd);
 		fd->setTag(100);
 	}
@@ -97,7 +97,7 @@ void GameUI::initBk()
 		drawCom->addVertex(Vector2(100, -20));
 		drawCom->addVertex(Vector2(100, 0));
 		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
-		fd->setPosition(110, -110);
+		fd->setPosition(10, -10);
 		_leftTop->addChild(fd);
 		fd->setTag(100);
 	}
@@ -112,7 +112,7 @@ void GameUI::initBk()
 		drawCom->addVertex(Vector2(-100, 20));
 		drawCom->addVertex(Vector2(-100, 0));
 		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
-		fd->setPosition(-110, 110);
+		fd->setPosition(-10, 10);
 		_rightBottom->addChild(fd);
 		fd->setTag(100);
 	}
@@ -127,7 +127,7 @@ void GameUI::initBk()
 		drawCom->addVertex(Vector2(-100, -20));
 		drawCom->addVertex(Vector2(-100, 0));
 		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
-		fd->setPosition(-110, -110);
+		fd->setPosition(-10, -10);
 		_rightTop->addChild(fd);
 		fd->setTag(100);
 	}
@@ -152,7 +152,7 @@ void GameUI::initBk()
 		fd->setTag(100);
 	}
 
-
+	/*
 	addTimer(0, -1, [&](float time) {
 		static float total_time = 0;
 		total_time = total_time + time;
@@ -163,6 +163,7 @@ void GameUI::initBk()
 		_center->getChildByTag(100)->setAngleCoordinate(90 * total_time, 0, 0);
 		return false;
 	});
+	*/
 }
 
 void GameUI::initDebug()
@@ -177,48 +178,50 @@ void GameUI::initDebug()
 	text1->setScale(1, 1, 1);
 	text1->setTag(1);
 	text1->setColor(Vector4(1, 1, 1, 0.6));
+
+	_debug->addTimer(0, -1, [&](float time) {
+		static float t_time = 0.f;
+		static int frame = 0;
+		static int timebase = 0;
+		//static char s[256] = { 0 };
+		static wchar_t s[256] = { 0 };
+		frame++;
+		t_time = t_time + time;
+		if (t_time - timebase > 1) {
+			//sprintf_s(s, 256, "FPS:%4.2f", frame * 1.0 / (t_time - timebase));
+
+			swprintf_s(s, 256, L"FPS:%4.2f  node数量：%d", frame * 1.0 / (t_time - timebase), GameApp::getInstance()->getNodeCount());
+
+			timebase = t_time;
+			frame = 0;
+
+			//SPFontDrawNode txt = dynamic_pointer_cast<FontDrawNode>(_debug->getChildByTag(1));
+			auto txt_node = _debug->getChildByTag(1);
+			if (txt_node)
+			{
+				auto fontCom = txt_node->getComponent<FontRanderComponent>();
+				if (fontCom)
+				{
+					fontCom->setText(s);
+				}
+			}
+		}
+		return false; 
+	});
 }
 
 void GameUI::reshape()
 {
-	auto w = GameApp::getInstance()->getViewWidth();
-	auto h = GameApp::getInstance()->getViewHeight();
+	__super::reshape();
+	
+	auto w = GameApp::getInstance()->getProjectWidth();
+	auto h = GameApp::getInstance()->getProjectHeight();
 
 	//_leftBottom->setPosition(0, 0);
 	_leftTop->setPosition(0, h);
 	_rightBottom->setPosition(w, 0);
 	_rightTop->setPosition(w, h);
 	_center->setPosition(w / 2, h / 2);
-}
-
-void GameUI::update(GLfloat time)
-{
-	static float t_time = 0.f;
-	static int frame = 0;
-	static int timebase = 0;
-	//static char s[256] = { 0 };
-	static wchar_t s[256] = { 0 };
-	frame++;
-	t_time = t_time + time;
-	if (t_time - timebase > 1) {
-		//sprintf_s(s, 256, "FPS:%4.2f", frame * 1.0 / (t_time - timebase));
-
-		swprintf_s(s, 256, L"FPS:%4.2f  node数量：%d", frame * 1.0 / (t_time - timebase), GameApp::getInstance()->getNodeCount());
-
-		timebase = t_time;
-		frame = 0;
-
-		//SPFontDrawNode txt = dynamic_pointer_cast<FontDrawNode>(_debug->getChildByTag(1));
-		auto txt_node = _debug->getChildByTag(1);
-		if (txt_node)
-		{
-			auto fontCom = txt_node->getComponent<FontRanderComponent>();
-			if (fontCom)
-			{
-				fontCom->setText(s);
-			}
-		}
-	}
 }
 
 void GameUI::showStartUI()
@@ -236,6 +239,7 @@ void GameUI::showStartUI()
 		});
 		btn_start->setAngleCoordinate(0, 1, 0);
 	}
+	/*
 	{
 		auto btn_setting = Button::create("./res/btn_normal.png", "./res/btn_select.png");
 		btn_setting->setTitle(L"设置", DEFAULTE_FONT_FILE, 24);
@@ -254,6 +258,7 @@ void GameUI::showStartUI()
 			exit(0);
 		});
 	}
+	*/
 }
 
 void GameUI::showGameUI()

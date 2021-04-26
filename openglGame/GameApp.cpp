@@ -28,45 +28,33 @@ GameApp::~GameApp()
 void GameApp::init()
 {
 	/*
-	*/
 	_listener->listen([&](const Event& event) {
 		printf("测试事件,接受到事件ID：%d\n", event._eventId);
 	});
-
+	*/
 	this->initShader();
+	this->setProjectSize(1400, 900);
+
 	_appNode = Node::create();
-	_start = GameStart::create();
+	_bg = Node::create();
+	_appNode->addChild(_bg, 0);
+
 	_ui = GameUI::create();
-	_appNode->addChild(_start, 0);
 	_appNode->addChild(_ui, 100);
 
-	//画格子
-	auto fd = Node::create();
-	auto drawCom = fd->addComponent<DrawRanderComponent>();
-	fd->setPosition(0, 0);
-	_start->addChild(fd, -1000);
-	for (int x = 0; x < 5; ++x)
-	{
-		for (int y = 0; y < 10; ++y)
-		{
-			if ((x + y) % 2 == 0)
-			{
-				drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
-				drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
-				drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
-				drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
-				drawCom->signDraw(GL_TRIANGLE_FAN);
-			}
-			else
-			{
-				drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
-				drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
-				drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
-				drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
-				drawCom->signDraw(GL_TRIANGLE_FAN);
-			}
-		}
-	}
+
+	auto appDrawCom = _bg->addComponent<DrawRanderComponent>();
+	appDrawCom->addVertex(Vector2(0, 0), Vector4(0.3, 0.3, 0, 0.5));
+	appDrawCom->addVertex(Vector2(_projectWidth, 0), Vector4(0.3, 0.3, 0, 0.5));
+	appDrawCom->addVertex(Vector2(_projectWidth, _projectHeight), Vector4(0.3, 0.3, 0, 0.5));
+	appDrawCom->addVertex(Vector2(0, _projectHeight), Vector4(0.3, 0.3, 0, 0.5));
+	appDrawCom->signDraw(GL_TRIANGLE_FAN);
+	_bg->setPosition(0, 0);
+	//_bg->setColor(Vector4(0.3, 0.3, 0, 0.5));
+
+	_start = GameStart::create();
+	_appNode->addChild(_start, 10);
+
 
 	/*
 	char path[256];
@@ -163,16 +151,35 @@ void GameApp::reshape()
 
 	GLfloat modelViewMatrix[16];
 
-	GLfloat viewMatrix[] = { 
-		2 / _viewWidth, 0.0f, 0.0f, 0.0f,
-		0.0f, 2 / _viewHeight, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.1 / _viewWidth, 0.2 / _viewWidth,
+	float w_s = _viewWidth / _projectWidth;
+	float h_s = _viewHeight / _projectHeight;
+	_proScale = w_s < h_s ? w_s : h_s;
+
+	const GLfloat biasMatrix[] = {
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f };
+	glusMatrix4x4Copyf(_transform, biasMatrix, false);
+	if (w_s < h_s)
+	{
+		_transform[12] = 0;
+		_transform[13] = (_viewHeight / _proScale - _projectHeight) / 2;
+	}
+	else
+	{
+		_transform[12] = (_viewWidth / _proScale - _projectWidth) / 2;
+		_transform[13] = 0;
+	}
+
+	GLfloat viewMatrix[] = {
+		2 / _viewWidth * _proScale, 0.0f, 0.0f, 0.0f,
+		0.0f, 2 / _viewHeight * _proScale, 0.0f, 0.0f,
+		0.0f, 0.0f, 0.1 / _viewWidth * _proScale, 0.8 / _viewWidth * _proScale,
 		-1, -1, -0.5f, 1.0f };
 
 	glusMatrix4x4Copyf(_viewMatrix, viewMatrix, false);
-
 	glusMatrix4x4Multiplyf(_modelViewMatrix, _viewMatrix, _modelMatrix);
-	
 
 	for (auto it = _shaders->begin(); it != _shaders->end(); it++)
 	{
@@ -183,18 +190,23 @@ void GameApp::reshape()
 	}
 	glUseProgram(0);
 
+	//_appNode->reshape();
+	_bg->reshape();
 	_start->reshape();
 	_ui->reshape();
 }
 
-void GameApp::visit(const GLfloat *parentTransform, GLboolean parentFlag)
+void GameApp::visit()
 {
-	_start->visit(parentTransform, false);
-	_ui->visit(_viewMatrix, false);
+	_bg->visit(_transform, false);
+	_start->visit(_transform, false);
+	_ui->visit(_transform, false);
 }
 
 void GameApp::rander()
 {
+	//_appNode->rander();
+	_bg->rander();
 	_start->rander();
 	_ui->rander();
 }
@@ -202,9 +214,6 @@ void GameApp::rander()
 void GameApp::update(float time)
 {
 	_controllerMaster->update(time);
-
-	_start->update(time);
-	_ui->update(time);
 
 	_events->process();
 
@@ -217,21 +226,29 @@ void GameApp::update(float time)
 
 		Sleep(sti * 1000);
 	}
-
 }
 
-void GameApp::setViewSize(GLfloat widht, GLfloat height)
+void GameApp::setViewSize(GLfloat width, GLfloat height)
 {
-	_viewWidth = widht;
+	_viewWidth = width;
 	_viewHeight = height;
 	_reLoadView = true;
 }
 
-void GameApp::setProjectSize(GLfloat widht, GLfloat height)
+void GameApp::setProjectSize(GLfloat width, GLfloat height)
 {
-	_projectWidth = widht;
+	_projectWidth = width;
 	_projectHeight = height;
 	_reLoadView = true;
+}
+
+void GameApp::setWindowSize(GLfloat width, GLfloat height)
+{
+	auto window = glfwGetCurrentContext();
+	if (window)
+	{
+		glfwSetWindowSize(window, width, height);
+	}
 }
 
 shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> GameApp::createListenerSP()
@@ -252,6 +269,8 @@ Vector2 GameApp::convertToWorld(Node*node, const Vector2&pos)
 	0.0f, 0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 1.0f };
 
+	glusMatrix4x4Multiplyf(projectTransform, projectTransform, _transform);
+
 	vector<Node*> _quest_node;
 	Node*temp_node = node;
 	while (temp_node)
@@ -269,7 +288,7 @@ Vector2 GameApp::convertToWorld(Node*node, const Vector2&pos)
 	1.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 1.0f, 0.0f,
-	pos._x, pos._y, 0.0f, 1.0f };
+	pos._x / _proScale, pos._y / _proScale, 0.0f, 1.0f };
 
 	glusMatrix4x4Multiplyf(transform, projectTransform, transform);
 	
@@ -283,6 +302,8 @@ Vector2 GameApp::convertViewToNode(Node*node, const Vector2&pos)
 	0.0f, 1.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 1.0f };
+
+	glusMatrix4x4Multiplyf(projectTransform, projectTransform, _transform);
 
 	vector<Node*> _quest_node;
 	Node*temp_node = node;
@@ -302,7 +323,7 @@ Vector2 GameApp::convertViewToNode(Node*node, const Vector2&pos)
 	1.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 1.0f, 0.0f,
-	pos._x, pos._y, 0.0f, 1.0f };
+	pos._x / _proScale, pos._y / _proScale, 0.0f, 1.0f };
 
 	glusMatrix4x4Multiplyf(transform, projectTransform, transform);
 

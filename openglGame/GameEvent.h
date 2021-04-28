@@ -21,7 +21,7 @@ struct Event
 
 struct KeyEvent :public Event
 {
-	int _key;
+	unsigned int _key;
 	bool _isDown;
 };
 

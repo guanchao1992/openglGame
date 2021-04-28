@@ -29,7 +29,6 @@ public:
 
 	virtual void doBegin() {}
 	virtual void doEnd() {}
-	virtual void update() {}
 public:
 
 

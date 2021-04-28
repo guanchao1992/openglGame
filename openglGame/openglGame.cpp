@@ -19,6 +19,7 @@
 #include <nlohmann/json.hpp>
 #include <iostream> 
 #include <fstream> 
+#include "control/KeyboardController.h"
 
 FT_Library g_library;
 FT_Error error;
@@ -156,9 +157,9 @@ int main(int argc, char* argv[])
 	glusWindowSetReshapeFunc(reshape);
 	glusWindowSetUpdateFunc(update);
 	glusWindowSetTerminateFunc(terminate);
-	
+
 	glusWindowSetKeyFunc([](const GLUSboolean pressed, const GLUSint key) {
-		GameApp::getInstance()->getEventBus()->postpone(KeyEvent{ EVENT_KEY,key,(bool)pressed });
+		KeyboardController::getInstance()->handlerKey(key, pressed);
 	});
 	glusWindowSetMouseFunc(
 		[](const GLUSboolean pressed, const GLUSint button, const GLUSint xPos, const GLUSint yPos) {

@@ -14,6 +14,7 @@
 #include <functional>
 #include "control/MouseController.h"
 #include "component/AreaComponent.h"
+#include "Game2DFight/GameMainFight.h"
 
 GameApp::GameApp()
 {
@@ -52,7 +53,8 @@ void GameApp::init()
 	_bg->setPosition(0, 0);
 	//_bg->setColor(Vector4(0.3, 0.3, 0, 0.5));
 
-	_start = GameStart::create();
+	//_start = GameStart::create();
+	_start = GameMainFight::create();
 	_appNode->addChild(_start, 10);
 
 

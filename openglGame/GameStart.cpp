@@ -31,10 +31,10 @@ void GameStart::init()
 			{
 				if ((x + y) % 2 == 0)
 				{
-					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
-					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.2, 0.2, 0.2, 1));
-					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
-					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.2, 0.2, 0.2, 1));
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.2f, 0.2f, 0.2f, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.2f, 0.2f, 0.2f, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.2f, 0.2f, 0.2f, 1));
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.2f, 0.2f, 0.2f, 1));
 					drawCom->signDraw(GL_TRIANGLE_FAN);
 				}
 				else
@@ -94,16 +94,6 @@ void GameStart::initListen()
 {
 	_listener = GameApp::getInstance()->createListenerSP();
 	_listener->listen([&](const KeyEvent& et) {
-		/*
-		if (et._isDown)
-		{
-			printf("event:%d按下了按键:%d\n", et._eventId, et._key);
-		}
-		else
-		{
-			printf("event:%d放开了按键:%d\n", et._eventId, et._key);
-		}
-		*/
 		switch (et._key)
 		{
 		case GLFW_KEY_UP: case 'w': case 'W':
@@ -121,12 +111,10 @@ void GameStart::initListen()
 		case GLFW_KEY_SPACE:
 			onRotate(et._isDown);
 			break;
-			/*
 		case 'r': case 'R':
 			if (et._isDown)
 				restartBlock();
 			break;
-			*/
 		default:
 			break;
 		}

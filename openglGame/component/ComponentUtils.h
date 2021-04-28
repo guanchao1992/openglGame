@@ -9,5 +9,7 @@ enum ComponentType
 	COMPONENT_MOUSE_MOVE = 3,	//鼠标移动
 	COMPONENT_AREA,				//区块
 	COMPONENT_OUTLINE,			//描线
+	COMPONENT_ACTOR_OI,			//控制演员的输入接口
+	COMPONENT_ACTIVE_MOVE,		//移动控制
 };
 

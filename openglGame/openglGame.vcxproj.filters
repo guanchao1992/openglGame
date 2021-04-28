@@ -128,6 +128,27 @@
     <ClCompile Include="component\EventComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="control\KeyboardController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Game2DFight\GameMainFight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Game2DFight\Actor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Game2DFight\StateMachine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ActorOIComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ActorMoveComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ActorTipsComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -275,6 +296,27 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="component\EventComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\KeyboardController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Game2DFight\GameMainFight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Game2DFight\StateMachine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Game2DFight\Actor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ActorOIComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ActorMoveComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ActorTipsComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

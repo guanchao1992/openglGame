@@ -1,6 +1,8 @@
 #ifndef ___Vector2__H__
 #define ___Vector2__H__
 
+#define  PI 3.141592653589793238f
+
 class Vector2
 {
 public:

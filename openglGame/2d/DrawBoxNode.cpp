@@ -14,10 +14,10 @@ DrawBoxNode:: ~DrawBoxNode()
 void DrawBoxNode::init()
 {
 	auto com = addComponent<DrawRanderComponent>();
-	com->addVertex(Vector2(0, 0));
-	com->addVertex(Vector2(40, 0));
-	com->addVertex(Vector2(40, 40));
-	com->addVertex(Vector2(0, 40));
+	com->addVertex(Vector2(0.f, 0));
+	com->addVertex(Vector2(40.f, 0));
+	com->addVertex(Vector2(40.f, 40));
+	com->addVertex(Vector2(0.f, 40));
 	resetBoxType(BOX_1);
 }
 
@@ -26,19 +26,19 @@ void DrawBoxNode::resetBoxType(BoxType bt) {
 	switch (_boxType)
 	{
 	case BOX_NULL:
-		setColor(0, 0, 0, 0);
+		setColor(0.f, 0.f, 0.f, 0);
 		break;
 	case BOX_1:
-		setColor(0.8, 0, 0, 1);
+		setColor(0.8f, 0.f, 0.f, 1);
 		break;
 	case BOX_2:
-		setColor(0, 0.8, 0, 1);
+		setColor(0.f, 0.8f, 0.f, 1);
 		break;
 	case BOX_3:
-		setColor(0, 0, 0.8, 1);
+		setColor(0.f, 0.f, 0.8f, 1);
 		break;
 	case BOX_4:
-		setColor(0.8, 0.8, 0, 1);
+		setColor(0.8f, 0.8f, 0.f, 1);
 		break;
 	default:
 		break;
@@ -48,7 +48,7 @@ void DrawBoxNode::resetBoxType(BoxType bt) {
 void TxcBoxNode::init()
 {
 	//_shader = GameApp::getInstance()->getShader("texture");
-	addComponent<AreaComponent>()->setSize(Size(40, 40));
+	addComponent<AreaComponent>()->setSize(Size(40.f, 40));
 	auto com = addComponent<TextureRanderComponent>();
 	auto texture = TextureController::getInstance()->loadPng(".\\res\\test (1).png");
 	com->setTextureID(texture->_textureId);

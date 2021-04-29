@@ -42,6 +42,9 @@ void StateMachine::enterState(StateType stype)
 			it->second._enterFunc();
 		}
 		_state = stype;
+		_toState = it->second._to;
+		_accumulationTime = 0;
+		_nextTime = it->second._time;
 	}
 }
 
@@ -49,8 +52,7 @@ bool StateMachine::checkEnterState(StateType stype)
 {
 	if (_state == stype)
 	{
-		_accumulationTime = 0;
-		return true;
+		return false;
 	}
 	auto it = _mapStats.find(stype);
 	if (_state != STATE_NONE && it->second._froms.size() > 0 && it->second._froms.find(_state) == it->second._froms.end())

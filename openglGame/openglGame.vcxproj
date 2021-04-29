@@ -91,7 +91,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_AMD64_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_X86_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -179,6 +179,10 @@
     <ClCompile Include="component\ActorOIComponent.cpp" />
     <ClCompile Include="component\ActorTipsComponent.cpp" />
     <ClCompile Include="component\AreaComponent.cpp" />
+    <ClCompile Include="component\BulletComponent\BulletMoveCComponent.cpp" />
+    <ClCompile Include="component\BulletComponent\BulletMoveComponent.cpp" />
+    <ClCompile Include="component\BulletComponent\BulletMoveKComponent.cpp" />
+    <ClCompile Include="component\BulletComponent\BulletMoveSComponent.cpp" />
     <ClCompile Include="component\Component.cpp" />
     <ClCompile Include="component\DrawRanderComponent.cpp" />
     <ClCompile Include="component\EventComponent.cpp" />
@@ -195,6 +199,7 @@
     <ClCompile Include="control\TimerController.cpp" />
     <ClCompile Include="EgameController.cpp" />
     <ClCompile Include="Game2DFight\Actor.cpp" />
+    <ClCompile Include="Game2DFight\Bullet.cpp" />
     <ClCompile Include="Game2DFight\GameMainFight.cpp" />
     <ClCompile Include="Game2DFight\StateMachine.cpp" />
     <ClCompile Include="GameApp.cpp" />
@@ -234,6 +239,10 @@
     <ClInclude Include="component\ActorOIComponent.h" />
     <ClInclude Include="component\ActorTipsComponent.h" />
     <ClInclude Include="component\AreaComponent.h" />
+    <ClInclude Include="component\BulletComponent\BulletMoveCComponent.h" />
+    <ClInclude Include="component\BulletComponent\BulletMoveComponent.h" />
+    <ClInclude Include="component\BulletComponent\BulletMoveKComponent.h" />
+    <ClInclude Include="component\BulletComponent\BulletMoveSComponent.h" />
     <ClInclude Include="component\Component.hpp" />
     <ClInclude Include="component\ComponentUtils.h" />
     <ClInclude Include="component\DrawRanderComponent.h" />
@@ -251,6 +260,7 @@
     <ClInclude Include="control\TimerController.h" />
     <ClInclude Include="EgameController.h" />
     <ClInclude Include="Game2DFight\Actor.h" />
+    <ClInclude Include="Game2DFight\Bullet.h" />
     <ClInclude Include="Game2DFight\GameMainFight.h" />
     <ClInclude Include="Game2DFight\StateMachine.h" />
     <ClInclude Include="GameApp.h" />

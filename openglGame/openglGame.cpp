@@ -20,12 +20,17 @@
 #include <iostream> 
 #include <fstream> 
 #include "control/KeyboardController.h"
+#include <profileapi.h>
+#include <synchapi.h>
 
-FT_Library g_library;
-FT_Error error;
-FT_Face g_face;
 
-GLuint g_ftx;
+LARGE_INTEGER g_nLast;
+LARGE_INTEGER g_nNow;
+LARGE_INTEGER g_freq;
+LONGLONG g_interval;
+LONGLONG g_frameInterval;
+LONG g_waitMS;
+
 GLUSboolean init(GLUSvoid)
 {
 	auto app = GameApp::getInstance();
@@ -41,37 +46,9 @@ GLUSboolean init(GLUSvoid)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	app->visit();
 
-	/*
-	auto error = FT_Init_FreeType(&g_library);					
-	error = FT_New_Face(g_library, "res/simhei.ttf", 0, &g_face);		
-	error = FT_Select_Charmap(g_face, FT_ENCODING_UNICODE);
-
-	error = FT_Set_Char_Size(g_face, 50 * 64, 0, 100, 0); 
-	FT_Set_Pixel_Sizes(g_face, 24, 0);
-
-	FT_Load_Char(g_face, 880, FT_LOAD_RENDER);
-
-
-	FT_GlyphSlot glyphSlot = g_face->glyph;
-
-	glGenTextures(1, &g_ftx);    // Using your API here
-	glBindTexture(GL_TEXTURE_2D, g_ftx);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	// Setup some parameters for texture filters and mipmapping 
-
-	GLint alignment;
-	glGetIntegerv(GL_UNPACK_ALIGNMENT, &alignment);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	GLint fmt = GL_RED;
-	glTexImage2D(GL_TEXTURE_2D, 0, fmt, glyphSlot->bitmap.width, glyphSlot->bitmap.rows,
-		0, fmt, GL_UNSIGNED_BYTE, glyphSlot->bitmap.buffer);
-	//glTexSubImage2D(,)
-	glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
-	*/
+	QueryPerformanceCounter(&g_nLast);
+	QueryPerformanceFrequency(&g_freq);
+	g_frameInterval = g_freq.QuadPart / 120;
 
 	return GLUS_TRUE;
 }
@@ -96,21 +73,28 @@ GLUSboolean update(GLUSfloat time)
 	}
 	app->visit();
 
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 0.5);
+	GameApp::getInstance()->rander();
 
 	/*
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(75, 1, 1, 4000000);
-	glOrtho();
-	//glMatrixMode(GL_MODELVIEW);
-	//glLoadIdentity();
-	gluLookAt(0, -2000000, 2000000, 0, 0, 0, 0, 0, 1);
-	*/
+	static float t_time = 0.f;
+	static int frame = 0;
+	static int timebase = 0;
+	//static char s[256] = { 0 };
+	static wchar_t s[256] = { 0 };
+	frame++;
+	t_time = t_time + time;
+	if (t_time > 1.f) {
+		//sprintf_s(s, 256, "FPS:%4.2f", frame * 1.0 / (t_time - timebase));
 
-	GameApp::getInstance()->rander();
+		printf("FPS:%4.2f  node数量：%d", frame * 1.0f / t_time, GameApp::getInstance()->getNodeCount());
+
+		timebase = t_time;
+		t_time = 0;
+		frame = 0;
+	}
+	*/
 
 	return GLUS_TRUE;
 }
@@ -192,7 +176,32 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	glusWindowRun();
+	GLUSboolean run = GLUS_TRUE;
+
+	if (!glusWindowStartup())
+	{
+		return GLUS_FALSE;
+	}
+
+	while (run)
+	{
+		QueryPerformanceCounter(&g_nNow);
+		g_interval = g_nNow.QuadPart - g_nLast.QuadPart;
+		if (g_interval >= g_frameInterval)
+		{
+			g_nLast.QuadPart = g_nNow.QuadPart;
+			run = glusWindowLoop();
+		}
+		else
+		{
+			g_waitMS = (g_frameInterval - g_interval) * 1000LL / g_freq.QuadPart;
+			if (g_waitMS > 1L)
+			{
+				Sleep(g_waitMS);
+			}
+		}
+	}
+	glusWindowShutdown();
 	return 0;
 }
 

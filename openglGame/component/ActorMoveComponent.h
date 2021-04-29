@@ -7,7 +7,7 @@
 class ActorMoveComponent :public Component
 {
 public:
-	virtual ComponentType getType() { return ComponentType::COMPONENT_ACTOR_OI; }
+	virtual ComponentType getType() { return ComponentType::COMPONENT_CUSTOM; }
 	virtual void doBegin();
 	virtual void doEnd(); 
 	bool update(float time);

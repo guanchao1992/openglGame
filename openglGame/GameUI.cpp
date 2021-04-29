@@ -187,12 +187,13 @@ void GameUI::initDebug()
 		static wchar_t s[256] = { 0 };
 		frame++;
 		t_time = t_time + time;
-		if (t_time - timebase > 1) {
+		if (t_time > 1.f) {
 			//sprintf_s(s, 256, "FPS:%4.2f", frame * 1.0 / (t_time - timebase));
 
-			swprintf_s(s, 256, L"FPS:%4.2f  node数量：%d", frame * 1.0 / (t_time - timebase), GameApp::getInstance()->getNodeCount());
+			swprintf_s(s, 256, L"FPS:%4.2f  node数量：%d", frame * 1.0f / t_time, GameApp::getInstance()->getNodeCount());
 
 			timebase = t_time;
+			t_time = 0;
 			frame = 0;
 
 			//SPFontDrawNode txt = dynamic_pointer_cast<FontDrawNode>(_debug->getChildByTag(1));

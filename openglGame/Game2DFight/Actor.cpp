@@ -4,6 +4,11 @@
 #include <component/FontRanderComponent.h>
 #include "component/ActorMoveComponent.h"
 #include "component/ActorTipsComponent.h"
+#include "Bullet.h"
+#include <GameApp.h>
+#include "component/BulletComponent/BulletMoveSComponent.h"
+#include "component/BulletComponent/BulletMoveCComponent.h"
+#include "component/BulletComponent/BulletMoveKComponent.h"
 
 
 void Actor::init()
@@ -33,7 +38,7 @@ void Actor::init()
 	_name->setPosition(0, 70);
 
 	addComponent<OutlineBoxComponent>();
-	auto areaCom = addComponent<AreaComponent>();
+	auto areaCom = getComponent<AreaComponent>();
 	areaCom->setAnchor(Vector2(0.5, 0));
 	areaCom->setSize(Size(40, 60));
 
@@ -42,7 +47,7 @@ void Actor::init()
 	auto atCom = addComponent<ActorTipsComponent>();
 }
 
-void Actor::enterState(StateType stype)
+bool Actor::enterState(StateType stype)
 {
 	if (_sm->checkEnterState(stype))
 	{
@@ -50,14 +55,16 @@ void Actor::enterState(StateType stype)
 		wchar_t str[256];
 		swprintf_s(str, 256, L"状态：%d", _sm->getState());
 		atCom->addTips(str);
+		return true;
 	}
+	return false;
 }
 
-void Actor::enterMoveState()
+bool Actor::enterMoveState()
 {
 	if (_sm->isState(STATE_DEATH) || _sm->isState(STATE_NOTACTIVE))
-		return;
-	_sm_move->checkEnterState(STATE_MOVE);
+		return false;
+	return _sm_move->checkEnterState(STATE_MOVE);
 }
 
 bool Actor::isMoveing()
@@ -90,7 +97,14 @@ void Actor::calculateMove()
 
 void Actor::fire()
 {
-	enterState(STATE_FIRE);
+	if (enterState(STATE_FIRE))
+	{
+		auto b = Bullet::create(this, Vector2(450.f, 150.f));
+		GameApp::getInstance()->_start->addChild(b);
+		b->setPosition(getPosition() + Vector3(0.f, 20.f, 0.f));
+		b->addComponent<BulletMoveCComponent>();
+		b->addComponent<BulletMoveKComponent>();
+	}
 }
 
 /**************状态机发生变化***************/

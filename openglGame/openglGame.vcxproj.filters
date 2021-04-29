@@ -149,6 +149,21 @@
     <ClCompile Include="component\ActorTipsComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Game2DFight\Bullet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BulletMoveSComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BulletMoveComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BulletMoveCComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BulletMoveKComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -317,6 +332,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="component\ActorTipsComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Game2DFight\Bullet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BulletMoveSComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BulletMoveComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BulletMoveCComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BulletMoveKComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

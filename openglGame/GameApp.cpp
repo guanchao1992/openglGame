@@ -216,18 +216,7 @@ void GameApp::rander()
 void GameApp::update(float time)
 {
 	_controllerMaster->update(time);
-
 	_events->process();
-
-	static float s_fps = 1.0f / 60;
-
-	float pause_time = 0;
-	if (s_fps > time )
-	{
-		float sti = s_fps - time ;
-
-		Sleep(sti * 1000);
-	}
 }
 
 void GameApp::setViewSize(GLfloat width, GLfloat height)

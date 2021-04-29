@@ -10,8 +10,8 @@ class Actor : public Node
 public:
 	StatementCreate(Actor);
 	void init();
-	void enterState(StateType stype);
-	void enterMoveState();
+	bool enterState(StateType stype);
+	bool enterMoveState();
 	bool isMoveing();
 public:
 	inline void onUp(bool keyPress) {

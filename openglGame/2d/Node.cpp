@@ -142,7 +142,6 @@ void Node::setPosition(float x, float y, float z)
 	_revisit = true;
 }
 
-const float PI = 3.141592653589793238f;
 
 void Node::setEulerAngle(float angleZ)
 {

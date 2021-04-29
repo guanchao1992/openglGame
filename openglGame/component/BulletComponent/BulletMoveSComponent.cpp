@@ -13,6 +13,8 @@ void BulletMoveSComponent::doBegin()
 
 	auto bmc = _object->getComponent<BulletMoveComponent>();
 	_defaultSpeed = bmc->getSpeed();
+	_defaultRadian = bmc->getRadian();
+	_addRadian = -PI / 3;
 }
 
 void BulletMoveSComponent::doEnd()
@@ -25,10 +27,12 @@ bool BulletMoveSComponent::update(float time)
 {
 	if (!_active)
 		return false;
-	_totalTime += time;
 	auto bmc = _object->getComponent<BulletMoveComponent>();
-	auto d = (_defaultSpeed._x + _defaultSpeed._y) * 1.5;
-	bmc->setSpeed(_defaultSpeed + Vector2(d * sin(_totalTime * 15), d * cos(_totalTime * 15)));
+	_totalTime += time;
+
+
+	Vector2 dir = { cosf(_totalTime * 10) + 0.7f, sinf(_totalTime * 10) };
+	bmc->setDir(atan2f(dir._y, dir._x) + _defaultRadian);
 
 	return false;
 }

@@ -13,6 +13,7 @@ public:
 	bool enterState(StateType stype);
 	bool enterMoveState();
 	bool isMoveing();
+	void setName(const wchar_t*name);
 public:
 	inline void onUp(bool keyPress) {
 		_upKey = keyPress;
@@ -31,7 +32,7 @@ public:
 		calculateMove();
 	}
 	void calculateMove();
-	void fire();
+	void fire(const Vector2&aim, const Vector2&offset);
 private:
 	virtual void __activeEnter();
 	virtual void __activeExit();

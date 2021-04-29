@@ -8,9 +8,13 @@ StatementNode(Bullet)
 class Bullet : public Node
 {
 public:
-	static SPBullet create(Actor* father, const Vector2&speed);
-	void init(const Vector2&speed);
+	static SPBullet create(Actor* father);
+	void init();
 public:
+	void setSpeed(float speed,float radian);
+	void setSpeed(float speed);
+	void setDir(const Vector2&dir);
+	void setSpeed(const Vector2&speed);
 
 	inline Actor* getFather() { return _father; }
 private:

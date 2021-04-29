@@ -13,5 +13,7 @@ public:
 public:
 private:
 	SPActor	_player;
+
+	SPNode _objectLayer;
 };
 

@@ -32,7 +32,7 @@ bool ActorTipsComponent::update(float time)
 	for (auto it = _listTexts.begin(); it != _listTexts.end();)
 	{
 		auto nodetext = (*it);
-		nodetext->setPosition(nodetext->getPosition() + Vector3(0, 100 * time, 0));
+		nodetext->setPosition(nodetext->getPosition() + Vector3(0, 150 * time, 0));
 		if (nodetext->getPosition()._y > 100)
 		{
 			hasDel = true;
@@ -53,7 +53,7 @@ bool ActorTipsComponent::update(float time)
 void ActorTipsComponent::addTips(const wchar_t*text)
 {
 	auto nodetext = Text::create(text, DEFAULTE_FONT_FILE, 24);
-	nodetext->setScale(0.7);
+	nodetext->setScale(0.6);
 	nodetext->setPosition(-30, 0);
 	nodetext->setColor(Vector4(0.1, 0.1, 0.1, 1));
 	auto areaCom = nodetext->getComponent<AreaComponent>();

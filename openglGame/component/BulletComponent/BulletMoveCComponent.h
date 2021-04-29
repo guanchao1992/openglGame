@@ -16,5 +16,6 @@ private:
 	int _timerId;
 	float _totalTime = 0.f;
 
-	Vector2 _defaultSpeed;
+	float _defaultSpeed;
+	float _defaultRadian;
 };

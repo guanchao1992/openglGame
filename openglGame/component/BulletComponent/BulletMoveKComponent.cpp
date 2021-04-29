@@ -13,7 +13,7 @@ void BulletMoveKComponent::doBegin()
 
 	auto bmc = _object->getComponent<BulletMoveComponent>();
 	_defaultSpeed = bmc->getSpeed();
-	_defaultRadian = atan2f(_defaultSpeed._y, _defaultSpeed._x);
+	_defaultRadian = bmc->getRadian();
 }
 
 void BulletMoveKComponent::doEnd()
@@ -33,13 +33,13 @@ bool BulletMoveKComponent::update(float time)
 		auto originBullet = (Bullet*)_object;
 		auto bmc = originBullet->getComponent<BulletMoveComponent>();
 
-		auto radian1 = _defaultRadian + PI / 8;
-		auto radian3 = _defaultRadian - PI / 8;
-		auto p = (_defaultSpeed._x + _defaultSpeed._y) / 8;
+		auto b1 = Bullet::create(originBullet->getFather());
+		b1->setSpeed(_defaultSpeed, _defaultRadian + PI / 8);
+		auto b2 = Bullet::create(originBullet->getFather());
+		b2->setSpeed(_defaultSpeed, _defaultRadian);
+		auto b3 = Bullet::create(originBullet->getFather());
+		b3->setSpeed(_defaultSpeed, _defaultRadian - PI / 8);
 
-		auto b1 = Bullet::create(originBullet->getFather(), _defaultSpeed + Vector2(p * cosf(radian1), p * sinf(radian1)));
-		auto b2 = Bullet::create(originBullet->getFather(), _defaultSpeed + Vector2(p * cosf(_defaultRadian), p * sinf(_defaultRadian)));
-		auto b3 = Bullet::create(originBullet->getFather(), _defaultSpeed + Vector2(p * cosf(radian3), p * sinf(radian3)));
 		originBullet->getParent()->addChild(b1);
 		originBullet->getParent()->addChild(b2);
 		originBullet->getParent()->addChild(b3);

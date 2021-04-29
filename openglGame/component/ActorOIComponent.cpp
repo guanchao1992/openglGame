@@ -31,11 +31,21 @@ void ActorOIComponent::doBegin()
 		case GLFW_KEY_SPACE:
 			if (et._isDown)
 			{
-				actor->fire();
+				//actor->fire();
 			}
 			break;
 		default:
 			break;
+		}
+	});
+	_listener->listen([&](const MouseKeyEvent&et) {
+		if (et._isDown)
+		{
+			Actor* actor = (Actor*)_object;
+			auto pos = GameApp::getInstance()->convertViewToNode(actor->getParent(), Vector2(et._x, et._y));
+			auto offset = Vector2(0, 40);
+			pos.setVector(pos._x - actor->getPosition()._x - offset._x, pos._y - actor->getPosition()._y - offset._y);
+			actor->fire(pos, offset);
 		}
 	});
 }

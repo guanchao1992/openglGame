@@ -5,18 +5,17 @@
 #include "component/BulletComponent/BulletMoveComponent.h"
 
 
-SPBullet Bullet::create(Actor* father, const Vector2&speed)
+SPBullet Bullet::create(Actor* father)
 {
 	auto ret = make_shared<Bullet>();
 	ret->_father = father;
-	ret->init(speed);
+	ret->init();
 	return ret;
 }
 	
-void Bullet::init(const Vector2&speed)
+void Bullet::init()
 {
 	_name = Text::create(L"µ¯", DEFAULTE_FONT_FILE, 24);
-	_name->addComponent<OutlineBoxComponent>();
 	auto nameAreaCom = _name->getComponent<AreaComponent>();
 	nameAreaCom->setAnchor(Vector2(0.5, 0.5));
 	addChild(_name);
@@ -28,7 +27,31 @@ void Bullet::init(const Vector2&speed)
 	areaCom->setSize(Size(20, 20));
 
 	auto bmCom = addComponent<BulletMoveComponent>();
+;
 
-	bmCom->setSpeed(speed);
+}
 
+void Bullet::setSpeed(float speed, float radian)
+{
+	auto bmc = getComponent<BulletMoveComponent>();
+	bmc->setSpeed(speed);
+	bmc->setDir(radian);
+}
+
+void Bullet::setSpeed(float speed)
+{
+	auto bmc = getComponent<BulletMoveComponent>();
+	bmc->setSpeed(speed);
+}
+
+void Bullet::setSpeed(const Vector2&speed)
+{
+	auto bmc = getComponent<BulletMoveComponent>();
+	bmc->setSpeed(speed);
+}
+
+void Bullet::setDir(const Vector2&dir)
+{
+	auto bmc = getComponent<BulletMoveComponent>();
+	bmc->setDir(dir);
 }

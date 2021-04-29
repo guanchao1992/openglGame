@@ -16,6 +16,6 @@ private:
 	int		_timerId;
 	float	_accumulatedTime = 0.f;	//¿€º∆ ±º‰
 
-	Vector2 _defaultSpeed;
+	float _defaultSpeed;
 	float _defaultRadian;
 };

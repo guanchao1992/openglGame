@@ -22,7 +22,7 @@ bool BulletMoveComponent::update(float time)
 		return false;
 	Node*node = (Node*)_object;
 
-	node->setPosition(node->getPosition()._x + _speed._x * time, node->getPosition()._y + _speed._y * time);
+	node->setPosition(node->getPosition()._x + _speed * cosf(_radian) * time, node->getPosition()._y + _speed * sinf(_radian) * time);
 
 	_leftTime -= time;
 	if (_leftTime < 0)
@@ -34,6 +34,22 @@ bool BulletMoveComponent::update(float time)
 }
 
 void BulletMoveComponent::setSpeed(const Vector2&speed)
+{
+	_radian = atan2f(speed._y, speed._x);
+	_speed = sqrtf((speed._x * speed._x) + (speed._y * speed._y));
+}
+
+void BulletMoveComponent::setDir(const Vector2&dir)
+{
+	_radian = atan2f(dir._y, dir._x);
+}
+
+void BulletMoveComponent::setDir(float radian)
+{
+	_radian = radian;
+}
+
+void BulletMoveComponent::setSpeed(float speed)
 {
 	_speed = speed;
 }

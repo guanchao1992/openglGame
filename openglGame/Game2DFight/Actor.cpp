@@ -9,10 +9,13 @@
 #include "component/BulletComponent/BulletMoveSComponent.h"
 #include "component/BulletComponent/BulletMoveCComponent.h"
 #include "component/BulletComponent/BulletMoveKComponent.h"
+#include "component/BulletComponent/BulletMoveComponent.h"
 
 
 void Actor::init()
 {
+	auto atCom = addComponent<ActorTipsComponent>();
+
 	_sm = StateMachine::create();
 	_sm_move = StateMachine::create();
 
@@ -44,17 +47,12 @@ void Actor::init()
 
 	auto amCom = addComponent<ActorMoveComponent>();
 
-	auto atCom = addComponent<ActorTipsComponent>();
 }
 
 bool Actor::enterState(StateType stype)
 {
 	if (_sm->checkEnterState(stype))
 	{
-		auto atCom = getComponent<ActorTipsComponent>();
-		wchar_t str[256];
-		swprintf_s(str, 256, L"×´Ì¬£º%d", _sm->getState());
-		atCom->addTips(str);
 		return true;
 	}
 	return false;
@@ -70,6 +68,11 @@ bool Actor::enterMoveState()
 bool Actor::isMoveing()
 {
 	return _sm_move->isState(STATE_MOVE);
+}
+
+void Actor::setName(const wchar_t*name)
+{
+	_name->setString(name);
 }
 
 void Actor::calculateMove()
@@ -95,14 +98,18 @@ void Actor::calculateMove()
 	amCom->setAcceleratedSpeed(as);
 }
 
-void Actor::fire()
+void Actor::fire(const Vector2&aim, const Vector2&offset)
 {
 	if (enterState(STATE_FIRE))
 	{
-		auto b = Bullet::create(this, Vector2(450.f, 150.f));
+		float vec[] = { aim._x,aim._y };
+		glusVector2Normalizef(vec);
+		auto b = Bullet::create(this);
+		b->setDir(aim - offset);
+		b->setSpeed(400.f);
 		GameApp::getInstance()->_start->addChild(b);
-		b->setPosition(getPosition() + Vector3(0.f, 20.f, 0.f));
-		b->addComponent<BulletMoveCComponent>();
+		b->setPosition(getPosition()._x + offset._x, getPosition()._y + offset._y);
+		b->addComponent<BulletMoveSComponent>();
 		b->addComponent<BulletMoveKComponent>();
 	}
 }
@@ -110,6 +117,10 @@ void Actor::fire()
 /**************×´Ì¬»ú·¢Éú±ä»¯***************/
 void Actor::__activeEnter()
 {
+	auto atCom = getComponent<ActorTipsComponent>();
+	wchar_t str[256];
+	swprintf_s(str, 256, L"×´Ì¬£º¼¤»î", _sm->getState());
+	atCom->addTips(str);
 }
 void Actor::__activeExit()
 {
@@ -117,7 +128,10 @@ void Actor::__activeExit()
 }
 void Actor::__notactiveEnter()
 {
-
+	auto atCom = getComponent<ActorTipsComponent>();
+	wchar_t str[256];
+	swprintf_s(str, 256, L"×´Ì¬£ºÎ´¼¤»î", _sm->getState());
+	atCom->addTips(str);
 }
 void Actor::__notactiveExit()
 {
@@ -125,7 +139,10 @@ void Actor::__notactiveExit()
 }
 void Actor::__idleEnter()
 {
-
+	auto atCom = getComponent<ActorTipsComponent>();
+	wchar_t str[256];
+	swprintf_s(str, 256, L"×´Ì¬£º¿ÕÏÐ", _sm->getState());
+	atCom->addTips(str);
 }
 void Actor::__idleExit()
 {
@@ -134,18 +151,30 @@ void Actor::__idleExit()
 
 void Actor::__readyEnter()
 {
+	auto atCom = getComponent<ActorTipsComponent>();
+	wchar_t str[256];
+	swprintf_s(str, 256, L"×´Ì¬£ºË¼¿¼", _sm->getState());
+	atCom->addTips(str);
 }
 void Actor::__readyExit()
 {
 }
 void Actor::__fireEnter()
 {
+	auto atCom = getComponent<ActorTipsComponent>();
+	wchar_t str[256];
+	swprintf_s(str, 256, L"×´Ì¬£º¿ª»ð", _sm->getState());
+	atCom->addTips(str);
 }
 void Actor::__fireExit()
 {
 }
 void Actor::__deathEnter()
 {
+	auto atCom = getComponent<ActorTipsComponent>();
+	wchar_t str[256];
+	swprintf_s(str, 256, L"×´Ì¬£ºËÀÍö", _sm->getState());
+	atCom->addTips(str);
 }
 void Actor::__deathExit()
 {

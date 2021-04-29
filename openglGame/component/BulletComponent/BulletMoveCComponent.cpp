@@ -13,6 +13,7 @@ void BulletMoveCComponent::doBegin()
 
 	auto bmc = _object->getComponent<BulletMoveComponent>();
 	_defaultSpeed = bmc->getSpeed();
+	_defaultRadian = bmc->getRadian();
 }
 
 void BulletMoveCComponent::doEnd()
@@ -27,20 +28,21 @@ bool BulletMoveCComponent::update(float time)
 		return false;
 	_totalTime += time;
 	auto bmc = _object->getComponent<BulletMoveComponent>();
+
 	int tt = ((int)(_totalTime * 12)) % 4;
 	switch (tt)
 	{
 	case 0:
-		bmc->setSpeed(Vector2(_defaultSpeed._x, _defaultSpeed._y));
+		bmc->setDir(_defaultRadian);
 		break;
 	case 1:
-		bmc->setSpeed(Vector2(_defaultSpeed._y, _defaultSpeed._x));
+		bmc->setDir(_defaultRadian + PI / 2);
 		break;
 	case 2:
-		bmc->setSpeed(Vector2(_defaultSpeed._x, _defaultSpeed._y));
+		bmc->setDir(_defaultRadian);
 		break;
 	case 3:
-		bmc->setSpeed(Vector2(_defaultSpeed._y, -_defaultSpeed._x));
+		bmc->setDir(_defaultRadian - PI / 2);
 		break;
 	default:
 		break;

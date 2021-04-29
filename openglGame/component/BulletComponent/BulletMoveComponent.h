@@ -13,13 +13,17 @@ public:
 	bool update(float time);
 
 	void setSpeed(const Vector2&speed);
-	inline const Vector2& getSpeed()
-	{
-		return _speed;
-	}
+	void setDir(const Vector2&dir);
+	void setDir(float radian);
+	void setSpeed(float speed);
+
+	inline float getSpeed() { return _speed; }
+	inline float getRadian() { return _radian; }
+
 private:
 	int _timerId;
 	float _totalTime = 3.f;
 	float _leftTime = 3.f;
-	Vector2 _speed = { 0.f,0.f };				//速度
+	float _radian = 0.f;	//弧度
+	float _speed = 0.f;		//速度
 };

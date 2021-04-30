@@ -9,6 +9,7 @@
 #include "base/Vector4.h"
 #include "control/TimerController.h"
 #include "Object.hpp"
+#include <list>
 
 using namespace std;
 
@@ -87,6 +88,15 @@ public:
 	//
 	GLfloat* getProjectTransform() { return _projectTransform; }
 
+	bool operator < (Node b)
+	{
+		return this->_localZOrder < b._localZOrder;
+	}
+	bool operator > (Node b)
+	{
+		return this->_localZOrder > b._localZOrder;
+	}
+
 public:
 	void setRanderComponent(RanderComponent* com);
 	void setMouseKeyComponent(MouseComponent* com);
@@ -111,8 +121,9 @@ protected:
 	Node* _parent = nullptr;
 
 	shared_ptr<vector<SPNode>> _childs = make_shared<vector<SPNode>>();
-	shared_ptr<vector<SPNode>> _visitLeft = make_shared<vector<SPNode>>();
-	shared_ptr<vector<SPNode>> _visitRight = make_shared<vector<SPNode>>();
+	shared_ptr<std::list<SPNode>> _visitLeft = make_shared<list<SPNode>>();
+	shared_ptr<std::list<SPNode>> _visitRight = make_shared<list<SPNode>>();
+
 
 	int _localZOrder = 0;
 	int _tag = 0;

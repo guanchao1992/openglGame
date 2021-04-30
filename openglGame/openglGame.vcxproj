@@ -232,6 +232,7 @@
     <ClInclude Include="base\Shader.h" />
     <ClInclude Include="base\Singleton.h" />
     <ClInclude Include="base\Size.h" />
+    <ClInclude Include="base\TreeFour.h" />
     <ClInclude Include="base\Vector2.h" />
     <ClInclude Include="base\Vector3.h" />
     <ClInclude Include="base\Vector4.h" />

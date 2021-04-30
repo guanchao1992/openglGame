@@ -269,12 +269,15 @@ void Node::refreshOrder()
 			_visitRight->push_back(*it);
 		}
 	}
+	/*
 	sort(_visitLeft->begin(), _visitLeft->end(), [](SPNode a, SPNode b) {
 		return a->getZOrder() < b->getZOrder();
 	});
 	sort(_visitRight->begin(), _visitRight->end(), [](SPNode a, SPNode b) {
 		return a->getZOrder() < b->getZOrder();
 	});
+	*/
+	_visitLeft->sort();
 }
 
 void Node::setTag(int tag)

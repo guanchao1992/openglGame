@@ -43,7 +43,6 @@ void GameApp::init()
 	_ui = GameUI::create();
 	_appNode->addChild(_ui, 100);
 
-
 	auto appDrawCom = _bg->addComponent<DrawRanderComponent>();
 	appDrawCom->addVertex(Vector2(0, 0), Vector4(0.3, 0.3, 0, 0.5));
 	appDrawCom->addVertex(Vector2(_projectWidth, 0), Vector4(0.3, 0.3, 0, 0.5));

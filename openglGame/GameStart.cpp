@@ -60,7 +60,7 @@ void GameStart::init()
 	*/
 
 	/*
-	addTimer(0.1, -1, [&](float time) {
+	addTimer(0.1, -1, [this](float time) {
 		onAddBlockDown();
 		return false;
 	});
@@ -72,9 +72,9 @@ void GameStart::init()
 	areaCom->setSize(Size(10000, 10000));
 	areaCom->setAnchor(Vector2(0.5, 0.5));
 	auto mouseCom = addComponent<MouseComponent>();
-	mouseCom->setMouseKeyFunc([&](MouseComponent&mouseCon, const MouseKeyEvent&event) {
+	mouseCom->setMouseKeyFunc([this](MouseComponent&mouseCon, const MouseKeyEvent&event) {
 	});
-	mouseCom->setMouseMoveFunc([&](MouseComponent&mouseCon, const MouseMoveEvent&event) {
+	mouseCom->setMouseMoveFunc([this](MouseComponent&mouseCon, const MouseMoveEvent&event) {
 		if (event._buttons & 1)
 		{
 			//this->setAngleCoordinate(_angleX + (event._x - _oldDownPos._x)*0.001, _angleY + (event._y - _oldDownPos._y)*0.001, 0);
@@ -93,7 +93,7 @@ void GameStart::init()
 void GameStart::initListen()
 {
 	_listener = GameApp::getInstance()->createListenerSP();
-	_listener->listen([&](const KeyEvent& et) {
+	_listener->listen([this](const KeyEvent& et) {
 		switch (et._key)
 		{
 		case GLFW_KEY_UP: case 'w': case 'W':
@@ -120,10 +120,10 @@ void GameStart::initListen()
 		}
 	});
 
-	_listener->listen([&](const MouseMoveEvent& et) {
+	_listener->listen([this](const MouseMoveEvent& et) {
 		//printf("x:%.2f,y:%.2f,bts:%d\n", et._x, et._y, et._buttons);
 	});
-	_listener->listen([&](const MouseKeyEvent& et) {
+	_listener->listen([this](const MouseKeyEvent& et) {
 		if ((et.button & 4) && et._isDown)
 		{
 			auto pos = GameApp::getInstance()->convertViewToNode(this, Vector2(et._x, et._y));
@@ -169,13 +169,13 @@ void GameStart::initWorld()
 	}
 
 	static int time_i = 0;
-	addTimer(0.1, 200, [&](float time) {
+	addTimer(0.1, 200, [this](float time) {
 		//onAddBox(Vector2(10.0f + time_i / 10 * 4, 10.0f + time_i % 10 * 4), Size(2, 4), Vector4(0.1, 0.5, 0.8, 1));
 		time_i++;
 		return false;
 	});
 
-	addTimer(0, -1, [&](float time) {
+	addTimer(0, -1, [this](float time) {
 
 		static float timeStep = 1.0f / 60.0f;
 		static int32 velocityIterations = 6;

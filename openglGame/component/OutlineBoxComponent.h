@@ -10,6 +10,7 @@ class OutlineBoxComponent :public Component
 public:
 	~OutlineBoxComponent();
 public:
+	virtual const char* getName() { return "OutlineBoxComponent"; }
 	virtual ComponentType getType() { return ComponentType::COMPONENT_OUTLINE; }
 	virtual void doBegin();
 	virtual void doEnd(); 

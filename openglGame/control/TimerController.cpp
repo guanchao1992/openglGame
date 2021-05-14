@@ -75,7 +75,7 @@ void TimerController::killTimer(int id)
 	auto it = _timers->find(id);
 	if (it!= _timers->end())
 	{
-		_timers->erase(it);
+		it->second->_stop = true;
 	}
 }
 

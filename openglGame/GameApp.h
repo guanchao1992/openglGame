@@ -67,7 +67,7 @@ public:
 
 	void postEvent(EventType);	//只允许发普通的Event消息
 protected:
-	shared_ptr<map<string, SPShader>> _shaders = make_shared<map<string, SPShader>>();
+	map<string, SPShader> _shaders;
 
 	//GLfloat _projectionMatrix[16];
 	GLfloat _viewMatrix[16];

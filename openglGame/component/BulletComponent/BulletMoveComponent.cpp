@@ -20,9 +20,18 @@ bool BulletMoveComponent::update(float time)
 {
 	if (!_active)
 		return false;
-	Node*node = (Node*)_object;
+	_speedIncrement = 0.f;
+	_radianIncrement = 0.f;
+	for (auto it = _bmcComponents.begin(); it != _bmcComponents.end(); it++)
+	{
+		(*it)->update(time);
+	}
 
-	node->setPosition(node->getPosition()._x + _speed * cosf(_radian) * time, node->getPosition()._y + _speed * sinf(_radian) * time);
+	auto speed = _speedOriginal + _speedIncrement;
+	auto radian = _radianOriginal + _radianIncrement;
+
+	Node*node = (Node*)_object;
+	node->setPosition(node->getPosition()._x + speed * cosf(radian) * time, node->getPosition()._y + speed * sinf(radian) * time);
 
 	_leftTime -= time;
 	if (_leftTime < 0)
@@ -33,23 +42,68 @@ bool BulletMoveComponent::update(float time)
 	return false;
 }
 
-void BulletMoveComponent::setSpeed(const Vector2&speed)
+bool BulletMoveComponent::collision()
 {
-	_radian = atan2f(speed._y, speed._x);
-	_speed = sqrtf((speed._x * speed._x) + (speed._y * speed._y));
+
+	return false;
 }
 
-void BulletMoveComponent::setDir(const Vector2&dir)
+void BulletMoveComponent::setSpeedOriginal(const Vector2&speed)
 {
-	_radian = atan2f(dir._y, dir._x);
+	_radianOriginal = atan2f(speed._y, speed._x);
+	_speedOriginal = sqrtf((speed._x * speed._x) + (speed._y * speed._y));
 }
 
-void BulletMoveComponent::setDir(float radian)
+void BulletMoveComponent::setDirOriginal(const Vector2&dir)
 {
-	_radian = radian;
+	_radianOriginal = atan2f(dir._y, dir._x);
 }
 
-void BulletMoveComponent::setSpeed(float speed)
+void BulletMoveComponent::setDirOriginal(float radian)
 {
-	_speed = speed;
+	_radianOriginal = radian;
 }
+
+void BulletMoveComponent::setSpeedOriginal(float speed)
+{
+	_speedOriginal = speed;
+}
+
+void BulletMoveComponent::setSpeedIncrement(const Vector2&speed)
+{
+	_radianIncrement = atan2f(speed._y, speed._x);
+	_speedIncrement = sqrtf((speed._x * speed._x) + (speed._y * speed._y));
+}
+
+void BulletMoveComponent::setDirIncrement(const Vector2&dir)
+{
+	_radianIncrement = atan2f(dir._y, dir._x);
+}
+
+void BulletMoveComponent::setDirIncrement(float radian)
+{
+	_radianIncrement = radian;
+}
+
+void BulletMoveComponent::setSpeedIncrement(float speed)
+{
+	_speedIncrement = speed;
+}
+
+void BulletMoveComponent::insert(BMCComponent*bmcc)
+{
+	_bmcComponents.push_back(bmcc);
+}
+
+void BulletMoveComponent::erase(BMCComponent*bmcc)
+{
+	for (auto it = _bmcComponents.begin(); it != _bmcComponents.end(); it++)
+	{
+		if (*it == bmcc)
+		{
+			_bmcComponents.erase(it);
+			break;
+		}
+	}
+}
+

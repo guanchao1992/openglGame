@@ -3,6 +3,9 @@
 #include "OutlineBoxComponent.h"
 #include "AreaComponent.h"
 
+RanderComponent::RanderComponent()
+{
+}
 
 RanderComponent::~RanderComponent()
 {
@@ -77,6 +80,10 @@ void RanderComponent::genBuffer()
 }
 
 void RanderComponent::rander()
+{
+}
+
+void RanderComponent::randerOutLine()
 {
 	if (_outlineBoxCom)
 	{

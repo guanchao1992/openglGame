@@ -6,10 +6,12 @@
 #include "component/ActorTipsComponent.h"
 #include "Bullet.h"
 #include <GameApp.h>
-#include "component/BulletComponent/BulletMoveSComponent.h"
-#include "component/BulletComponent/BulletMoveCComponent.h"
-#include "component/BulletComponent/BulletMoveKComponent.h"
+#include "component/BulletComponent/BMCComponentS.h"
+#include "component/BulletComponent/BMCComponentK.h"
 #include "component/BulletComponent/BulletMoveComponent.h"
+#include "component/BulletComponent/BMCComponentS1.h"
+#include "component/BulletComponent/BMCComponentS2.h"
+#include "component/CollisionComponent.h"
 
 
 void Actor::init()
@@ -22,6 +24,7 @@ void Actor::init()
 	_sm->addState({ STATE_ACTIVE,{},STATE_ACTIVE,0,std::bind(&Actor::__activeEnter,this),std::bind(&Actor::__activeExit,this) });
 	_sm->addState({ STATE_NOTACTIVE,{},STATE_NOTACTIVE,0,std::bind(&Actor::__notactiveEnter,this),std::bind(&Actor::__notactiveExit,this) });
 	_sm->addState({ STATE_IDLE,{},STATE_IDLE,0,std::bind(&Actor::__idleEnter,this),std::bind(&Actor::__idleExit,this) });
+	_sm->addState({ STATE_HIT,{STATE_IDLE,STATE_READY,STATE_FIRE,STATE_ACTIVE},STATE_IDLE,0.15,std::bind(&Actor::__hitEnter,this),std::bind(&Actor::__hitExit,this) });
 	_sm->addState({ STATE_READY,{},STATE_READY,0.1,std::bind(&Actor::__readyEnter,this),std::bind(&Actor::__readyExit,this) });
 	_sm->addState({ STATE_FIRE,{STATE_IDLE},STATE_IDLE,0.1,std::bind(&Actor::__fireEnter,this),std::bind(&Actor::__fireExit,this) });
 	_sm->addState({ STATE_DEATH,{},STATE_DEATH,0,std::bind(&Actor::__deathEnter,this),std::bind(&Actor::__deathExit,this) });
@@ -39,6 +42,15 @@ void Actor::init()
 	nameAreaCom->setAnchor(Vector2(0.5, 0.5));
 	addChild(_name);
 	_name->setPosition(0, 70);
+
+
+	auto drawCom = addComponent<DrawRanderComponent>();
+	drawCom->addVertex(Vector2(0.f, 0));
+	drawCom->addVertex(Vector2(40.f, 0));
+	drawCom->addVertex(Vector2(40.f, 40));
+	drawCom->addVertex(Vector2(0.f, 40));
+	drawCom->signDraw(GL_TRIANGLE_FAN);
+
 
 	addComponent<OutlineBoxComponent>();
 	auto areaCom = getComponent<AreaComponent>();
@@ -104,13 +116,48 @@ void Actor::fire(const Vector2&aim, const Vector2&offset)
 	{
 		float vec[] = { aim._x,aim._y };
 		glusVector2Normalizef(vec);
-		auto b = Bullet::create(this);
-		b->setDir(aim - offset);
-		b->setSpeed(400.f);
-		GameApp::getInstance()->_start->addChild(b);
-		b->setPosition(getPosition()._x + offset._x, getPosition()._y + offset._y);
-		b->addComponent<BulletMoveSComponent>();
-		b->addComponent<BulletMoveKComponent>();
+		//发射
+		for (int i = 0; i < 10; i++)
+		{
+			auto b = Bullet::create(this);
+			b->setDir(aim);
+			b->setSpeed(400.f);
+			GameApp::getInstance()->_start->addChild(b);
+			b->setPosition(getPosition()._x + offset._x, getPosition()._y + offset._y);
+			/*
+			b->addComponent<BMCComponentS>();
+			b->addComponent<BMCComponentS1>();
+			b->addComponent<BMCComponentS2>();
+			*/
+
+			auto bulletCollCom = b->addComponent<CollisionComponent>();
+			auto collCom = getComponent<CollisionComponent>();
+			if (collCom)
+			{
+				switch (collCom->getFlagMark())
+				{
+				case  CMARK_SELF:
+				case  CMARK_SELF_BULLET:
+					bulletCollCom->enableCollision(CMARK_SELF_BULLET, CMARK_ENEMY | CMARK_STONE);
+					break;
+				case  CMARK_ENEMY:
+				case  CMARK_ENEMY_BULLET:
+					bulletCollCom->enableCollision(CMARK_ENEMY_BULLET, CMARK_SELF | CMARK_STONE);
+					break;
+				case  CMARK_FRIENDLY:
+				case  CMARK_FRIENDLY_BULLET:
+					bulletCollCom->enableCollision(CMARK_FRIENDLY_BULLET, CMARK_ENEMY | CMARK_STONE);
+					break;
+				case  CMARK_STONE:
+				case  CMARK_NEUTRAL:
+				case  CMARK_NEUTRAL_BULLET:
+					//他们(石头和中立单位)应该不会开枪
+				default:
+					break;
+				}
+
+			}
+		}
 	}
 }
 
@@ -147,6 +194,19 @@ void Actor::__idleEnter()
 void Actor::__idleExit()
 {
 
+}
+
+void Actor::__hitEnter()
+{
+	auto atCom = getComponent<ActorTipsComponent>();
+	wchar_t str[256];
+	swprintf_s(str, 256, L"状态：受击", _sm->getState());
+	atCom->addTips(str);
+	setColor(Vector4(1, 1, 0, 1));
+}
+void Actor::__hitExit()
+{
+	setColor(Vector4(1, 0, 0, 1));
 }
 
 void Actor::__readyEnter()

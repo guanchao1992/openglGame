@@ -19,24 +19,24 @@ public:
 		return dynamic_pointer_cast<T>(addComponent(make_shared<T>()));
 	}
 
-	void removeComponent(shared_ptr<Component> com);
+	virtual void removeComponent(shared_ptr<Component> com);
 	shared_ptr<Component> getComponent(ComponentType type);
 
 	template <class T>
 	T* getComponent() {
 		auto name = typeid(T).name();
 		//printf("getComponent:%s\n", name);
-		auto it = _components_map->find(name);
-		if (it == _components_map->end())
+		auto it = _components_map.find(name);
+		if (it == _components_map.end())
 		{
 			return nullptr;
 		}
 		return (T*)(it->second.get());
 	}
 
-	void removeAllComponent();
+	virtual void removeAllComponent();
 private:
-	shared_ptr<Component> addComponent(shared_ptr<Component> com);
+	virtual shared_ptr<Component> addComponent(shared_ptr<Component> com);
 private:
-	shared_ptr<map<string, shared_ptr<Component>>> _components_map = make_shared<map<string, shared_ptr<Component>>>();
+	map<string, shared_ptr<Component>> _components_map;
 };

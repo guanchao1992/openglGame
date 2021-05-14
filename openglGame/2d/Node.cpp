@@ -8,16 +8,16 @@
 
 Node::~Node()
 {
-	_childs->clear();
-	_visitLeft->clear();
-	_visitRight->clear();
+	_childs.clear();
+	_visitLeft.clear();
+	_visitRight.clear();
 	_parent = nullptr;
 	killAllTimer();
 }
 
 void Node::reshape()
 {
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	for (auto it = _childs.begin(); it != _childs.end(); it++)
 	{
 		(*it)->reshape();
 	}
@@ -34,7 +34,7 @@ void Node::rander()
 	{
 		return;
 	}
-	for (auto it = _visitLeft->begin(); it != _visitLeft->end(); it++)
+	for (auto it = _visitLeft.begin(); it != _visitLeft.end(); it++)
 	{
 		(*it)->rander();
 	}
@@ -42,8 +42,9 @@ void Node::rander()
 	if (_randerComponent)
 	{
 		_randerComponent->rander();
+		_randerComponent->randerOutLine();
 	}
-	for (auto it = _visitRight->begin(); it != _visitRight->end(); it++)
+	for (auto it = _visitRight.begin(); it != _visitRight.end(); it++)
 	{
 		(*it)->rander();
 	}
@@ -73,7 +74,7 @@ void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 	{
 		_randerComponent->draw();
 	}
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	for (auto it = _childs.begin(); it != _childs.end(); it++)
 	{
 		(*it)->visit(_projectTransform, parentFlag);
 	}
@@ -83,16 +84,16 @@ void Node::addChild(SPNode node, int zOrder)
 {
 	node->_parent = this;
 	node->_localZOrder = zOrder;
-	_childs->push_back(node);
+	_childs.push_back(node);
 
 	_reorder = true;
 }
 
 void Node::removeAllChild()
 {
-	_childs->clear();
-	_visitLeft->clear();
-	_visitRight->clear();
+	_childs.clear();
+	_visitLeft.clear();
+	_visitRight.clear();
 	_reorder = true;
 }
 
@@ -100,12 +101,29 @@ void Node::removeFromParent()
 {
 	assert(_parent, "That node havent parent.");
 
-	for (auto it = _parent->_childs->begin(); it != _parent->_childs->end(); it++)
+	this->removeAllComponent();
+	for (auto it = _parent->_visitLeft.begin(); it != _parent->_visitLeft.end(); it++)
+	{
+		if (*it == this)
+		{
+			_parent->_visitLeft.erase(it);
+			break;
+		}
+	}
+	for (auto it = _parent->_visitRight.begin(); it != _parent->_visitRight.end(); it++)
+	{
+		if (*it == this)
+		{
+			_parent->_visitRight.erase(it);
+			break;
+		}
+	}
+	for (auto it = _parent->_childs.begin(); it != _parent->_childs.end(); it++)
 	{
 		if ((*it).get() == this)
 		{
-			_parent->_childs->erase(it);
-			_parent->_reorder = true;
+			_parent->_childs.erase(it);
+			return;
 			_parent = nullptr;
 			break;
 		}
@@ -114,7 +132,7 @@ void Node::removeFromParent()
 
 const vector<SPNode>& Node::getChilds()
 {
-	return *_childs;
+	return _childs;
 }
 
 void Node::setPosition(const Vector2&pos)
@@ -255,29 +273,29 @@ void Node::setZOrder(int localZOrder)
 
 void Node::refreshOrder()
 {
-	_visitLeft->clear();
-	_visitRight->clear();
+	_visitLeft.clear();
+	_visitRight.clear();
 
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	for (auto it = _childs.begin(); it != _childs.end(); it++)
 	{
 		if ((*it)->getZOrder() < 0)
 		{
-			_visitLeft->push_back(*it);
+			_visitLeft.push_back(it->get());
 		}
 		else
 		{
-			_visitRight->push_back(*it);
+			_visitRight.push_back(it->get());
 		}
 	}
 	/*
-	sort(_visitLeft->begin(), _visitLeft->end(), [](SPNode a, SPNode b) {
+	sort(_visitLeft.begin(), _visitLeft.end(), [](SPNode a, SPNode b) {
 		return a->getZOrder() < b->getZOrder();
 	});
-	sort(_visitRight->begin(), _visitRight->end(), [](SPNode a, SPNode b) {
+	sort(_visitRight.begin(), _visitRight.end(), [](SPNode a, SPNode b) {
 		return a->getZOrder() < b->getZOrder();
 	});
 	*/
-	_visitLeft->sort();
+	_visitLeft.sort();
 }
 
 void Node::setTag(int tag)
@@ -287,7 +305,7 @@ void Node::setTag(int tag)
 
 SPNode Node::getChildByTag(int tag)
 {
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	for (auto it = _childs.begin(); it != _childs.end(); it++)
 	{
 		if ((*it)->getTag() == tag)
 		{
@@ -301,17 +319,17 @@ int Node::addTimer(float interval, int num, TimerCallback callback)
 {
 	//_timerids =
 	int timerId = TimerController::getInstance()->addTimer(interval, num, callback);
-	_timerids->push_back(timerId);
+	_timerids.push_back(timerId);
 	return timerId;
 }
 
 void Node::killTimer(int timerId)
 {
-	for (auto it = _timerids->begin(); it != _timerids->end(); it++)
+	for (auto it = _timerids.begin(); it != _timerids.end(); it++)
 	{
 		if ((*it) == timerId)
 		{
-			_timerids->erase(it);
+			_timerids.erase(it);
 			TimerController::getInstance()->killTimer(timerId);
 			break;
 		}
@@ -320,11 +338,11 @@ void Node::killTimer(int timerId)
 
 void Node::killAllTimer()
 {
-	for (auto it = _timerids->begin(); it != _timerids->end(); it++)
+	for (auto it = _timerids.begin(); it != _timerids.end(); it++)
 	{
 		TimerController::getInstance()->killTimer(*it);
 	}
-	_timerids->clear();
+	_timerids.clear();
 }
 
 void Node::setVisible(bool visible)
@@ -335,7 +353,7 @@ void Node::setVisible(bool visible)
 int Node::getAllChildNum()
 {
 	auto size = 1;
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	for (auto it = _childs.begin(); it != _childs.end(); it++)
 	{
 		size += (*it)->getAllChildNum();
 	}

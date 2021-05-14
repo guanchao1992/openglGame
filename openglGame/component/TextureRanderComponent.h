@@ -8,7 +8,7 @@ using namespace std;
 
 class TextureRanderComponent : public RanderComponent
 {
-	static string getComponentName() { return "TextureRanderComponent"; }
+	virtual const char* getName() { return "TextureRanderComponent"; }
 
 	virtual void doBegin();
 	virtual void doEnd();

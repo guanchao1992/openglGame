@@ -152,16 +152,34 @@
     <ClCompile Include="Game2DFight\Bullet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="component\BulletComponent\BulletMoveSComponent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="component\BulletComponent\BulletMoveComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="component\BulletComponent\BulletMoveCComponent.cpp">
+    <ClCompile Include="component\BulletComponent\BMCComponentS2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="component\BulletComponent\BulletMoveKComponent.cpp">
+    <ClCompile Include="component\BulletComponent\BMCComponentS3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponentS1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponentK.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponentS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponentM.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\CollisionComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="control\CollisionController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -337,19 +355,43 @@
     <ClInclude Include="Game2DFight\Bullet.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="component\BulletComponent\BulletMoveSComponent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="component\BulletComponent\BulletMoveComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="component\BulletComponent\BulletMoveCComponent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="component\BulletComponent\BulletMoveKComponent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="base\TreeFour.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentS1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentS2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentS3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentK.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentM.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\CollisionComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\CollisionController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\QTreeBase.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Rect.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

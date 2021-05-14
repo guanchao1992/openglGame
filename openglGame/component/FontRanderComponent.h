@@ -12,7 +12,8 @@ class FontRanderComponent : public RanderComponent
 {
 
 public:
-	static string getComponentName() { return "FontRanderComponent"; }
+	FontRanderComponent();
+	virtual const char* getName() { return "FontRanderComponent"; }
 
 	virtual void doBegin();
 	virtual void doEnd();

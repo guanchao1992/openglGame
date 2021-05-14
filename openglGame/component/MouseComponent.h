@@ -11,6 +11,7 @@ class MouseComponent :public Component
 {
 	friend class MouseController;
 public:
+	virtual const char* getName() { return "MouseComponent"; }
 	bool onMouseKeyEvent(const MouseKeyEvent&et);
 	bool onMouseMoveEvent(const MouseMoveEvent&et);
 

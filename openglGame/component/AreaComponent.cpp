@@ -49,3 +49,25 @@ bool AreaComponent::isPosInArea(const Vector2& pos)
 	}
 	return true;
 }
+
+
+const Rect& AreaComponent::getAreaRect(bool isNew)
+{
+	//²âÊÔµÄ£¬²»¹æ·¶
+	if (isNew)
+	{
+		_rectLast = _rect;
+		auto node = (Node*)getObject();
+
+		_rect._left = node->getPosition()._x - _anchor._x * _contentSize._width;
+		_rect._bottom = node->getPosition()._y - _anchor._y * _contentSize._height;
+		_rect._right = _rect._left + _contentSize._width;
+		_rect._top = _rect._bottom + _contentSize._height;
+	}
+	return _rect;
+}
+
+const Rect& AreaComponent::getAreaRectLast()
+{
+	return _rectLast;
+}

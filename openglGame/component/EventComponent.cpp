@@ -13,7 +13,7 @@ void EventComponent::doBegin()
 	_listener = GameApp::getInstance()->createListenerSP();
 	_map_callback = make_shared<std::map<EventType, std::function<void(Object*, const Event&)>>>();
 
-	_listener->listen([&](const Event& event) { onEventHandler(event); });
+	_listener->listen([this](const Event& event) { onEventHandler(event); });
 }
 
 void EventComponent::doEnd()
@@ -36,16 +36,16 @@ void EventComponent::addEvent(EventType et, std::function<void(Object*, const Ev
 	switch (et)
 	{
 	case EVENT_KEY:
-		_listener->listen([&](const KeyEvent& event) { onEventHandler(event); });
+		_listener->listen([this](const KeyEvent& event) { onEventHandler(event); });
 		break;
 	case EVENT_MOUSEKEY:
-		_listener->listen([&](const MouseKeyEvent& event) { onEventHandler(event); });
+		_listener->listen([this](const MouseKeyEvent& event) { onEventHandler(event); });
 		break;
 	case EVENT_MOUSEMOUSE:
-		_listener->listen([&](const MouseMoveEvent& event) { onEventHandler(event); });
+		_listener->listen([this](const MouseMoveEvent& event) { onEventHandler(event); });
 		break;
 	case EVENT_MOUSEWHEEL:
-		_listener->listen([&](const MouseWheelEvent& event) { onEventHandler(event); });
+		_listener->listen([this](const MouseWheelEvent& event) { onEventHandler(event); });
 		break;
 	case EVENT_CUSTOM:
 	case EVENT_NULL:

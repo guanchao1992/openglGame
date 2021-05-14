@@ -12,13 +12,10 @@ class Object;
 class Component
 {
 public:
-	Component()
-	{
-		_name = typeid(*this).name();
-	}
-	//标记组件名称，可以直接返回类名
-	//static string getName() { return "Component"; }
-	inline const string& getName() { return _name; }
+	Component();
+	~Component();
+	//标记组件名称
+	virtual const char* getName() { return "Component"; }
 
 	virtual ComponentType getType() { return ComponentType::COMPONENT_CUSTOM; }
 
@@ -77,7 +74,6 @@ public:
 	inline bool isActive() { return _active; }
 protected:
 	Object* _object = nullptr;
-	string _name;
 	bool _active = true;
 };
 

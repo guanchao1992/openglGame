@@ -33,7 +33,7 @@ void GameUI::init()
 	addChild(_center);
 
 	auto eventCom = addComponent<EventComponent>();
-	eventCom->addEvent(EVENT_GAME_RESTART, [&](Object*obj, const Event&event) {
+	eventCom->addEvent(EVENT_GAME_RESTART, [this](Object*obj, const Event&event) {
 		auto childs = getChilds();
 		for (auto child : childs)
 		{
@@ -43,7 +43,7 @@ void GameUI::init()
 		initDebug();
 		showStartUI();
 	});
-	eventCom->addEvent(EVENT_KEY, [&](Object*obj, const Event&event) {
+	eventCom->addEvent(EVENT_KEY, [this](Object*obj, const Event&event) {
 		const KeyEvent& ke = (KeyEvent&)event;
 		if (ke._isDown)
 		{
@@ -63,6 +63,13 @@ void GameUI::init()
 				}
 			}
 			break;
+			case 'o':
+			case 'O':
+			{
+				SPNode a = Node::create();
+				//std::list<SPNode> _visitLeft = list<SPNode>>();
+			}
+				break;
 			default:
 				break;
 			}
@@ -153,7 +160,7 @@ void GameUI::initBk()
 	}
 
 	/*
-	addTimer(0, -1, [&](float time) {
+	addTimer(0, -1, [this](float time) {
 		static float total_time = 0;
 		total_time = total_time + time;
 		_leftBottom->getChildByTag(100)->setAngleCoordinate(90 * total_time, 0, 0);
@@ -179,7 +186,7 @@ void GameUI::initDebug()
 	text1->setTag(1);
 	text1->setColor(Vector4(1, 1, 1, 0.6));
 
-	_debug->addTimer(0, -1, [&](float time) {
+	_debug->addTimer(0, -1, [this](float time) {
 		static float t_time = 0.f;
 		static int frame = 0;
 		static int timebase = 0;
@@ -234,7 +241,7 @@ void GameUI::showStartUI()
 		btn_start->setTitle(L"开始", DEFAULTE_FONT_FILE, 24);
 		node_start_uis->addChild(btn_start);
 		btn_start->setPosition(-130, -140);
-		btn_start->setCallBack([&]() {
+		btn_start->setCallBack([this]() {
 			printf("开始游戏");
 			//node_start_uis->removeFromParent();
 		});

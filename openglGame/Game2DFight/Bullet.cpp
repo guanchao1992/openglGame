@@ -27,31 +27,31 @@ void Bullet::init()
 	areaCom->setSize(Size(20, 20));
 
 	auto bmCom = addComponent<BulletMoveComponent>();
-;
+	
 
 }
 
 void Bullet::setSpeed(float speed, float radian)
 {
 	auto bmc = getComponent<BulletMoveComponent>();
-	bmc->setSpeed(speed);
-	bmc->setDir(radian);
+	bmc->setSpeedOriginal(speed);
+	bmc->setDirOriginal(radian);
 }
 
 void Bullet::setSpeed(float speed)
 {
 	auto bmc = getComponent<BulletMoveComponent>();
-	bmc->setSpeed(speed);
+	bmc->setSpeedOriginal(speed);
 }
 
 void Bullet::setSpeed(const Vector2&speed)
 {
 	auto bmc = getComponent<BulletMoveComponent>();
-	bmc->setSpeed(speed);
+	bmc->setSpeedOriginal(speed);
 }
 
 void Bullet::setDir(const Vector2&dir)
 {
 	auto bmc = getComponent<BulletMoveComponent>();
-	bmc->setDir(dir);
+	bmc->setDirOriginal(dir);
 }

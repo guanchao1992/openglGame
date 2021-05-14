@@ -10,6 +10,7 @@ enum StateType : unsigned int
 	STATE_ACTIVE,		//激活
 	STATE_NOTACTIVE,	//非激活
 	STATE_IDLE,			//闲置
+	STATE_HIT,			//受击
 	STATE_READY,		//思索
 	STATE_FIRE,			//攻击
 	STATE_DEATH,		//死亡

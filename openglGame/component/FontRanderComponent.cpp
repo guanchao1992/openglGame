@@ -5,6 +5,24 @@
 #include <base/Tools.h>
 #include "AreaComponent.h"
 
+#define CRTDBG_MAP_ALLOC    
+#include <stdlib.h>    
+#include <crtdbg.h> 
+
+#ifdef _DEBUG
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define new DBG_NEW
+#endif 
+#endif  // _DEBUG
+
+FontRanderComponent::FontRanderComponent()
+{
+	auto name = getName();
+}
+/*
+*/
+
 void FontRanderComponent::setFont(const string& fontFile)
 {
 	_font = FontController::getInstance()->loadFont(fontFile.c_str());
@@ -102,7 +120,7 @@ void FontRanderComponent::draw()
 	glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
 
 	//如果缓冲区大小发生改变，则重新创建缓冲区
-	glBufferData(GL_ARRAY_BUFFER, _vertexs.size() * (4 + 2) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, _vertexs.size() * (4 + 2) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(_verticesVAO);
 

@@ -8,6 +8,7 @@
 class ActorOIComponent :public Component
 {
 public:
+	virtual const char* getName() { return "ActorOIComponent"; }
 	virtual ComponentType getType() { return ComponentType::COMPONENT_ACTOR_OI; }
 	virtual void doBegin();
 	virtual void doEnd(); 

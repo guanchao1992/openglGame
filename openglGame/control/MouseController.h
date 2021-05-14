@@ -9,13 +9,13 @@ using namespace std;
 class MouseController : public ControllerBaseT<MouseController>
 {
 public:
+	~MouseController();
 	void init();
 	void addMouseComponent(MouseComponent* com);
 	void removeMouseComponent(MouseComponent* com);
 	void sortAllComs();
 private:
-	shared_ptr<vector<MouseComponent*>> _mouseComs = make_shared<vector<MouseComponent*>>();
-
-	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
+	vector<MouseComponent*> _mouseComs;
+	shared_ptr<dexode::eventbus::Listener<dexode::eventbus::Bus>> _listener = nullptr;
 };
 

@@ -1,5 +1,16 @@
 #include "../2d/Object.hpp"
 #include "Component.hpp"
+#include "FontRanderComponent.h"
+#include <set>
+
+
+Component::Component()
+{
+}
+
+Component::~Component()
+{
+}
 
 /*
 void Component::addComponent(shared_ptr<Component> com)

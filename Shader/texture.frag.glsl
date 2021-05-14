@@ -8,11 +8,11 @@ out vec4 fragColor;
 
 void main(void)
 {
-	//gl_FragColor = u_makeColor * texture2D(CC_Texture0, v_texCoord);
+	//fragColor = u_makeColor * texture2D(CC_Texture0, v_texCoord);
 
 	//颜色加深
-	//gl_FragColor = vec4(1.0) - (vec4(1.0) - texture2D(CC_Texture0, v_texCoord)) / u_makeColor;
+	//fragColor = vec4(1.0) - (vec4(1.0) - texture2D(CC_Texture0, v_texCoord)) / u_makeColor;
 
 	//正片叠底
-	gl_FragColor = texture2D(CC_Texture0, v_texCoord)* u_makeColor;
+	fragColor = texture2D(CC_Texture0, v_texCoord)* u_makeColor;
 }

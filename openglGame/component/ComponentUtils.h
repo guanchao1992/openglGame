@@ -14,6 +14,8 @@ enum ComponentType
 	COMPONENT_ACTIVE_MOVE,		//移动控制
 
 	COMPONENT_BULLET_MOVE,		//子弹移动控制
-	COMPONENT_BULLET_MOVE_S,	//子弹移动控制的控制
+	COMPONENT_BULLET_MOVE_CHANGE,//子弹移动控制的控制
+
+	COMPONENT_COLLISION,	//碰撞组件
 };
 

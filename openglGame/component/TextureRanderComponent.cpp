@@ -90,7 +90,7 @@ void TextureRanderComponent::draw()
 	glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
 
 	//重新创建缓冲区
-	glBufferData(GL_ARRAY_BUFFER, 4 * (4 + 2) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 4 * (4 + 2) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(_verticesVAO);
 

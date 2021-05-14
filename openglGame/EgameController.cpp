@@ -228,7 +228,7 @@ void EgameController::restartBlock()
 
 	if (_move_timer_left == -1)
 	{
-		_move_timer_left = TimerController::getInstance()->addTimer(0.15, -1, [&](float time) {
+		_move_timer_left = TimerController::getInstance()->addTimer(0.15, -1, [this](float time) {
 			if (_move_type & 0x0001)
 			{
 				moveBlock(-1, 0);
@@ -238,7 +238,7 @@ void EgameController::restartBlock()
 	}
 	if (_move_timer_right == -1)
 	{
-		_move_timer_right = TimerController::getInstance()->addTimer(0.15, -1, [&](float time) {
+		_move_timer_right = TimerController::getInstance()->addTimer(0.15, -1, [this](float time) {
 			if (_move_type & 0x0010)
 			{
 				moveBlock(1, 0);
@@ -248,7 +248,7 @@ void EgameController::restartBlock()
 	}
 	if (_move_timer_down == -1)
 	{
-		_move_timer_down = TimerController::getInstance()->addTimer(0.1, -1, [&](float time) {
+		_move_timer_down = TimerController::getInstance()->addTimer(0.1, -1, [this](float time) {
 			if (_move_type & 0x0100)
 			{
 				if (checkCan(0, -1, _cur_dir))

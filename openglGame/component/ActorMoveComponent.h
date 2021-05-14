@@ -7,6 +7,7 @@
 class ActorMoveComponent :public Component
 {
 public:
+	virtual const char* getName() { return "ActorMoveComponent"; }
 	virtual ComponentType getType() { return ComponentType::COMPONENT_CUSTOM; }
 	virtual void doBegin();
 	virtual void doEnd(); 

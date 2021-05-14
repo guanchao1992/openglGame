@@ -120,10 +120,9 @@ protected:
 	Vector4 _color = Vector4(1.f, 1.f, 1.f, 1.f);
 	Node* _parent = nullptr;
 
-	shared_ptr<vector<SPNode>> _childs = make_shared<vector<SPNode>>();
-	shared_ptr<std::list<SPNode>> _visitLeft = make_shared<list<SPNode>>();
-	shared_ptr<std::list<SPNode>> _visitRight = make_shared<list<SPNode>>();
-
+	vector<SPNode> _childs;
+	std::list<Node*> _visitLeft;
+	std::list<Node*> _visitRight;
 
 	int _localZOrder = 0;
 	int _tag = 0;
@@ -135,7 +134,7 @@ protected:
 	bool _reorder = true;	//需要重新对子节点进行排序
 	bool _visible = true;	//是否显示
 
-	shared_ptr<vector<int>> _timerids = make_shared<vector<int>>();
+	vector<int> _timerids;
 
 protected:
 	RanderComponent* _randerComponent = nullptr;		//特殊的，用于显示

@@ -8,6 +8,7 @@
 class ActorTipsComponent :public Component
 {
 public:
+	virtual const char* getName() { return "ActorTipsComponent"; }
 	virtual ComponentType getType() { return ComponentType::COMPONENT_CUSTOM; }
 	virtual void doBegin();
 	virtual void doEnd();

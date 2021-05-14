@@ -36,7 +36,7 @@ void Button::init(const char*imgNormal, const char*imgSelect)
 	textureCom->setTextureID(_textureNormalId);
 
 	auto mouseCom = addComponent<MouseComponent>();
-	mouseCom->setMouseKeyFunc([&](MouseComponent&com, const MouseKeyEvent&et) {
+	mouseCom->setMouseKeyFunc([this](MouseComponent&com, const MouseKeyEvent&et) {
 		if (et._isDown)
 		{
 			setScale(1.1);
@@ -46,7 +46,7 @@ void Button::init(const char*imgNormal, const char*imgSelect)
 			setScale(1.0);
 		}
 	});
-	mouseCom->setMouseMoveInFunc([&](MouseComponent&com, const MouseMoveEvent&et) {
+	mouseCom->setMouseMoveInFunc([this](MouseComponent&com, const MouseMoveEvent&et) {
 		getComponent<TextureRanderComponent>()->setTextureID(_textureSelectId);
 		if (com.isThisDown() && (et._buttons & 1))
 		{
@@ -57,7 +57,7 @@ void Button::init(const char*imgNormal, const char*imgSelect)
 			setScale(1.0);
 		}
 	});
-	mouseCom->setMouseMoveOutFunc([&](MouseComponent&com, const MouseMoveEvent&et) {
+	mouseCom->setMouseMoveOutFunc([this](MouseComponent&com, const MouseMoveEvent&et) {
 		getComponent<TextureRanderComponent>()->setTextureID(_textureNormalId);
 		setScale(1.0);
 	});

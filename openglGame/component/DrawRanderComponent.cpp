@@ -77,7 +77,7 @@ void DrawRanderComponent::draw()
 	int i = 0;
 	for (auto it = _vertexs.begin(); it != _vertexs.end(); it++)
 	{
-		pVectexs[i].vertexs[0] = it->_x - -anchor._x * size._width;
+		pVectexs[i].vertexs[0] = it->_x - anchor._x * size._width;
 		pVectexs[i].vertexs[1] = it->_y - anchor._y * size._height;
 		pVectexs[i].vertexs[2] = 0.0f;
 		pVectexs[i].vertexs[3] = 1.0f;

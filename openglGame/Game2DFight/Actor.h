@@ -40,6 +40,8 @@ private:
 	virtual void __notactiveExit();
 	virtual void __idleEnter();
 	virtual void __idleExit();
+	virtual void __hitEnter();
+	virtual void __hitExit();
 	virtual void __readyEnter();
 	virtual void __readyExit();
 	virtual void __fireEnter();

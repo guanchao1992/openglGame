@@ -7,8 +7,10 @@ class OutlineBoxComponent;
 class RanderComponent : public Component
 {
 public:
+	RanderComponent();
 	~RanderComponent();
 public:
+	virtual const char* getName() { return "RanderComponent"; }
 	virtual ComponentType getType() { return ComponentType::COMPONENT_RANDER; }
 
 	virtual void doBegin();
@@ -16,6 +18,7 @@ public:
 
 	virtual void rander();
 	virtual void draw();
+	virtual void randerOutLine();
 
 	void genBuffer();
 	inline void reDraw() { _redraw = true; }
@@ -29,6 +32,6 @@ protected:
 	bool _redraw = true;
 
 
-	OutlineBoxComponent* _outlineBoxCom;	//√Ë±ﬂ
+	OutlineBoxComponent* _outlineBoxCom = nullptr;	//√Ë±ﬂ
 };
 

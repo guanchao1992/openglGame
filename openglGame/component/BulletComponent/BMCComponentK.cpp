@@ -1,31 +1,25 @@
-#include "BulletMoveKComponent.h"
+#include "BMCComponentK.h"
 #include <GameApp.h>
 #include "Game2DFight/Actor.h"
 #include "BulletMoveComponent.h"
 #include "Game2DFight/Bullet.h"
 
-void BulletMoveKComponent::doBegin()
+void BMCComponentK::doBegin()
 {
 	__super::doBegin();
 	Node* node = (Node*)_object;
 
-	_timerId = TimerController::getInstance()->addTimer(0, -1, std::bind(&BulletMoveKComponent::update, this, std::placeholders::_1));
-
-	auto bmc = _object->getComponent<BulletMoveComponent>();
-	_defaultSpeed = bmc->getSpeed();
-	_defaultRadian = bmc->getRadian();
 }
 
-void BulletMoveKComponent::doEnd()
+void BMCComponentK::doEnd()
 {
 	__super::doEnd();
-	TimerController::getInstance()->killTimer(_timerId);
 }
 
-bool BulletMoveKComponent::update(float time)
+void BMCComponentK::update(float time)
 {
 	if (!_active)
-		return false;
+		return;
 	_accumulatedTime += time;
 	if (_accumulatedTime > 0.8)
 	{
@@ -33,12 +27,15 @@ bool BulletMoveKComponent::update(float time)
 		auto originBullet = (Bullet*)_object;
 		auto bmc = originBullet->getComponent<BulletMoveComponent>();
 
+		auto speedOriginal = bmc->getSpeedOriginal();
+		auto radianOriginal = bmc->getRadianOriginal();
+
 		auto b1 = Bullet::create(originBullet->getFather());
-		b1->setSpeed(_defaultSpeed, _defaultRadian + PI / 8);
+		b1->setSpeed(speedOriginal, radianOriginal + PI / 8);
 		auto b2 = Bullet::create(originBullet->getFather());
-		b2->setSpeed(_defaultSpeed, _defaultRadian);
+		b2->setSpeed(speedOriginal, radianOriginal);
 		auto b3 = Bullet::create(originBullet->getFather());
-		b3->setSpeed(_defaultSpeed, _defaultRadian - PI / 8);
+		b3->setSpeed(speedOriginal, radianOriginal - PI / 8);
 
 		originBullet->getParent()->addChild(b1);
 		originBullet->getParent()->addChild(b2);
@@ -49,5 +46,5 @@ bool BulletMoveKComponent::update(float time)
 		originBullet->removeFromParent();
 	}
 
-	return false;
+	return;
 }

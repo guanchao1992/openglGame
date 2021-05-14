@@ -9,6 +9,7 @@ class Object;
 class EventComponent : public Component
 {
 public:
+	virtual const char* getName() { return "EventComponent"; }
 	~EventComponent();
 public:
 	virtual ComponentType getType() { return ComponentType::COMPONENT_RANDER; }

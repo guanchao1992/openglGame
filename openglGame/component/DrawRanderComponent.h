@@ -13,7 +13,7 @@ using namespace std;
 class DrawRanderComponent : public RanderComponent
 {
 public:
-	static string getComponentName() { return "DrawRanderComponent"; }
+	virtual const char* getName() { return "DrawRanderComponent"; }
 
 	virtual void doBegin();
 	virtual void doEnd();

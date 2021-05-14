@@ -12,7 +12,7 @@ void ActorOIComponent::doBegin()
 	_timerId = TimerController::getInstance()->addTimer(0, -1, std::bind(&ActorOIComponent::update, this, std::placeholders::_1));
 
 	_listener = GameApp::getInstance()->createListenerSP();
-	_listener->listen([&](const KeyEvent& et) {
+	_listener->listen([this](const KeyEvent& et) {
 		Actor* actor = (Actor*)_object;
 		switch (et._key)
 		{
@@ -38,7 +38,7 @@ void ActorOIComponent::doBegin()
 			break;
 		}
 	});
-	_listener->listen([&](const MouseKeyEvent&et) {
+	_listener->listen([this](const MouseKeyEvent&et) {
 		if (et._isDown)
 		{
 			Actor* actor = (Actor*)_object;

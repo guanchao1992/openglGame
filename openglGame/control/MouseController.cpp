@@ -1,13 +1,16 @@
 #include "MouseController.h"
 #include "GameApp.h"
 
+MouseController::~MouseController()
+{
+}
 
 void MouseController::init()
 {
 	_listener = GameApp::getInstance()->createListenerSP();
-	_listener->listen([&](const MouseKeyEvent& et) {
+	_listener->listen([this](const MouseKeyEvent& et) {
 		sortAllComs();
-		for (auto it : *_mouseComs)
+		for (auto it : _mouseComs)
 		{
 			if (it->onMouseKeyEvent(et))
 			{
@@ -16,16 +19,16 @@ void MouseController::init()
 		}
 		if (!et._isDown)
 		{
-			for (auto it : *_mouseComs)
+			for (auto it : _mouseComs)
 			{
 				it->_isThisDown = false;
 			}
 		}
 	});
-	_listener->listen([&](const MouseMoveEvent& et) {
+	_listener->listen([this](const MouseMoveEvent& et) {
 		sortAllComs();
 		bool cutoff = false;
-		for (auto it : *_mouseComs)
+		for (auto it : _mouseComs)
 		{
 			if (cutoff)
 			{
@@ -41,16 +44,16 @@ void MouseController::init()
 
 void MouseController::addMouseComponent(MouseComponent* com)
 {
-	_mouseComs->push_back(com);
+	_mouseComs.push_back(com);
 }
 
 void MouseController::removeMouseComponent(MouseComponent* com)
 {
-	for (auto it = _mouseComs->begin(); it != _mouseComs->end(); it++)
+	for (auto it = _mouseComs.begin(); it != _mouseComs.end(); it++)
 	{
 		if (*it == com)
 		{
-			_mouseComs->erase(it);
+			_mouseComs.erase(it);
 			break;
 		}
 	}
@@ -103,7 +106,7 @@ void MouseController::sortAllComs()
 	auto app = GameApp::getInstance();
 	//_mouseKeyComs
 
-	sort(_mouseComs->begin(), _mouseComs->end(), [&](MouseComponent* a, MouseComponent* b) {
+	sort(_mouseComs.begin(), _mouseComs.end(), [this](MouseComponent* a, MouseComponent* b) {
 		Node *nodeA = (Node*)a->getObject();
 		Node *nodeB = (Node*)b->getObject();
 		if (!nodeA || !nodeB)

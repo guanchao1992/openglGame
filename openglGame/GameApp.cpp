@@ -29,7 +29,7 @@ GameApp::~GameApp()
 void GameApp::init()
 {
 	/*
-	_listener->listen([&](const Event& event) {
+	_listener->listen([this](const Event& event) {
 		printf("测试事件,接受到事件ID：%d\n", event._eventId);
 	});
 	*/
@@ -93,7 +93,7 @@ int GameApp::initShader()
 		SPShader shader = make_shared<Shader>();
 		shader->loadShader(shaderName);
 		
-		_shaders->insert(map<string, SPShader>::value_type(shaderName, shader));
+		_shaders.insert(map<string, SPShader>::value_type(shaderName, shader));
 	}
 
 
@@ -102,18 +102,18 @@ int GameApp::initShader()
 
 int GameApp::removeAllShader()
 {
-	for (auto it = _shaders->begin(); it != _shaders->end(); it++)
+	for (auto it = _shaders.begin(); it != _shaders.end(); it++)
 	{
 		glusProgramDestroy(it->second->_sprogram.get());
 	}
-	_shaders->clear();
+	_shaders.clear();
 	return 0;
 }
 
 int GameApp::initTouchUI()
 {
 	_listener = GameApp::getInstance()->createListenerSP();
-	//_listener->listen([&](const MouseKeyEvent& et) { });
+	//_listener->listen([this](const MouseKeyEvent& et) { });
 	_listener->listen<MouseKeyEvent>(std::bind(&GameApp::onTouchHandler, this, std::placeholders::_1));
 	return 0;
 }
@@ -127,7 +127,7 @@ void GameApp::onTouchHandler(const MouseKeyEvent& et)
 //getSprogram(const char*name);
 GLint GameApp::getProgram(const char* name)
 {
-	auto sp_shader = _shaders->at(name);
+	auto sp_shader = _shaders.at(name);
 	if (sp_shader != nullptr)
 	{
 		return sp_shader->getProgram();
@@ -137,7 +137,7 @@ GLint GameApp::getProgram(const char* name)
 
 SPShader GameApp::getShader(const char*name)
 {
-	auto sp_shader = _shaders->at(name);
+	auto sp_shader = _shaders.at(name);
 	if (sp_shader != nullptr)
 	{
 		return sp_shader;
@@ -182,7 +182,7 @@ void GameApp::reshape()
 	glusMatrix4x4Copyf(_viewMatrix, viewMatrix, false);
 	glusMatrix4x4Multiplyf(_modelViewMatrix, _viewMatrix, _modelMatrix);
 
-	for (auto it = _shaders->begin(); it != _shaders->end(); it++)
+	for (auto it = _shaders.begin(); it != _shaders.end(); it++)
 	{
 		auto program = it->second->getProgram();
 		glUseProgram(program);

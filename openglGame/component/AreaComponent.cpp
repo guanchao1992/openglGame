@@ -28,12 +28,12 @@ void AreaComponent::setSize(const Size&size)
 void AreaComponent::setAnchor(const Vector2&anchor)
 {
 	_anchor = anchor;
-	auto randerCom = dynamic_pointer_cast<RanderComponent>(getComponent(COMPONENT_RANDER));
+	auto randerCom = dynamic_cast<RanderComponent*>(getComponent(COMPONENT_RANDER));
 	if (randerCom)
 	{
 		randerCom->reDraw();
 	}
-	auto outlineCom = dynamic_pointer_cast<RanderComponent>(getComponent(COMPONENT_OUTLINE));
+	auto outlineCom = dynamic_cast<RanderComponent*>(getComponent(COMPONENT_OUTLINE));
 	if (outlineCom)
 	{
 		outlineCom->reDraw();

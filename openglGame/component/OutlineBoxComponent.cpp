@@ -7,17 +7,18 @@
 
 OutlineBoxComponent::~OutlineBoxComponent()
 {
+	if (_verticesVAO != -1)
+	{
+		glDeleteVertexArrays(1, &_verticesVAO);
+		_verticesVAO = -1;
+	}
+
 	if (_verticesVBO != -1)
 	{
 		glDeleteBuffers(1, &_verticesVBO);
 		_verticesVBO = -1;
 	}
 
-	if (_verticesVAO != -1)
-	{
-		glDeleteVertexArrays(1, &_verticesVAO);
-		_verticesVAO = -1;
-	}
 }
 
 void OutlineBoxComponent::doBegin()
@@ -27,9 +28,9 @@ void OutlineBoxComponent::doBegin()
 	auto areaCom = _object->getComponent<AreaComponent>();
 	if (!areaCom)
 	{
-		areaCom = _object->addComponent<AreaComponent>().get();
+		areaCom = _object->addComponent<AreaComponent>();
 	}
-	auto randerCom = dynamic_pointer_cast<RanderComponent>(_object->getComponent(COMPONENT_RANDER));
+	auto randerCom = dynamic_cast<RanderComponent*>(_object->getComponent(COMPONENT_RANDER));
 	if (!randerCom)
 	{
 		randerCom = _object->addComponent<RanderComponent>();
@@ -48,7 +49,7 @@ void OutlineBoxComponent::doBegin()
 void OutlineBoxComponent::doEnd()
 {
 	__super::doEnd();
-	auto randerCom = dynamic_pointer_cast<RanderComponent>(_object->getComponent(COMPONENT_RANDER));
+	auto randerCom = dynamic_cast<RanderComponent*>(_object->getComponent(COMPONENT_RANDER));
 	if (!randerCom)
 	{
 		randerCom = _object->addComponent<RanderComponent>();

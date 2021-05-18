@@ -182,6 +182,9 @@
     <ClCompile Include="control\CollisionController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="control\ComponentController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -392,6 +395,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="base\Rect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\ComponentController.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

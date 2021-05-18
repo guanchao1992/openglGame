@@ -14,6 +14,7 @@
 #include "component/AreaComponent.h"
 #include "2d/Button.h"
 #include "component/EventComponent.h"
+#include <component/BulletComponent/BMCComponent.h>
 
 
 void GameUI::init()

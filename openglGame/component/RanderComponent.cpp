@@ -9,17 +9,17 @@ RanderComponent::RanderComponent()
 
 RanderComponent::~RanderComponent()
 {
+	if (_verticesVAO != -1)
+	{
+		glDeleteVertexArrays(1, &_verticesVAO);
+		_verticesVAO = -1;
+	}
 	if (_verticesVBO != -1)
 	{
 		glDeleteBuffers(1, &_verticesVBO);
 		_verticesVBO = -1;
 	}
 
-	if (_verticesVAO != -1)
-	{
-		glDeleteVertexArrays(1, &_verticesVAO);
-		_verticesVAO = -1;
-	}
 }
 
 void RanderComponent::doBegin()
@@ -28,7 +28,7 @@ void RanderComponent::doBegin()
 	auto areaCom = _object->getComponent<AreaComponent>();
 	if (!areaCom)
 	{
-		areaCom = _object->addComponent<AreaComponent>().get();
+		areaCom = _object->addComponent<AreaComponent>();
 	}
 
 	auto outlineCom = _object->getComponent<OutlineBoxComponent>();

@@ -36,7 +36,6 @@ void CollisionController::erase(CollisionComponent*col)
 
 void CollisionController::collisionDetection()
 {
-	return;
 	_tree->clear();
 
 	for (auto it = _collisions.begin(); it != _collisions.end(); it++)

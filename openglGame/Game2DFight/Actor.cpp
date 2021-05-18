@@ -117,7 +117,7 @@ void Actor::fire(const Vector2&aim, const Vector2&offset)
 		float vec[] = { aim._x,aim._y };
 		glusVector2Normalizef(vec);
 		//·¢Éä
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			auto b = Bullet::create(this);
 			b->setDir(aim);

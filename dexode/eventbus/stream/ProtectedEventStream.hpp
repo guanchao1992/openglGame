@@ -24,9 +24,10 @@ public:
 		_queue.push_back(std::move(myEvent));
 	}
 
+	std::vector<Event> processEvents;
 	std::size_t process(const std::size_t limit) override
 	{
-		std::vector<Event> processEvents;
+		processEvents.clear();
 		{
 			std::lock_guard writeGuard{_mutexEvent};
 			if(limit >= _queue.size())

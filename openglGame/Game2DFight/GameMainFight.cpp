@@ -39,7 +39,6 @@ void GameMainFight::init()
 	auto playerCollCom = _player->addComponent<CollisionComponent>();
 	playerCollCom->enableCollision(CMARK_SELF, CMARK_ENEMY | CMARK_ENEMY_BULLET | CMARK_STONE);
 
-	/*
 	auto target1 = Actor::create();
 	_objectLayer->addChild(target1);
 	target1->setPosition(500, 100);
@@ -56,7 +55,6 @@ void GameMainFight::init()
 		auto target2CollCom = target2->addComponent<CollisionComponent>();
 		target2CollCom->enableCollision(CMARK_ENEMY, CMARK_SELF | CMARK_SELF_BULLET | CMARK_STONE);
 	}
-	*/
 
 
 	TimerController::getInstance()->addTimer(0, -1, std::bind(&GameMainFight::update, this, std::placeholders::_1));

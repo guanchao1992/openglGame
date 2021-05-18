@@ -28,7 +28,6 @@ void Bullet::init()
 
 	auto bmCom = addComponent<BulletMoveComponent>();
 	
-
 }
 
 void Bullet::setSpeed(float speed, float radian)

@@ -197,6 +197,7 @@
     <ClCompile Include="component\TextureRanderComponent.cpp" />
     <ClCompile Include="component\MouseComponent.cpp" />
     <ClCompile Include="control\CollisionController.cpp" />
+    <ClCompile Include="control\ComponentController.cpp" />
     <ClCompile Include="control\FontController.cpp" />
     <ClCompile Include="control\KeyboardController.cpp" />
     <ClCompile Include="control\MouseController.cpp" />
@@ -267,6 +268,7 @@
     <ClInclude Include="component\TextureRanderComponent.h" />
     <ClInclude Include="component\MouseComponent.h" />
     <ClInclude Include="control\CollisionController.h" />
+    <ClInclude Include="control\ComponentController.hpp" />
     <ClInclude Include="control\FontController.h" />
     <ClInclude Include="control\KeyboardController.h" />
     <ClInclude Include="control\MouseController.h" />

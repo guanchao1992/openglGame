@@ -66,6 +66,8 @@ public:
 	int getNodeCount();
 
 	void postEvent(EventType);	//只允许发普通的Event消息
+
+	inline float getLastTime() { return _last_time; }
 protected:
 	map<string, SPShader> _shaders;
 
@@ -87,6 +89,8 @@ protected:
 	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
 
 	shared_ptr<ControllerMaster> _controllerMaster;
+
+	float _last_time = 0.0f;
 public:
 	SPNode	_appNode;
 	SPNode	_bg;

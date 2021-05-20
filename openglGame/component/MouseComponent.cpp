@@ -127,7 +127,7 @@ void MouseComponent::doBegin()
 	Node* node = (Node*)(_object);
 	if (node)
 	{
-		node->setMouseKeyComponent(this);
+		//node->setMouseKeyComponent(this);
 		MouseController::getInstance()->addMouseComponent(this);
 	}
 }
@@ -139,7 +139,7 @@ void MouseComponent::doEnd()
 	if (node)
 	{
 		MouseController::getInstance()->removeMouseComponent(this);
-		node->setMouseKeyComponent(nullptr);
+		//node->setMouseKeyComponent(nullptr);
 	}
 }
 

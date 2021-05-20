@@ -124,8 +124,6 @@ void Node::removeFromParent()
 		{
 			_parent->_childs.erase(it);
 			return;
-			_parent = nullptr;
-			break;
 		}
 	}
 }
@@ -365,7 +363,3 @@ void Node::setRanderComponent(RanderComponent* com)
 	_randerComponent = com;
 }
 
-void Node::setMouseKeyComponent(MouseComponent* com)
-{
-	_mouseKeyComponent = com;
-}

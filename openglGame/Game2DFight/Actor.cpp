@@ -12,6 +12,8 @@
 #include "component/BulletComponent/BMCComponentS1.h"
 #include "component/BulletComponent/BMCComponentS2.h"
 #include "component/CollisionComponent.h"
+#include "component/CollisionBulletComponent.h"
+#include "component/CollisionActorComponent.h"
 
 
 void Actor::init()
@@ -130,8 +132,8 @@ void Actor::fire(const Vector2&aim, const Vector2&offset)
 			b->addComponent<BMCComponentS2>();
 			*/
 
-			auto bulletCollCom = b->addComponent<CollisionComponent>();
-			auto collCom = getComponent<CollisionComponent>();
+			auto bulletCollCom = b->addComponent<CollisionBulletComponent>();
+			auto collCom = getComponent<CollisionActorComponent>();
 			if (collCom)
 			{
 				switch (collCom->getFlagMark())

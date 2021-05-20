@@ -9,6 +9,7 @@
 #include "base/QTreeBase.hpp"
 
 using namespace std;
+class Node;
 
 class CollisionController : public ControllerBaseT<CollisionController>
 {
@@ -27,10 +28,8 @@ private:
 	bool collisionEnemyToOther(CollisionComponent*actor, CollisionComponent*colB);
 	//友方演员与子弹碰撞
 	bool collisionFriendlyToOther(CollisionComponent*actor, CollisionComponent*colB);
-	//其他的碰撞处理
-	bool collisionAB(CollisionComponent*colA, CollisionComponent*colB);
 
-	//盒子碰撞检测
+	//盒子碰撞检测，简单的矩形碰撞，该函数需要优化
 	bool collisionAABB(CollisionComponent*colA, CollisionComponent*colB);
 private:
 
@@ -38,6 +37,8 @@ private:
 	std::map<COLLISIONMARK, std::set<CollisionComponent*>> _collisions;
 
 	QTree::CQTreeBase<int, CollisionTreeData>* _tree;
+
+	std::list<Node*> _delNodes;//延时删除的对象
 
 	int _collisionNum = 0;	//记录一轮碰撞的总数
 };

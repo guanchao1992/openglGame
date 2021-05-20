@@ -99,7 +99,6 @@ public:
 
 public:
 	void setRanderComponent(RanderComponent* com);
-	void setMouseKeyComponent(MouseComponent* com);
 protected:
 
 	Vector3 _position = Vector3(0.f, 0.f, 0.f);
@@ -138,6 +137,5 @@ protected:
 
 protected:
 	RanderComponent* _randerComponent = nullptr;		//特殊的，用于显示
-	MouseComponent* _mouseKeyComponent = nullptr;	//特殊的，用于鼠标按键事件
 };
 

@@ -1,12 +1,13 @@
 #include "CollisionComponent.h"
 #include <GameApp.h>
 #include "control/CollisionController.h"
+#include <Game2DFight/Actor.h>
+#include <Game2DFight/Bullet.h>
 
 
 void CollisionComponent::doBegin()
 {
 	__super::doBegin();
-	Node* node = (Node*)_object;
 }
 
 void CollisionComponent::doEnd()
@@ -31,7 +32,6 @@ void CollisionComponent::enableCollision(COLLISIONMARK flagMark, int doMark)
 
 	CollisionController::getInstance()->insert(this);
 }
-
 
 static int ctd = 0;
 CollisionTreeData::CollisionTreeData(CollisionComponent *collCom)

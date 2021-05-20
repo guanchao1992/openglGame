@@ -36,6 +36,7 @@ void CollisionController::erase(CollisionComponent*col)
 
 void CollisionController::collisionDetection()
 {
+	_delNodes.clear();
 	_tree->clear();
 
 	for (auto it = _collisions.begin(); it != _collisions.end(); it++)
@@ -117,7 +118,6 @@ void CollisionController::collisionDetection()
 	//子弹检测和非以上物体进行检测，因为子弹比较多，所以反过来
 	_collisions[CMARK_STONE];
 
-		
 	//_tree.Search();
 }
 
@@ -125,14 +125,17 @@ bool CollisionController::collisionPlayerToOther(CollisionComponent*selfCol, Col
 {
 	if (selfCol == colB)
 		return false;
+	if (!(selfCol->isActive() && colB->isActive()))
+		return false;
+
 	auto actorA = dynamic_cast<Actor*>(selfCol->getObject());
 	if ((selfCol->getDoMark() & colB->getFlagMark()) || (selfCol->getFlagMark() & colB->getDoMark()))
 	{
-		if (colB->getFlagMark() == CMARK_ENEMY_BULLET)
+		if (collisionAABB(selfCol, colB))
 		{
-		}
-		else
-		{
+			selfCol->collision(colB->getObject());
+			colB->collision(selfCol->getObject());
+			return true;
 		}
 	}
 	return false;
@@ -142,21 +145,17 @@ bool CollisionController::collisionEnemyToOther(CollisionComponent*actorCol, Col
 {
 	if (actorCol == colB)
 		return false;
+	if (!(actorCol->isActive() && colB->isActive()))
+		return false;
+
 	auto actorA = dynamic_cast<Actor*>(actorCol->getObject());
 	if ((actorCol->getDoMark() & colB->getFlagMark()) || (actorCol->getFlagMark() & colB->getDoMark()))
 	{
-		if (colB->getFlagMark() == CMARK_SELF_BULLET || colB->getFlagMark() == CMARK_FRIENDLY_BULLET)
+		if (collisionAABB(actorCol, colB))
 		{
-			if (collisionAABB(actorCol,colB))
-			{
-				auto bulletB = dynamic_cast<Bullet*>(actorCol->getObject());
-				actorA->enterState(STATE_HIT);
-				//bulletB->removeFromParent();
-				return true;
-			}
-		}
-		else
-		{
+			actorCol->collision(colB->getObject());
+			colB->collision(actorCol->getObject());
+			return true;
 		}
 	}
 	return false;
@@ -164,19 +163,21 @@ bool CollisionController::collisionEnemyToOther(CollisionComponent*actorCol, Col
 
 bool CollisionController::collisionFriendlyToOther(CollisionComponent*actorCol, CollisionComponent*colB)
 {
-	return false;
-}
-
-
-bool CollisionController::collisionAB(CollisionComponent*colA, CollisionComponent*colB)
-{
-	if (colA == colB)
+	if (actorCol == colB)
 		return false;
-	auto actorA = dynamic_cast<Actor*>(colA->getObject());
-	auto actorB = dynamic_cast<Actor*>(colB->getObject());
-	//auto actor = (Actor*)colA->getObject();
+	if (!(actorCol->isActive() && colB->isActive()))
+		return false;
 
-	//enterState
+	auto actorA = dynamic_cast<Actor*>(actorCol->getObject());
+	if ((actorCol->getDoMark() & colB->getFlagMark()) || (actorCol->getFlagMark() & colB->getDoMark()))
+	{
+		if (collisionAABB(actorCol, colB))
+		{
+			actorCol->collision(colB->getObject());
+			colB->collision(actorCol->getObject());
+			return true;
+		}
+	}
 	return false;
 }
 

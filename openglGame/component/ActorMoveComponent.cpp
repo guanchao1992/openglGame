@@ -93,3 +93,4 @@ void ActorMoveComponent::setAcceleratedSpeed(const Vector2&acceleratedSpeed)
 {
 	_acceleratedSpeed = acceleratedSpeed;
 }
+

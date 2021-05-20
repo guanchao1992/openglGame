@@ -4,6 +4,8 @@
 #include "Base/Vector2.h"
 #include "../base/QTreeBase.hpp"
 
+class Node;
+
 enum COLLISIONMARK : int
 {
 	CMARK_SELF				= 0X0000000000000001,
@@ -32,6 +34,8 @@ public:
 	inline int getDoMark() { return _doMark; }
 
 	void enableCollision(COLLISIONMARK flagMark, int doMark);	//∆Ù”√≈ˆ◊≤ºÏ≤‚
+
+	virtual void collision(Object*other) = 0;
 
 private:
 

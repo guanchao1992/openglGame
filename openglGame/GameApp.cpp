@@ -214,6 +214,7 @@ void GameApp::rander()
 
 void GameApp::update(float time)
 {
+	_last_time = time;
 	_controllerMaster->update(time);
 	_events->process();
 }

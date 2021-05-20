@@ -15,6 +15,13 @@ public:
 
 	void setAcceleratedSpeed(const Vector2&acceleratedSpeed);
 
+	inline void setSpeed(const Vector2&speed)
+	{
+		_speed = speed;
+	}
+	inline const Vector2& getSpeed() {
+		return _speed;
+	}
 	inline void setMaxSpeed(float speed) {
 		_maxSpeed = speed;
 	}

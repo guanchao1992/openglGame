@@ -3,7 +3,9 @@
 #include "Base/Size.h"
 #include "Base/Vector2.h"
 #include "dexode/eventbus/Bus.hpp"
+#include "ActorStateComponent.h"
 
+class ActorStateComponent;
 
 class ActorAIComponent :public Component
 {
@@ -15,6 +17,8 @@ public:
 	void update(float time);
 private:
 	int _timerId;
-	Object* _target;
+	ActorCamp _targetCamp = ACTORCAMP_NULL;
+	shared_ptr<ActorStateComponent> _target = nullptr;
 
+	float _nextTime = 0.5f;	//下次思考的时间
 };

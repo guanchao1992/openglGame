@@ -13,6 +13,11 @@ public:
 	virtual void init();
 	virtual void restart();
 	void update(float time);
+
+	inline const vector<SPNode>& getChildObjects()
+	{
+		return _objectLayer->getChilds();
+	}
 public:
 private:
 	SPActor	_player;

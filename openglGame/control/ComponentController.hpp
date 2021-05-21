@@ -35,6 +35,17 @@ public:
 		//_components_map[com] = nullptr;
 		_components_map.erase(com);
 	}
+
+	//额外的记录点
+	shared_ptr<Component> recordExtraComponent(Component*com)
+	{
+		auto it = _components_map.find(com);
+		if (it != _components_map.end())
+		{
+			return it->second;
+		}
+		return nullptr;
+	}
 private:
 	map<Component*, shared_ptr<Component>> _components_map;	//记录所有的组件
 	map<Component*, shared_ptr<Component>> _del_components_map; //将要销毁的com

@@ -199,7 +199,6 @@ void ActorStateComponent::__deathExit()
 {
 }
 
-
 void ActorStateComponent::__standEnter()
 {
 }

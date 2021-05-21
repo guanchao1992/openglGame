@@ -15,6 +15,7 @@
 #include "component/ActorOIComponent.h"
 #include "control/CollisionController.h"
 #include "component/ConllisionComponent/CollisionActorComponent.h"
+#include "component/ActorAIComponent.h"
 
 
 void GameMainFight::init()
@@ -39,6 +40,7 @@ void GameMainFight::init()
 	_player->addComponent<ActorOIComponent>();
 	auto playerCollCom = _player->addComponent<CollisionActorComponent>();
 	playerCollCom->enableCollision(CMARK_SELF, CMARK_SELF | CMARK_ENEMY | CMARK_ENEMY_BULLET | CMARK_STONE);
+	_player->getComponent<ActorStateComponent>()->setCamp(ACTORCAMP_PLAYER);
 
 	auto target1 = Actor::create();
 	_objectLayer->addChild(target1);
@@ -46,6 +48,8 @@ void GameMainFight::init()
 	target1->setName(L"ľ׮");
 	auto target1CollCom = target1->addComponent<CollisionActorComponent>();
 	target1CollCom->enableCollision(CMARK_ENEMY, CMARK_SELF | CMARK_ENEMY | CMARK_SELF_BULLET | CMARK_STONE);
+	target1->getComponent<ActorStateComponent>()->setCamp(ACTORCAMP_ENEMY);
+	target1->addComponent<ActorAIComponent>();
 
 	for (int i = 0; i < 20; i++)
 	{
@@ -55,6 +59,7 @@ void GameMainFight::init()
 		target2->setName(L"ľ׮");
 		auto target2CollCom = target2->addComponent<CollisionActorComponent>();
 		target2CollCom->enableCollision(CMARK_ENEMY, CMARK_SELF | CMARK_ENEMY | CMARK_SELF_BULLET | CMARK_STONE);
+		target2->getComponent<ActorStateComponent>()->setCamp(ACTORCAMP_ENEMY);
 	}
 
 

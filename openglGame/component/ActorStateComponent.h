@@ -5,6 +5,14 @@
 #include "dexode/eventbus/Bus.hpp"
 #include "Game2DFight/StateMachine.h"
 
+enum ActorCamp
+{
+	ACTORCAMP_NULL = 0,		//无阵营
+	ACTORCAMP_PLAYER = 1,	//友
+	ACTORCAMP_ENEMY = 2,	//敌
+	ACTORCAMP_NEUTRAL = 4,	//中立
+
+};
 
 class ActorStateComponent :public Component
 {
@@ -36,6 +44,9 @@ public:
 		calculateMove();
 	}
 	void calculateMove();
+
+	inline void setCamp(ActorCamp camp) { _camp = camp; }
+	inline ActorCamp getCamp() { return _camp; }
 private:
 	virtual void __activeEnter();
 	virtual void __activeExit();
@@ -67,4 +78,6 @@ private:
 	SPStateMachine _sm_move;	//移动单独抠出来
 
 	int _timerId;
+
+	ActorCamp _camp = ACTORCAMP_NULL;	//阵营
 };

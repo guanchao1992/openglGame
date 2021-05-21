@@ -26,7 +26,7 @@ void ActorAIComponent::doEnd()
 
 void ActorAIComponent::update(float time)
 {
-	//追简单的AI，追着主角开火
+	//最简单的AI，追着主角开火
 
 	_nextTime = _nextTime - time;
 	if (_nextTime < 0)
@@ -51,7 +51,7 @@ void ActorAIComponent::update(float time)
 	//追赶
 	if (_target != nullptr)
 	{
-		auto actor = dynamic_cast<Node*>(_object);
+		auto actor = dynamic_cast<Actor*>(_object);
 		auto target_node = dynamic_cast<Node*>(_target->getObject());
 		auto amc = _object->getComponent<ActorMoveComponent>();
 		if (amc)
@@ -62,6 +62,7 @@ void ActorAIComponent::update(float time)
 				auto r = atan2(p._y, p._x);
 
 				amc->setAcceleratedSpeed(Vector2(cosf(r) * 500, sinf(r) * 500));
+				actor->fire(Vector2(cosf(r) * 500, sinf(r) * 500), Vector2(0, 40));
 			}
 			else
 			{

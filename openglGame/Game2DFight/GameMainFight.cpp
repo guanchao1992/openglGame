@@ -48,7 +48,12 @@ void GameMainFight::init()
 	target1->setName(L"ľ׮");
 	auto target1CollCom = target1->addComponent<CollisionActorComponent>();
 	target1CollCom->enableCollision(CMARK_ENEMY, CMARK_SELF | CMARK_ENEMY | CMARK_SELF_BULLET | CMARK_STONE);
-	target1->getComponent<ActorStateComponent>()->setCamp(ACTORCAMP_ENEMY);
+	auto target1_stateCom = target1->getComponent<ActorStateComponent>();
+	target1_stateCom->setCamp(ACTORCAMP_ENEMY);
+
+	auto target1_sm = target1_stateCom->getStateData(STATE_FIRE);
+	target1_sm->_time = 3;
+
 	target1->addComponent<ActorAIComponent>();
 
 	for (int i = 0; i < 20; i++)

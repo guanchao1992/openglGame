@@ -47,6 +47,19 @@ public:
 
 	inline void setCamp(ActorCamp camp) { _camp = camp; }
 	inline ActorCamp getCamp() { return _camp; }
+
+	inline StateMachine* getStateMachine() { return _sm.get(); }
+	inline StateMachine* getMoveStateMachine() { return _sm_move.get(); }
+	inline State* getStateData(StateType stype) {
+		if (stype == STATE_MOVE)
+		{
+			return _sm_move->getStateData(STATE_MOVE);
+		}
+		else
+		{
+			return _sm->getStateData(stype);
+		}
+	};
 private:
 	virtual void __activeEnter();
 	virtual void __activeExit();

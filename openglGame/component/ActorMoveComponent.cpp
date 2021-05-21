@@ -1,6 +1,7 @@
 #include "ActorMoveComponent.h"
 #include <GameApp.h>
 #include "Game2DFight/Actor.h"
+#include "ActorStateComponent.h"
 
 
 void ActorMoveComponent::doBegin()
@@ -64,7 +65,11 @@ void ActorMoveComponent::update(float time)
 	}
 	if (_acceleratedSpeed._x == 0 && _acceleratedSpeed._x == 0)
 	{
-		actor->enterMoveState();
+		auto stateCom = _object->getComponent<ActorStateComponent>();
+		if (stateCom)
+		{
+			stateCom->enterMoveState();
+		}
 	}
 
 	_speed = _speed + _acceleratedSpeed * time;

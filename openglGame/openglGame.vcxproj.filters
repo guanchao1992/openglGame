@@ -191,6 +191,12 @@
     <ClCompile Include="component\ConllisionComponent\CollisionActorComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="component\ActorAIComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ActorStateComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -410,6 +416,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="component\ConllisionComponent\CollisionActorComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ActorAIComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ActorStateComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

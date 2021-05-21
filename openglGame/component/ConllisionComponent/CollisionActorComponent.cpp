@@ -5,6 +5,7 @@
 #include <Game2DFight/Bullet.h>
 #include "CollisionBulletComponent.h"
 #include "../ActorMoveComponent.h"
+#include "../ActorStateComponent.h"
 
 
 void CollisionActorComponent::doBegin()
@@ -28,10 +29,11 @@ void CollisionActorComponent::collision(Object*other)
 		CollisionBulletComponent* othercbc = dynamic_cast<CollisionBulletComponent*>(otherColCom);
 		if (othercbc)
 		{
-			actor->enterState(STATE_HIT);
+			auto stateCom = _object->getComponent<ActorStateComponent>();
+			stateCom->enterState(STATE_HIT);
 		}
 		else {
-			auto amc = actor->getComponent<ActorMoveComponent>();
+			auto amc = _object->getComponent<ActorMoveComponent>();
 			if (amc)
 			{
 				auto app = GameApp::getInstance();

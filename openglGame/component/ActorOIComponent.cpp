@@ -3,6 +3,7 @@
 #include "Game2DFight/Actor.h"
 #include <functional>
 #include "control/TimerController.h"
+#include "ActorStateComponent.h"
 
 
 void ActorOIComponent::doBegin()
@@ -14,19 +15,22 @@ void ActorOIComponent::doBegin()
 	_listener = GameApp::getInstance()->createListenerSP();
 	_listener->listen([this](const KeyEvent& et) {
 		Actor* actor = (Actor*)_object;
+		auto stateCom = _object->getComponent <ActorStateComponent>();
+		if (!stateCom)
+			return;
 		switch (et._key)
 		{
 		case GLFW_KEY_UP: case 'w': case 'W':
-			actor->onUp(et._isDown);
+			stateCom->onUp(et._isDown);
 			break;
 		case GLFW_KEY_DOWN: case 's': case 'S':
-			actor->onDown(et._isDown);
+			stateCom->onDown(et._isDown);
 			break;
 		case GLFW_KEY_LEFT: case 'a': case 'A':
-			actor->onLeft(et._isDown);
+			stateCom->onLeft(et._isDown);
 			break;
 		case GLFW_KEY_RIGHT: case 'd': case 'D':
-			actor->onRight(et._isDown);
+			stateCom->onRight(et._isDown);
 			break;
 		case GLFW_KEY_SPACE:
 			if (et._isDown)

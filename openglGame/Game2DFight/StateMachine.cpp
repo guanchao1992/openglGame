@@ -1,10 +1,8 @@
 
 #include "StateMachine.h"
-#include "control/TimerController.h"
 
 StateMachine::~StateMachine()
 {
-	TimerController::getInstance()->killTimer(_timerId);
 }
 
 SPStateMachine StateMachine::create()
@@ -16,7 +14,6 @@ SPStateMachine StateMachine::create()
 
 void StateMachine::init()
 {
-	_timerId = TimerController::getInstance()->addTimer(0, -1, std::bind(&StateMachine::update, this, std::placeholders::_1));
 }
 
 void StateMachine::addState(const State& s)

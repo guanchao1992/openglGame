@@ -57,6 +57,5 @@ private:
 	StateType _toState = STATE_NONE;
 	float _nextTime = 0;
 	float _accumulationTime = 0;
-	int _timerId;
 };
 

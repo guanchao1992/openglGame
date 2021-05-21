@@ -4,28 +4,28 @@
 #include "glm/gtx/transform.hpp"
 #include <algorithm>
 #include "control/TimerController.h"
+#include "component/RanderComponent.h"
 
 Node::~Node()
 {
-	_childs->clear();
+	_childs.clear();
+	_visitLeft.clear();
+	_visitRight.clear();
+	_parent = nullptr;
 	killAllTimer();
-}
-
-void Node::record(SPNode selfNode)
-{
-	//_this = selfNode;
 }
 
 void Node::reshape()
 {
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	for (auto it = _childs.begin(); it != _childs.end(); it++)
 	{
 		(*it)->reshape();
 	}
 	_revisit = true;
-	_redraw = true;
-
-	//do something
+	if (_randerComponent)
+	{
+		_randerComponent->reDraw();
+	}
 }
 
 void Node::rander()
@@ -34,20 +34,20 @@ void Node::rander()
 	{
 		return;
 	}
-	for (auto it = _visitLeft->begin(); it != _visitLeft->end(); it++)
+	for (auto it = _visitLeft.begin(); it != _visitLeft.end(); it++)
 	{
 		(*it)->rander();
 	}
-	this->randerOne();
-	for (auto it = _visitRight->begin(); it != _visitRight->end(); it++)
+	
+	if (_randerComponent)
+	{
+		_randerComponent->rander();
+		_randerComponent->randerOutLine();
+	}
+	for (auto it = _visitRight.begin(); it != _visitRight.end(); it++)
 	{
 		(*it)->rander();
 	}
-}
-
-void Node::randerOne()
-{
-	//do something
 }
 
 void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
@@ -70,33 +70,30 @@ void Node::visit(const GLfloat *parentTransform, GLboolean parentFlag)
 		_reorder = false;
 		refreshOrder();
 	}
-	this->onDraw();
-
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	if (_randerComponent)
+	{
+		_randerComponent->draw();
+	}
+	for (auto it = _childs.begin(); it != _childs.end(); it++)
 	{
 		(*it)->visit(_projectTransform, parentFlag);
 	}
-}
-
-//只有在模型发生变化的时候才需要调用
-void Node::onDraw()
-{
-	//do something
-	_redraw = false;
 }
 
 void Node::addChild(SPNode node, int zOrder)
 {
 	node->_parent = this;
 	node->_localZOrder = zOrder;
-	_childs->push_back(node);
+	_childs.push_back(node);
 
 	_reorder = true;
 }
 
 void Node::removeAllChild()
 {
-	_childs->clear();
+	_childs.clear();
+	_visitLeft.clear();
+	_visitRight.clear();
 	_reorder = true;
 }
 
@@ -104,21 +101,36 @@ void Node::removeFromParent()
 {
 	assert(_parent, "That node havent parent.");
 
-	for (auto it = _parent->_childs->begin(); it != _parent->_childs->end(); it++)
+	this->removeAllComponent();
+	for (auto it = _parent->_visitLeft.begin(); it != _parent->_visitLeft.end(); it++)
+	{
+		if (*it == this)
+		{
+			_parent->_visitLeft.erase(it);
+			break;
+		}
+	}
+	for (auto it = _parent->_visitRight.begin(); it != _parent->_visitRight.end(); it++)
+	{
+		if (*it == this)
+		{
+			_parent->_visitRight.erase(it);
+			break;
+		}
+	}
+	for (auto it = _parent->_childs.begin(); it != _parent->_childs.end(); it++)
 	{
 		if ((*it).get() == this)
 		{
-			_parent->_childs->erase(it);
-			_parent->_reorder = true;
-			_parent = nullptr;
-			break;
+			_parent->_childs.erase(it);
+			return;
 		}
 	}
 }
 
 const vector<SPNode>& Node::getChilds()
 {
-	return *_childs;
+	return _childs;
 }
 
 void Node::setPosition(const Vector2&pos)
@@ -133,7 +145,19 @@ void Node::setPosition(float x, float y)
 	_revisit = true;
 }
 
-const float PI = 3.141592653589793238f;
+void Node::setPosition(const Vector3&pos)
+{
+	setPosition(pos._x, pos._y, pos._z);
+}
+
+void Node::setPosition(float x, float y, float z)
+{
+	_position._x = x;
+	_position._y = y;
+	_position._z = z;
+	_revisit = true;
+}
+
 
 void Node::setEulerAngle(float angleZ)
 {
@@ -164,25 +188,29 @@ void Node::setRotateAxis(Vector3 vec, float angle)
 
 void Node::setScaleX(float scale)
 {
-	setScale(scale, _scaleY);
+	setScale(scale, _scaleY, _scaleZ);
 }
 
 void Node::setScaleY(float scale)
 {
-	setScale(_scaleX, scale);
+	setScale(_scaleX, scale, _scaleZ);
 }
 
-void Node::setScale(float scaleX, float scaleY)
+void Node::setScale(float scaleX, float scaleY, float scaleZ)
 {
 	_scaleX = scaleX;
 	_scaleY = scaleY;
+	_scaleZ = scaleZ;
 
 	_revisit = true;
 }
 
-void Node::setContentSize(const Size&size)
+void Node::setScale(float scale)
 {
-	_contentSize = size;
+	_scaleX = scale;
+	_scaleY = scale;
+	_scaleZ = scale;
+
 	_revisit = true;
 }
 
@@ -190,7 +218,7 @@ void Node::refreshTransformParent()
 {
 	glm::mat4 transformMat(1.0f);
 
-	transformMat = glm::translate(transformMat, _position._x, _position._y, 0.0f);
+	transformMat = glm::translate(transformMat, _position._x, _position._y, _position._z);
 
 	if (_angleZ != 0)
 		transformMat = glm::rotate(transformMat, _angleZ, 0.f, 0.f, 1.f);
@@ -201,8 +229,8 @@ void Node::refreshTransformParent()
 	if (_angleAxis != 0)
 		transformMat = glm::rotate(transformMat, _angleAxis, _rotateAxis._x, _rotateAxis._y, _rotateAxis._z);
 
-	if (_scaleX != 1.0f || _scaleY != 1.0f)
-		transformMat = glm::scale(transformMat, _scaleX, _scaleY, 1.0f);
+	if (_scaleX != 1.0f || _scaleY != 1.0f || _scaleZ != 1.0f)
+		transformMat = glm::scale(transformMat, _scaleX, _scaleY, _scaleZ);
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -212,6 +240,12 @@ void Node::refreshTransformParent()
 			_transform[index] = transformMat[i][j];
 		}
 	}
+}
+
+GLfloat* Node::getTransformParent()
+{
+	refreshTransformParent();
+	return _transform;
 }
 
 void Node::setColor(const Vector4&color)
@@ -237,26 +271,29 @@ void Node::setZOrder(int localZOrder)
 
 void Node::refreshOrder()
 {
-	_visitLeft->clear();
-	_visitRight->clear();
+	_visitLeft.clear();
+	_visitRight.clear();
 
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	for (auto it = _childs.begin(); it != _childs.end(); it++)
 	{
 		if ((*it)->getZOrder() < 0)
 		{
-			_visitLeft->push_back(*it);
+			_visitLeft.push_back(it->get());
 		}
 		else
 		{
-			_visitRight->push_back(*it);
+			_visitRight.push_back(it->get());
 		}
 	}
-	sort(_visitLeft->begin(), _visitLeft->end(), [](SPNode a, SPNode b) {
+	/*
+	sort(_visitLeft.begin(), _visitLeft.end(), [](SPNode a, SPNode b) {
 		return a->getZOrder() < b->getZOrder();
 	});
-	sort(_visitRight->begin(), _visitRight->end(), [](SPNode a, SPNode b) {
+	sort(_visitRight.begin(), _visitRight.end(), [](SPNode a, SPNode b) {
 		return a->getZOrder() < b->getZOrder();
 	});
+	*/
+	_visitLeft.sort();
 }
 
 void Node::setTag(int tag)
@@ -266,7 +303,7 @@ void Node::setTag(int tag)
 
 SPNode Node::getChildByTag(int tag)
 {
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	for (auto it = _childs.begin(); it != _childs.end(); it++)
 	{
 		if ((*it)->getTag() == tag)
 		{
@@ -280,17 +317,17 @@ int Node::addTimer(float interval, int num, TimerCallback callback)
 {
 	//_timerids =
 	int timerId = TimerController::getInstance()->addTimer(interval, num, callback);
-	_timerids->push_back(timerId);
+	_timerids.push_back(timerId);
 	return timerId;
 }
 
 void Node::killTimer(int timerId)
 {
-	for (auto it = _timerids->begin(); it != _timerids->end(); it++)
+	for (auto it = _timerids.begin(); it != _timerids.end(); it++)
 	{
 		if ((*it) == timerId)
 		{
-			_timerids->erase(it);
+			_timerids.erase(it);
 			TimerController::getInstance()->killTimer(timerId);
 			break;
 		}
@@ -299,11 +336,11 @@ void Node::killTimer(int timerId)
 
 void Node::killAllTimer()
 {
-	for (auto it = _timerids->begin(); it != _timerids->end(); it++)
+	for (auto it = _timerids.begin(); it != _timerids.end(); it++)
 	{
 		TimerController::getInstance()->killTimer(*it);
 	}
-	_timerids->clear();
+	_timerids.clear();
 }
 
 void Node::setVisible(bool visible)
@@ -314,10 +351,15 @@ void Node::setVisible(bool visible)
 int Node::getAllChildNum()
 {
 	auto size = 1;
-	for (auto it = _childs->begin(); it != _childs->end(); it++)
+	for (auto it = _childs.begin(); it != _childs.end(); it++)
 	{
 		size += (*it)->getAllChildNum();
 	}
 	return size;
+}
+
+void Node::setRanderComponent(RanderComponent* com)
+{
+	_randerComponent = com;
 }
 

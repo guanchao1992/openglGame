@@ -5,7 +5,7 @@
 #include <functional>
 
 
-#define TimerCallback std::function<bool(float time)>
+#define TimerCallback std::function<void(float time)>
 
 
 struct Timer
@@ -15,13 +15,15 @@ public:
 	Timer(float interval, int num, TimerCallback callback);
 
 	void resetTime();
+	void stop();
 private:
 	void update(float time);
 	float			_interval = 1.0f;		//间隔
 	int				_num = 0;				//次数 (小于0表示不限次数)
 	float			_accumulatedTime = 0.f;	//累计时间
 	float			_accumulatedNum = 0.f;	//累计次数
-
+	float			_totalTime = 0.f;				//总时间
+	float			_lastTime = 0.f;				//上一次的时间
 	bool			_stop = false;
 	bool			_pause = false;
 	TimerCallback	_function = nullptr;

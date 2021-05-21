@@ -33,9 +33,12 @@ public:
 	int initShader();
 	int removeAllShader();
 
+	int initTouchUI();
+	void onTouchHandler(const MouseKeyEvent& et);
+
 	void init();
 	void reshape();
-	void visit(const GLfloat *parentTransform, GLboolean parentFlag);
+	void visit();
 	void rander();		
 	//做一些绘制之外的其他操作
 	void update(float time);
@@ -43,6 +46,9 @@ public:
 	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> createListenerSP();
 
 	inline shared_ptr<dexode::EventBus> getEventBus() { return _events; }
+
+	Vector2 convertToWorld(Node*node, const Vector2&pos);
+	Vector2 convertViewToNode(Node*node, const Vector2&pos);
 public:
 	GLint getProgram(const char*name);
 	SPShader getShader(const char*name);
@@ -52,12 +58,18 @@ public:
 	GLboolean isReLoadView() { return _reLoadView; }
 	GLfloat getViewWidth() { return _viewWidth; }
 	GLfloat getViewHeight() { return _viewHeight; }
-	GLfloat getProjectWidth() { return _viewWidth; }
-	GLfloat getProjectHeight() { return _viewHeight; }
+	GLfloat getProjectWidth() { return _projectWidth; }
+	GLfloat getProjectHeight() { return _projectHeight; }
+	void setWindowSize(GLfloat width, GLfloat height);
+	inline GLfloat getProScale() { return _proScale; }
 
 	int getNodeCount();
+
+	void postEvent(EventType);	//只允许发普通的Event消息
+
+	inline float getLastTime() { return _last_time; }
 protected:
-	shared_ptr<map<string, SPShader>> _shaders = make_shared<map<string, SPShader>>();
+	map<string, SPShader> _shaders;
 
 	//GLfloat _projectionMatrix[16];
 	GLfloat _viewMatrix[16];
@@ -66,8 +78,10 @@ protected:
 
 	GLfloat _viewWidth;			//窗口宽度
 	GLfloat _viewHeight;		//窗口高度
-	GLfloat _projectWidth;		//设计宽度，未生效
-	GLfloat _projectHeight;		//设计高度，未生效
+	GLfloat _projectWidth;		//设计宽度，初始化后不允许更改
+	GLfloat _projectHeight;		//设计高度，初始化后不允许更改
+	GLfloat _transform[16];
+	GLfloat _proScale = 1;
 
 	GLboolean _reLoadView = true;	//重新加载窗口
 
@@ -75,8 +89,14 @@ protected:
 	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
 
 	shared_ptr<ControllerMaster> _controllerMaster;
+
+	float _last_time = 0.0f;
 public:
-	shared_ptr<GameStart> _start;
-	shared_ptr<GameUI> _ui;
+	SPNode	_appNode;
+	SPNode	_bg;
+	SPNode	_start;
+	SPNode	_ui;
+	//shared_ptr<GameStart> _start;
+	//shared_ptr<GameUI> _ui;
 };
 

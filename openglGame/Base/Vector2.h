@@ -1,6 +1,8 @@
 #ifndef ___Vector2__H__
 #define ___Vector2__H__
 
+#define  PI 3.141592653589793238f
+
 class Vector2
 {
 public:
@@ -71,6 +73,15 @@ public:
 	inline Vector2 operator+(const Vector2& pos) const
 	{
 		return Vector2(this->_x + pos._x, this->_y + pos._y);
+	}
+
+	inline Vector2 operator*(float s) const
+	{
+		return Vector2(this->_x * s, this->_y * s);
+	}
+	inline Vector2 operator/(float s) const
+	{
+		return Vector2(this->_x / s, this->_y / s);
 	}
 
 	inline Vector2 operator-(const Vector2& pos) const

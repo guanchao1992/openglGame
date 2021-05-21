@@ -1,5 +1,4 @@
 #include "GameStart.h"
-#include "2d/FillDrawNode.h"
 #include "EgameController.h"
 #include "GameEvent.h"
 #include "GameApp.h"
@@ -8,6 +7,9 @@
 #include "control/TableController.h"
 
 #include "tables/ItemTable.h"
+#include "component/DrawRanderComponent.h"
+#include "component/MouseComponent.h"
+#include "component/AreaComponent.h"
 
 
 #define WORLD_SCALE 10	//世界坐标系与物理坐标系比例
@@ -17,16 +19,36 @@ void GameStart::init()
 	initListen();
 	initWorld();
 
-	/*
-	auto fd = Block::create();
-	addChild(fd,200);
-	fd->setPosition(Vector2(100, 100));
-	_curblock = fd;
-	fd->setTag(1001);
-	*/
+	//画格子
+	{
+		auto fd = Node::create();
+		auto drawCom = fd->addComponent<DrawRanderComponent>();
+		fd->setPosition(0, 0);
+		addChild(fd, -1000);
+		for (int x = 0; x < 5; ++x)
+		{
+			for (int y = 0; y < 5; ++y)
+			{
+				if ((x + y) % 2 == 0)
+				{
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.2f, 0.2f, 0.2f, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.2f, 0.2f, 0.2f, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.2f, 0.2f, 0.2f, 1));
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.2f, 0.2f, 0.2f, 1));
+					drawCom->signDraw(GL_TRIANGLE_FAN);
+				}
+				else
+				{
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->signDraw(GL_TRIANGLE_FAN);
+				}
+			}
+		}
+	}
 
-	_filldraw = FillDrawNode::create();
-	
 	//TableController::getInstance()->reset();
 	/*
 	auto item1 = ItemTableDatas::getData(10001);
@@ -38,28 +60,40 @@ void GameStart::init()
 	*/
 
 	/*
-	addTimer(0.1, -1, [&](float time) {
+	addTimer(0.1, -1, [this](float time) {
 		onAddBlockDown();
 		return false;
 	});
 	*/
+
+	/*
+	*/
+	auto areaCom = addComponent<AreaComponent>();
+	areaCom->setSize(Size(10000, 10000));
+	areaCom->setAnchor(Vector2(0.5, 0.5));
+	auto mouseCom = addComponent<MouseComponent>();
+	mouseCom->setMouseKeyFunc([this](MouseComponent&mouseCon, const MouseKeyEvent&event) {
+	});
+	mouseCom->setMouseMoveFunc([this](MouseComponent&mouseCon, const MouseMoveEvent&event) {
+		if (event._buttons & 1)
+		{
+			//this->setAngleCoordinate(_angleX + (event._x - _oldDownPos._x)*0.001, _angleY + (event._y - _oldDownPos._y)*0.001, 0);
+			this->setAngleCoordinate(_angleX - (event._y - _oldDownPos._y)*0.1, _angleY + (event._x - _oldDownPos._x)*0.1, 0);
+		}
+		else if (event._buttons & 2)
+		{
+			auto app = GameApp::getInstance();
+			this->setPosition(_position._x + (event._x - _oldDownPos._x) / app->getProScale(), _position._y + (event._y - _oldDownPos._y) / app->getProScale());
+		}
+		_oldDownPos = Vector2(event._x, event._y);
+	});
 }
 
 
 void GameStart::initListen()
 {
 	_listener = GameApp::getInstance()->createListenerSP();
-	_listener->listen([&](const KeyEvent& et) {
-		/*
-		if (et._isDown)
-		{
-			printf("event:%d按下了按键:%d\n", et._eventId, et._key);
-		}
-		else
-		{
-			printf("event:%d放开了按键:%d\n", et._eventId, et._key);
-		}
-		*/
+	_listener->listen([this](const KeyEvent& et) {
 		switch (et._key)
 		{
 		case GLFW_KEY_UP: case 'w': case 'W':
@@ -86,13 +120,14 @@ void GameStart::initListen()
 		}
 	});
 
-	_listener->listen([&](const MouseMoveEvent& et) {
+	_listener->listen([this](const MouseMoveEvent& et) {
 		//printf("x:%.2f,y:%.2f,bts:%d\n", et._x, et._y, et._buttons);
 	});
-	_listener->listen([&](const MouseKeyEvent& et) {
+	_listener->listen([this](const MouseKeyEvent& et) {
 		if ((et.button & 4) && et._isDown)
 		{
-			onAddBox(Vector2(et._x / WORLD_SCALE, et._y / WORLD_SCALE), Size(4, 4), Vector4(0.5, 0.1, 0, 1));
+			auto pos = GameApp::getInstance()->convertViewToNode(this, Vector2(et._x, et._y));
+			onAddBox(Vector2(pos._x / WORLD_SCALE, pos._y / WORLD_SCALE), Size(4, 4), Vector4(0.5, 0.1, 0, 1));
 		}
 	});
 }
@@ -108,11 +143,12 @@ void GameStart::initWorld()
 	{
 		auto w = 100.f;
 		auto h = 1.f;
-		auto ground1 = FillDrawNode::create();
-		ground1->addVertex(-w * WORLD_SCALE, h * WORLD_SCALE);
-		ground1->addVertex(w * WORLD_SCALE, h * WORLD_SCALE);
-		ground1->addVertex(w * WORLD_SCALE, -h * WORLD_SCALE);
-		ground1->addVertex(-w * WORLD_SCALE, -h * WORLD_SCALE);
+		auto ground1 = Node::create();
+		auto com = ground1->addComponent<DrawRanderComponent>();
+		com->addVertex(-w * WORLD_SCALE, h * WORLD_SCALE);
+		com->addVertex(w * WORLD_SCALE, h * WORLD_SCALE);
+		com->addVertex(w * WORLD_SCALE, -h * WORLD_SCALE);
+		com->addVertex(-w * WORLD_SCALE, -h * WORLD_SCALE);
 		ground1->setColor(1, 0, 0, 1);
 		addChild(ground1);
 
@@ -133,13 +169,13 @@ void GameStart::initWorld()
 	}
 
 	static int time_i = 0;
-	addTimer(0.1, 200, [&](float time) {
+	addTimer(0.1, 200, [this](float time) {
 		//onAddBox(Vector2(10.0f + time_i / 10 * 4, 10.0f + time_i % 10 * 4), Size(2, 4), Vector4(0.1, 0.5, 0.8, 1));
 		time_i++;
 		return false;
 	});
 
-	addTimer(0, -1, [&](float time) {
+	addTimer(0, -1, [this](float time) {
 
 		static float timeStep = 1.0f / 60.0f;
 		static int32 velocityIterations = 6;
@@ -168,10 +204,6 @@ void GameStart::initWorld()
 void GameStart::restartBlock()
 {
 	EgameController::getInstance()->restartBlock();
-}
-
-void GameStart::update(GLfloat time)
-{
 }
 
 void GameStart::onUp(bool keyPress)
@@ -223,11 +255,12 @@ void GameStart::onAddBlockDown()
 //传入的参数是相对于物理坐标系的
 void GameStart::onAddBox(const Vector2& pos, const Size& size, const Vector4& color)
 {
-	auto box1 = FillDrawNode::create();
-	box1->addVertex(size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
-	box1->addVertex(size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
-	box1->addVertex(-size.m_width / 2 * WORLD_SCALE, size.m_height / 2 * WORLD_SCALE);
-	box1->addVertex(-size.m_width / 2 * WORLD_SCALE, -size.m_height / 2 * WORLD_SCALE);
+	auto box1 = Node::create();
+	auto com = box1->addComponent<DrawRanderComponent>();
+	com->addVertex(size._width / 2 * WORLD_SCALE, -size._height / 2 * WORLD_SCALE);
+	com->addVertex(size._width / 2 * WORLD_SCALE, size._height / 2 * WORLD_SCALE);
+	com->addVertex(-size._width / 2 * WORLD_SCALE, size._height / 2 * WORLD_SCALE);
+	com->addVertex(-size._width / 2 * WORLD_SCALE, -size._height / 2 * WORLD_SCALE);
 	box1->setColor(color);
 	addChild(box1);
 
@@ -241,7 +274,7 @@ void GameStart::onAddBox(const Vector2& pos, const Size& size, const Vector4& co
 	b2Body* body = _world->CreateBody(&bodyDef);
 
 	b2PolygonShape dynamicBox;	//设置形状
-	dynamicBox.SetAsBox(size.m_width / 2, size.m_height / 2);
+	dynamicBox.SetAsBox(size._width / 2, size._height / 2);
 
 	b2FixtureDef fixtureDef;	//设置物体的各种参数
 	fixtureDef.shape = &dynamicBox;

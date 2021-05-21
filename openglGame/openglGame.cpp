@@ -7,6 +7,18 @@
  *
  * Copyright Norbert Nopper
  */
+#define CRTDBG_MAP_ALLOC    
+#include <stdlib.h>    
+#include <crtdbg.h> 
+
+/*
+#ifdef _DEBUG
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define new (DBG_NEW)
+#endif 
+#endif  // _DEBUG
+*/
 
 #include <stdio.h>
 
@@ -16,23 +28,21 @@
 
 #include "ft2build.h"
 #include "freetype/freetype.h"
-#include <2d/TextureNode.h>
-#include <2d/FontDrawNode.h>
+#include <nlohmann/json.hpp>
+#include <iostream> 
+#include <fstream> 
+#include "control/KeyboardController.h"
+#include <profileapi.h>
+#include <synchapi.h>
 
-#define VIEW_WIDTH 1000
-#define VIEW_HEIGHT 800
 
-const static GLfloat biasMatrix[] = {
-	1.0f, 0.0f, 0.0f, 0.0f,
-	0.0f, 1.0f, 0.0f, 0.0f,
-	0.0f, 0.0f, 1.0f, 0.0f,
-	0.0f, 0.0f, 0.0f, 1.0f };
+LARGE_INTEGER g_nLast;
+LARGE_INTEGER g_nNow;
+LARGE_INTEGER g_freq;
+LONGLONG g_interval;
+LONGLONG g_frameInterval;
+LONG g_waitMS;
 
-FT_Library g_library;
-FT_Error error;
-FT_Face g_face;
-
-GLuint g_ftx;
 GLUSboolean init(GLUSvoid)
 {
 	auto app = GameApp::getInstance();
@@ -46,40 +56,11 @@ GLUSboolean init(GLUSvoid)
 	//glEnable(GL_CULL_FACE);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	app->visit();
 
-	app->visit(biasMatrix, false);
-
-	/*
-	auto error = FT_Init_FreeType(&g_library);					
-	error = FT_New_Face(g_library, "res/simhei.ttf", 0, &g_face);		
-	error = FT_Select_Charmap(g_face, FT_ENCODING_UNICODE);
-
-	error = FT_Set_Char_Size(g_face, 50 * 64, 0, 100, 0); 
-	FT_Set_Pixel_Sizes(g_face, 24, 0);
-
-	FT_Load_Char(g_face, 880, FT_LOAD_RENDER);
-
-
-	FT_GlyphSlot glyphSlot = g_face->glyph;
-
-	glGenTextures(1, &g_ftx);    // Using your API here
-	glBindTexture(GL_TEXTURE_2D, g_ftx);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	// Setup some parameters for texture filters and mipmapping 
-
-	GLint alignment;
-	glGetIntegerv(GL_UNPACK_ALIGNMENT, &alignment);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	GLint fmt = GL_RED;
-	glTexImage2D(GL_TEXTURE_2D, 0, fmt, glyphSlot->bitmap.width, glyphSlot->bitmap.rows,
-		0, fmt, GL_UNSIGNED_BYTE, glyphSlot->bitmap.buffer);
-	//glTexSubImage2D(,)
-	glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
-	*/
+	QueryPerformanceCounter(&g_nLast);
+	QueryPerformanceFrequency(&g_freq);
+	g_frameInterval = g_freq.QuadPart / 120;
 
 	return GLUS_TRUE;
 }
@@ -89,9 +70,8 @@ static int redisplay_interval;
 GLUSvoid reshape(GLUSint width, GLUSint height)
 {
 	auto app = GameApp::getInstance();
-	app->setViewSize(width, height);
 	app->reshape();
-
+	app->setViewSize(width, height);
 	glViewport(0, 0, width, height);
 }
 
@@ -103,11 +83,30 @@ GLUSboolean update(GLUSfloat time)
 	{
 		app->reshape();
 	}
-	app->visit(biasMatrix, app->isReLoadView());
+	app->visit();
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 0.5);
 	GameApp::getInstance()->rander();
+
+	/*
+	static float t_time = 0.f;
+	static int frame = 0;
+	static int timebase = 0;
+	//static char s[256] = { 0 };
+	static wchar_t s[256] = { 0 };
+	frame++;
+	t_time = t_time + time;
+	if (t_time > 1.f) {
+		//sprintf_s(s, 256, "FPS:%4.2f", frame * 1.0 / (t_time - timebase));
+
+		printf("FPS:%4.2f  node数量：%d", frame * 1.0f / t_time, GameApp::getInstance()->getNodeCount());
+
+		timebase = t_time;
+		t_time = 0;
+		frame = 0;
+	}
+	*/
 
 	return GLUS_TRUE;
 }
@@ -121,7 +120,7 @@ GLUSvoid terminate(GLUSvoid)
 	GameApp::getInstance()->removeAllShader();
 }
 
-int main(int argc, char* argv[])
+int initWindow(GLUSint width, GLUSint height)
 {
 	EGLint eglConfigAttributes[] = {
 			EGL_RED_SIZE, 8,
@@ -140,18 +139,23 @@ int main(int argc, char* argv[])
 			EGL_CONTEXT_OPENGL_PROFILE_MASK, EGL_CONTEXT_OPENGL_CORE_PROFILE_BIT,
 			EGL_NONE
 	};
+	if (!glusWindowCreate("GLUS Example Window", width, height, GLUS_FALSE, GLUS_FALSE, eglConfigAttributes, eglContextAttributes, 0))
+	{
+		printf("Could not create window!\n");
+		return -1;
+	}
+	return 0;
+}
 
+int main(int argc, char* argv[])
+{
 	glusWindowSetInitFunc(init);
-
 	glusWindowSetReshapeFunc(reshape);
-
 	glusWindowSetUpdateFunc(update);
-
 	glusWindowSetTerminateFunc(terminate);
 
-	
 	glusWindowSetKeyFunc([](const GLUSboolean pressed, const GLUSint key) {
-		GameApp::getInstance()->getEventBus()->postpone(KeyEvent{ EVENT_KEY,key,(bool)pressed });
+		KeyboardController::getInstance()->handlerKey(key, pressed);
 	});
 	glusWindowSetMouseFunc(
 		[](const GLUSboolean pressed, const GLUSint button, const GLUSint xPos, const GLUSint yPos) {
@@ -164,13 +168,53 @@ int main(int argc, char* argv[])
 		GameApp::getInstance()->getEventBus()->postpone(MouseWheelEvent{ EVENT_MOUSEWHEEL,(float)xPos,GameApp::getInstance()->getViewHeight() - yPos,ticks ,buttons });
 	});
 
-	if (!glusWindowCreate("GLUS Example Window", VIEW_WIDTH, VIEW_HEIGHT, GLUS_FALSE, GLUS_FALSE, eglConfigAttributes, eglContextAttributes, 0))
+	nlohmann::json setting_json;
+	std::ifstream iofile("./setting.json");
+	if (iofile)
 	{
-		printf("Could not create window!\n");
+		iofile >> setting_json;
+	}
+	else
+	{
+		setting_json["width"] = 1400;
+		setting_json["height"] = 900;
+		std::ofstream out_setting_json("./setting.json");
+		out_setting_json << setting_json << std::endl;
+	}
+	GameApp::getInstance()->setViewSize(setting_json["width"], setting_json["height"]);
+
+	if (initWindow(setting_json["width"], setting_json["height"]) == -1)
+	{
 		return -1;
 	}
 
-	glusWindowRun();
+	GLUSboolean run = GLUS_TRUE;
 
+	if (!glusWindowStartup())
+	{
+		return GLUS_FALSE;
+	}
+
+	while (run)
+	{
+		QueryPerformanceCounter(&g_nNow);
+		g_interval = g_nNow.QuadPart - g_nLast.QuadPart;
+		if (g_interval >= g_frameInterval)
+		{
+			g_nLast.QuadPart = g_nNow.QuadPart;
+			run = glusWindowLoop();
+		}
+		else
+		{
+			g_waitMS = (g_frameInterval - g_interval) * 1000LL / g_freq.QuadPart;
+			if (g_waitMS > 1L)
+			{
+				Sleep(g_waitMS);
+			}
+		}
+	}
+	glusWindowShutdown();
 	return 0;
 }
+
+

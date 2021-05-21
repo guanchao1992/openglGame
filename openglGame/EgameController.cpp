@@ -4,6 +4,8 @@
 #include <nlohmann/detail/conversions/from_json.hpp>
 #include "GameEvent.h"
 #include "GameApp.h"
+#include "component/DrawRanderComponent.h"
+#include <2d/Object.hpp>
 
 
 Block::~Block()
@@ -111,7 +113,7 @@ void EgameController::update(float time)
 
 }
 
-bool EgameController::updateBlockTimer(float time)
+void EgameController::updateBlockTimer(float time)
 {
 	if (checkCan(0, -1, _cur_dir))
 	{
@@ -123,7 +125,7 @@ bool EgameController::updateBlockTimer(float time)
 		setBlockPlace(_cur_block);
 		rectrBlock();
 	}
-	return false;
+	return;
 }
 
 void EgameController::handlerKeyEvent(const KeyEvent& et)
@@ -207,9 +209,9 @@ void EgameController::restartBlock()
 	}
 	if (_place_draw == nullptr)
 	{
-		_place_draw = FillDrawNode::create();
+		_place_draw = Node::create();
 		_game_node->addChild(_place_draw);
-		//_place_draw->setPosition(Vector2(0, 0));
+		auto drawCom = _place_draw->addComponent<DrawRanderComponent>();
 	}
 	_cur_x = 5;
 	_cur_y = 20;
@@ -226,7 +228,7 @@ void EgameController::restartBlock()
 
 	if (_move_timer_left == -1)
 	{
-		_move_timer_left = TimerController::getInstance()->addTimer(0.15, -1, [&](float time) {
+		_move_timer_left = TimerController::getInstance()->addTimer(0.15, -1, [this](float time) {
 			if (_move_type & 0x0001)
 			{
 				moveBlock(-1, 0);
@@ -236,7 +238,7 @@ void EgameController::restartBlock()
 	}
 	if (_move_timer_right == -1)
 	{
-		_move_timer_right = TimerController::getInstance()->addTimer(0.15, -1, [&](float time) {
+		_move_timer_right = TimerController::getInstance()->addTimer(0.15, -1, [this](float time) {
 			if (_move_type & 0x0010)
 			{
 				moveBlock(1, 0);
@@ -246,7 +248,7 @@ void EgameController::restartBlock()
 	}
 	if (_move_timer_down == -1)
 	{
-		_move_timer_down = TimerController::getInstance()->addTimer(0.1, -1, [&](float time) {
+		_move_timer_down = TimerController::getInstance()->addTimer(0.1, -1, [this](float time) {
 			if (_move_type & 0x0100)
 			{
 				if (checkCan(0, -1, _cur_dir))
@@ -333,7 +335,9 @@ bool EgameController::moveBlock(int mx, int my)
 
 void EgameController::redrawAll()
 {
-	_place_draw->clearAllVertex();
+	//_place_draw->clearAllVertex();
+	auto drawCom = _place_draw->getComponent<DrawRanderComponent>();
+	drawCom->clearAllVertex();
 	for (int y = 0; y <= _max_y; ++y)
 	{
 		for (int x = 0; x <= _max_x; ++x)
@@ -341,11 +345,11 @@ void EgameController::redrawAll()
 			if (_place[x][y] != 0)
 			{
 				auto color = Block::getBlockColor(_place[x][y]);
-				_place_draw->addVertex(Vector2((x + 0) * _block_scale, (y + 0)*_block_scale), color);
-				_place_draw->addVertex(Vector2((x + 1) * _block_scale, (y + 0)*_block_scale), color);
-				_place_draw->addVertex(Vector2((x + 1) * _block_scale, (y + 1)*_block_scale), color);
-				_place_draw->addVertex(Vector2((x + 0) * _block_scale, (y + 1)*_block_scale), color);
-				_place_draw->signDraw(GL_TRIANGLE_FAN);
+				drawCom->addVertex(Vector2((x + 0) * _block_scale, (y + 0)*_block_scale), color);
+				drawCom->addVertex(Vector2((x + 1) * _block_scale, (y + 0)*_block_scale), color);
+				drawCom->addVertex(Vector2((x + 1) * _block_scale, (y + 1)*_block_scale), color);
+				drawCom->addVertex(Vector2((x + 0) * _block_scale, (y + 1)*_block_scale), color);
+				drawCom->signDraw(GL_TRIANGLE_FAN);
 			}
 		}
 	}
@@ -393,6 +397,7 @@ int EgameController::checkEliminate()
 
 void EgameController::setBlockPlace(const SPBlock&sp)
 {
+	auto drawCom = _place_draw->getComponent<DrawRanderComponent>();
 	for (int n = 0; n < 4; ++n)
 	{
 		auto block = sp->getCurBlockST();
@@ -404,11 +409,11 @@ void EgameController::setBlockPlace(const SPBlock&sp)
 		if ((x >= 0 && x <= _max_x) && (y >= 0 && y < _max_y))
 		{
 			_place[x][y] = (int)sp->_blockType;
-			_place_draw->addVertex(Vector2((x + 0) * _block_scale, (y + 0)*_block_scale), sp->getColor());
-			_place_draw->addVertex(Vector2((x + 1) * _block_scale, (y + 0)*_block_scale), sp->getColor());
-			_place_draw->addVertex(Vector2((x + 1) * _block_scale, (y + 1)*_block_scale), sp->getColor());
-			_place_draw->addVertex(Vector2((x + 0) * _block_scale, (y + 1)*_block_scale), sp->getColor());
-			_place_draw->signDraw(GL_TRIANGLE_FAN);
+			drawCom->addVertex(Vector2((x + 0) * _block_scale, (y + 0)*_block_scale), sp->getColor());
+			drawCom->addVertex(Vector2((x + 1) * _block_scale, (y + 0)*_block_scale), sp->getColor());
+			drawCom->addVertex(Vector2((x + 1) * _block_scale, (y + 1)*_block_scale), sp->getColor());
+			drawCom->addVertex(Vector2((x + 0) * _block_scale, (y + 1)*_block_scale), sp->getColor());
+			drawCom->signDraw(GL_TRIANGLE_FAN);
 		}
 	}
 

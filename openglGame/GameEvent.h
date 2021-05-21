@@ -15,13 +15,13 @@ enum EventType : unsigned int
 
 struct Event 
 {
-	int _eventId = EventType::EVENT_NULL;
+	unsigned int _eventId = EventType::EVENT_NULL;
 };
 
 
 struct KeyEvent :public Event
 {
-	int _key;
+	unsigned int _key;
 	bool _isDown;
 };
 

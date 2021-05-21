@@ -56,7 +56,7 @@ private:
 	void redrawAll();
 	int checkEliminate();
 	void setBlockPlace(const SPBlock&sp);
-	bool updateBlockTimer(float time);
+	void updateBlockTimer(float time);
 	void handlerKeyEvent(const KeyEvent& et);
 private:
 
@@ -72,7 +72,7 @@ private:
 	int _cur_y = 20;
 	int _cur_dir = 0;
 	SPNode _game_node = nullptr;
-	SPFillDrawNode _place_draw = nullptr;
+	SPNode _place_draw = nullptr;
 	int _update_timer = -1;
 	int _move_timer_left = -1;
 	int _move_timer_right = -1;

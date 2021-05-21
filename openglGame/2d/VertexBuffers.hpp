@@ -21,10 +21,10 @@ struct FDVertex
 };
 
 template <typename T>
-static unique_ptr<T[]>g_ptnVectexs(new T[64]);
+static unique_ptr<T[]>g_ptnVectexs(new T[1]);
 
 template <typename T>
-static size_t g_fdVectexsSize = 64;
+static size_t g_fdVectexsSize = 1;
 
 template <typename T>
 T * getVectexBuffer(int size)

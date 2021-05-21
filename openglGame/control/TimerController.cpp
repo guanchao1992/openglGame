@@ -12,16 +12,15 @@ void Timer::update(float time)
 	{
 		return;
 	}
+	_totalTime += time;
 	_accumulatedTime += time;
 	if (_accumulatedTime > _interval)
 	{
 		if (_function)
 		{
-			if (_function(_accumulatedTime))
-			{
-				_stop = true;
-			}
+			_function(_totalTime - _lastTime);
 		}
+		_lastTime = _totalTime;
 		_accumulatedTime = _accumulatedTime - _interval;
 		if (_num > 0 && ++_accumulatedNum >= _num)
 		{
@@ -33,6 +32,11 @@ void Timer::update(float time)
 void Timer::resetTime()
 {
 	_accumulatedTime = 0;
+}
+
+void Timer::stop()
+{
+	_stop = true;
 }
 
 void TimerController::init()
@@ -73,7 +77,7 @@ void TimerController::killTimer(int id)
 	auto it = _timers->find(id);
 	if (it!= _timers->end())
 	{
-		_timers->erase(it);
+		it->second->_stop = true;
 	}
 }
 

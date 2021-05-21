@@ -35,13 +35,7 @@
     <ClCompile Include="2d\DrawBoxNode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="2d\FillDrawNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="2d\Node.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="2d\TextureNode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="base\Shader.cpp">
@@ -86,9 +80,6 @@
     <ClCompile Include="control\TimerController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="2d\FontDrawNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="GameUI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -98,18 +89,120 @@
     <ClCompile Include="control\TableController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="2d\Object.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\Component.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\RanderComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\DrawRanderComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\TextureRanderComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\FontRanderComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\AreaComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\OutlineBoxComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\MouseComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="control\MouseController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\Button.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\Text.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\EventComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="control\KeyboardController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Game2DFight\GameMainFight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Game2DFight\Actor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Game2DFight\StateMachine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ActorOIComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ActorMoveComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ActorTipsComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Game2DFight\Bullet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BulletMoveComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponentS2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponentS3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponentS1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponentK.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponentS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\BulletComponent\BMCComponentM.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="control\CollisionController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="control\ComponentController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ConllisionComponent\CollisionBulletComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ConllisionComponent\CollisionComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ConllisionComponent\CollisionActorComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ActorAIComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ActorStateComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="2d\FillDrawNode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="2d\Node.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="2d\TextureNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="base\Shader.h">
@@ -196,9 +289,6 @@
     <ClInclude Include="control\TimerController.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="2d\FontDrawNode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="2d\VertexBuffers.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -212,6 +302,126 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="tables\ItemTable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\Component.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\RanderComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\DrawRanderComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ComponentUtils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\TextureRanderComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\FontRanderComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\Object.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\AreaComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\OutlineBoxComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\MouseComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\MouseController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\Button.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\Text.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\EventComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\KeyboardController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Game2DFight\GameMainFight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Game2DFight\StateMachine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Game2DFight\Actor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ActorOIComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ActorMoveComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ActorTipsComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Game2DFight\Bullet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BulletMoveComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\TreeFour.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentS1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentS2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentS3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentK.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\BulletComponent\BMCComponentM.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\CollisionController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\QTreeBase.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Rect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="control\ComponentController.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ConllisionComponent\CollisionBulletComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ConllisionComponent\CollisionComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ConllisionComponent\CollisionActorComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ActorAIComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ActorStateComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

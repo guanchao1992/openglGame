@@ -113,7 +113,7 @@ void EgameController::update(float time)
 
 }
 
-bool EgameController::updateBlockTimer(float time)
+void EgameController::updateBlockTimer(float time)
 {
 	if (checkCan(0, -1, _cur_dir))
 	{
@@ -125,7 +125,7 @@ bool EgameController::updateBlockTimer(float time)
 		setBlockPlace(_cur_block);
 		rectrBlock();
 	}
-	return false;
+	return;
 }
 
 void EgameController::handlerKeyEvent(const KeyEvent& et)

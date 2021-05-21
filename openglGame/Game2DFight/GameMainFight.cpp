@@ -14,7 +14,7 @@
 #include "component/ActorMoveComponent.h"
 #include "component/ActorOIComponent.h"
 #include "control/CollisionController.h"
-#include "component/CollisionActorComponent.h"
+#include "component/ConllisionComponent/CollisionActorComponent.h"
 
 
 void GameMainFight::init()
@@ -65,8 +65,8 @@ void GameMainFight::restart()
 {
 }
 
-bool GameMainFight::update(float time)
+void GameMainFight::update(float time)
 {
 	CollisionController::getInstance()->collisionDetection();
-	return false;
+	return;
 }

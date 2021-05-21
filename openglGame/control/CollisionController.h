@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 #include <map>
-#include "component/CollisionComponent.h"
+#include "component/ConllisionComponent/CollisionComponent.h"
 #include <list>
 #include <set>
 #include "base/QTreeBase.hpp"

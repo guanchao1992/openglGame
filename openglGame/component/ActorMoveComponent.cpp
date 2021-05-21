@@ -18,10 +18,10 @@ void ActorMoveComponent::doEnd()
 
 }
 
-bool ActorMoveComponent::update(float time)
+void ActorMoveComponent::update(float time)
 {
 	if (!_active)
-		return false;
+		return ;
 	Actor*actor = (Actor*)_object;
 
 	if (_acceleratedSpeed._x == 0)
@@ -86,7 +86,7 @@ bool ActorMoveComponent::update(float time)
 	}
 	actor->setPosition(actor->getPosition()._x + _speed._x * time, actor->getPosition()._y + _speed._y * time);
 
-	return false;
+	return ;
 }
 
 void ActorMoveComponent::setAcceleratedSpeed(const Vector2&acceleratedSpeed)

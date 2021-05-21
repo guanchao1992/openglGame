@@ -18,10 +18,7 @@ void Timer::update(float time)
 	{
 		if (_function)
 		{
-			if (_function(_totalTime - _lastTime))
-			{
-				_stop = true;
-			}
+			_function(_totalTime - _lastTime);
 		}
 		_lastTime = _totalTime;
 		_accumulatedTime = _accumulatedTime - _interval;
@@ -35,6 +32,11 @@ void Timer::update(float time)
 void Timer::resetTime()
 {
 	_accumulatedTime = 0;
+}
+
+void Timer::stop()
+{
+	_stop = true;
 }
 
 void TimerController::init()

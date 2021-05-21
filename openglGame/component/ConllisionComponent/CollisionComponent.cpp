@@ -16,12 +16,12 @@ void CollisionComponent::doEnd()
 	CollisionController::getInstance()->erase(this);
 }
 
-bool CollisionComponent::update(float time)
+void CollisionComponent::update(float time)
 {
 	if (!_active)
-		return false;
+		return;
 
-	return false;
+	return;
 }
 
 

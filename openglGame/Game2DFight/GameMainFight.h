@@ -3,7 +3,7 @@
 #include "dexode/eventbus/Bus.hpp"
 #include "Actor.h"
 #include "base/QTreeBase.hpp"
-#include "component/CollisionComponent.h"
+#include "component/ConllisionComponent/CollisionComponent.h"
 
 StatementNode(GameMainFight)
 class GameMainFight :public Node
@@ -12,7 +12,7 @@ class GameMainFight :public Node
 public:
 	virtual void init();
 	virtual void restart();
-	bool update(float time);
+	void update(float time);
 public:
 private:
 	SPActor	_player;

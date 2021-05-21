@@ -16,5 +16,9 @@ void CollisionBulletComponent::doEnd()
 
 void CollisionBulletComponent::collision(Object*other)
 {
-
+	auto node = dynamic_cast<Node*>(_object);
+	if (node)
+	{
+		node->removeFromParent();
+	}
 }

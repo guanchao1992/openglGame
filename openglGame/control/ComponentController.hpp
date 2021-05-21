@@ -32,7 +32,8 @@ public:
 
 	void delComponent(Component*com) {
 		_del_components_map[com] = _components_map[com];
-		_components_map[com] = nullptr;
+		//_components_map[com] = nullptr;
+		_components_map.erase(com);
 	}
 private:
 	map<Component*, shared_ptr<Component>> _components_map;	//记录所有的组件

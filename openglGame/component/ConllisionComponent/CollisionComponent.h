@@ -1,8 +1,8 @@
 #pragma once
-#include "Component.hpp"
-#include "Base/Size.h"
-#include "Base/Vector2.h"
-#include "../base/QTreeBase.hpp"
+#include "../Component.hpp"
+#include "base/Size.h"
+#include "base/Vector2.h"
+#include "base/QTreeBase.hpp"
 
 class Node;
 
@@ -27,7 +27,7 @@ public:
 	virtual ComponentType getType() { return ComponentType::COMPONENT_COLLISION; }
 	virtual void doBegin();
 	virtual void doEnd(); 
-	bool update(float time);
+	void update(float time);
 
 	inline bool checkCollision(COLLISIONMARK doMark) { return _flagMark & doMark; }
 	inline COLLISIONMARK getFlagMark() { return _flagMark; }

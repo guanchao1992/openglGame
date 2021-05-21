@@ -43,7 +43,7 @@ public:
 	void addState(const State& s);
 	void enterState(StateType stype);		//不检查from
 	bool checkEnterState(StateType stype);	//检查from，不满足则返回false
-	bool update(float time);
+	void update(float time);
 public:
 	inline StateType getState() {
 		return _state;

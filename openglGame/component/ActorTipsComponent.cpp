@@ -20,10 +20,10 @@ void ActorTipsComponent::doEnd()
 
 }
 
-bool ActorTipsComponent::update(float time)
+void ActorTipsComponent::update(float time)
 {
 	if (!_active)
-		return false;
+		return;
 	Actor*actor = (Actor*)_object;
 
 	//_listTexts.pop_front();
@@ -47,7 +47,7 @@ bool ActorTipsComponent::update(float time)
 	if (hasDel)
 	{
 	}
-	return false;
+	return;
 }
 
 void ActorTipsComponent::addTips(const wchar_t*text)

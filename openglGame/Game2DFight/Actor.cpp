@@ -11,9 +11,9 @@
 #include "component/BulletComponent/BulletMoveComponent.h"
 #include "component/BulletComponent/BMCComponentS1.h"
 #include "component/BulletComponent/BMCComponentS2.h"
-#include "component/CollisionComponent.h"
-#include "component/CollisionBulletComponent.h"
-#include "component/CollisionActorComponent.h"
+#include "component/ConllisionComponent/CollisionComponent.h"
+#include "component/ConllisionComponent/CollisionBulletComponent.h"
+#include "component/ConllisionComponent/CollisionActorComponent.h"
 
 
 void Actor::init()

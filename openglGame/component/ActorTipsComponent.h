@@ -12,7 +12,7 @@ public:
 	virtual ComponentType getType() { return ComponentType::COMPONENT_CUSTOM; }
 	virtual void doBegin();
 	virtual void doEnd();
-	bool update(float time);
+	void update(float time);
 	void addTips(const wchar_t*text);
 
 private:

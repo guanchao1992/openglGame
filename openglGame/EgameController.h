@@ -56,7 +56,7 @@ private:
 	void redrawAll();
 	int checkEliminate();
 	void setBlockPlace(const SPBlock&sp);
-	bool updateBlockTimer(float time);
+	void updateBlockTimer(float time);
 	void handlerKeyEvent(const KeyEvent& et);
 private:
 

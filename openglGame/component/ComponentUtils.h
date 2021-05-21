@@ -17,5 +17,7 @@ enum ComponentType
 	COMPONENT_BULLET_MOVE_CHANGE,//子弹移动控制的控制
 
 	COMPONENT_COLLISION,	//碰撞组件
+
+	COMPONENT_AI,			//AI组件
 };
 

@@ -5,7 +5,7 @@
 #include <functional>
 
 
-#define TimerCallback std::function<bool(float time)>
+#define TimerCallback std::function<void(float time)>
 
 
 struct Timer
@@ -15,6 +15,7 @@ public:
 	Timer(float interval, int num, TimerCallback callback);
 
 	void resetTime();
+	void stop();
 private:
 	void update(float time);
 	float			_interval = 1.0f;		//¼ä¸ô

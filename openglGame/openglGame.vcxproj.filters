@@ -176,19 +176,19 @@
     <ClCompile Include="component\BulletComponent\BMCComponentM.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="component\CollisionComponent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="control\CollisionController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="control\ComponentController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="component\CollisionBulletComponent.cpp">
+    <ClCompile Include="component\ConllisionComponent\CollisionBulletComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="component\CollisionActorComponent.cpp">
+    <ClCompile Include="component\ConllisionComponent\CollisionComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\ConllisionComponent\CollisionActorComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -391,9 +391,6 @@
     <ClInclude Include="component\BulletComponent\BMCComponentM.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="component\CollisionComponent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="control\CollisionController.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -406,10 +403,13 @@
     <ClInclude Include="control\ComponentController.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="component\CollisionActorComponent.h">
+    <ClInclude Include="component\ConllisionComponent\CollisionBulletComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="component\CollisionBulletComponent.h">
+    <ClInclude Include="component\ConllisionComponent\CollisionComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ConllisionComponent\CollisionActorComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -56,8 +56,8 @@ void ActorOIComponent::doEnd()
 	TimerController::getInstance()->killTimer(_timerId);
 }
 
-bool ActorOIComponent::update(float time)
+void ActorOIComponent::update(float time)
 {
 
-	return false;
+	return ;
 }

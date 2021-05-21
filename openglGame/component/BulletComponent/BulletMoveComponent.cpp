@@ -16,10 +16,10 @@ void BulletMoveComponent::doEnd()
 	TimerController::getInstance()->killTimer(_timerId);
 }
 
-bool BulletMoveComponent::update(float time)
+void BulletMoveComponent::update(float time)
 {
 	if (!_active)
-		return false;
+		return;
 	_speedIncrement = 0.f;
 	_radianIncrement = 0.f;
 	for (auto it = _bmcComponents.begin(); it != _bmcComponents.end(); it++)
@@ -39,7 +39,7 @@ bool BulletMoveComponent::update(float time)
 		node->removeFromParent();
 	}
 
-	return false;
+	return;
 }
 
 bool BulletMoveComponent::collision()

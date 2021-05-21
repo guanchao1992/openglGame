@@ -12,7 +12,7 @@ public:
 	virtual ComponentType getType() { return ComponentType::COMPONENT_ACTOR_OI; }
 	virtual void doBegin();
 	virtual void doEnd(); 
-	bool update(float time);
+	void update(float time);
 private:
 	shared_ptr<dexode::eventbus::Listener< dexode::eventbus::Bus>> _listener = nullptr;
 

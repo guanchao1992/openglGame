@@ -4,7 +4,7 @@
 #include <Game2DFight/Actor.h>
 #include <Game2DFight/Bullet.h>
 #include "CollisionBulletComponent.h"
-#include "ActorMoveComponent.h"
+#include "../ActorMoveComponent.h"
 
 
 void CollisionActorComponent::doBegin()

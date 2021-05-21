@@ -13,7 +13,7 @@ public:
 	virtual ComponentType getType() { return ComponentType::COMPONENT_BULLET_MOVE; }
 	virtual void doBegin();
 	virtual void doEnd(); 
-	bool update(float time);
+	void update(float time);
 	bool collision();
 
 	void setSpeedOriginal(const Vector2&speed);	//设置初始速度，会将当前速度重置

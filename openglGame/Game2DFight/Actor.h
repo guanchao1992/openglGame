@@ -13,9 +13,9 @@ public:
 	void setName(const wchar_t*name);
 public:
 	void fire(const Vector2&aim, const Vector2&offset);
+	void setState(const wchar_t*state);
 private:
-
-private:
-	SPText		_name;
+	SPText		_name = nullptr;
+	SPText		_state = nullptr;
 };
 

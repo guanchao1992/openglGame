@@ -14,5 +14,5 @@ void main(void)
 	//fragColor = vec4(1.0) - (vec4(1.0) - texture2D(CC_Texture0, v_texCoord)) / u_makeColor;
 
 	//ÕýÆ¬µþµ×
-	fragColor = texture2D(CC_Texture0, v_texCoord)* u_makeColor;
+	fragColor = texture(CC_Texture0, v_texCoord)* u_makeColor;
 }

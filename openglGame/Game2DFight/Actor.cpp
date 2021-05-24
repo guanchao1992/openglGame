@@ -15,20 +15,27 @@
 #include "component/ConllisionComponent/CollisionBulletComponent.h"
 #include "component/ConllisionComponent/CollisionActorComponent.h"
 #include "component/ActorStateComponent.h"
+#include "component/BulletStateComponent.h"
 
 
 void Actor::init()
 {
-	auto atCom = addComponent<ActorTipsComponent>();
-	auto amCom = addComponent<ActorMoveComponent>();
-	auto stateCom = addComponent<ActorStateComponent>();
-
 	_name = Text::create(L"名字好多个字哦", DEFAULTE_FONT_FILE, 24);
 	_name->addComponent<OutlineBoxComponent>();
 	auto nameAreaCom = _name->getComponent<AreaComponent>();
 	nameAreaCom->setAnchor(Vector2(0.5, 0.5));
 	addChild(_name);
 	_name->setPosition(0, 70);
+
+	_state = Text::create(L"状态", DEFAULTE_FONT_FILE, 18);
+	auto stateAreaCom = _state->getComponent<AreaComponent>();
+	stateAreaCom->setAnchor(Vector2(0.5, 0.5));
+	addChild(_state);
+	_state->setPosition(0, 50);
+	
+	auto atCom = addComponent<ActorTipsComponent>();
+	auto amCom = addComponent<ActorMoveComponent>();
+	auto stateCom = addComponent<ActorStateComponent>();
 
 	auto drawCom = addComponent<DrawRanderComponent>();
 	drawCom->addVertex(Vector2(0.f, 0));
@@ -42,12 +49,16 @@ void Actor::init()
 	areaCom->setAnchor(Vector2(0.5, 0));
 	areaCom->setSize(Size(40, 60));
 
-
 }
 
 void Actor::setName(const wchar_t*name)
 {
 	_name->setString(name);
+}
+
+void Actor::setState(const wchar_t*state)
+{
+	_state->setString(state);
 }
 
 void Actor::fire(const Vector2&aim, const Vector2&offset)
@@ -66,6 +77,9 @@ void Actor::fire(const Vector2&aim, const Vector2&offset)
 			auto b = Bullet::create(this);
 			b->setDir(aim);
 			b->setSpeed(400.f);
+			auto bsCom = b->getComponent<BulletStateComponent>();
+			bsCom->setAttack(stateCom->getAttack());
+			bsCom->setCamp(stateCom->getCamp());
 			GameApp::getInstance()->_start->addChild(b);
 			b->setPosition(getPosition()._x + offset._x, getPosition()._y + offset._y);
 			/*

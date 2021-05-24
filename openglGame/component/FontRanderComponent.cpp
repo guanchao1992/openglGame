@@ -150,7 +150,7 @@ void FontRanderComponent::setText(const std::wstring&wstr)
 
 void FontRanderComponent::setFontSize(int fontSize)
 {
-	_font->_fontSize = fontSize;
+	_fontSize = fontSize;
 	setText(_text.c_str());
 }
 
@@ -172,8 +172,9 @@ void FontRanderComponent::layout()
 	size_t nLen = wcslen(_text.c_str());
 	unsigned int str_w = 0;
 	float size_w = 0;
-	int str_h = _font->_fontSize;
-	int off_y = _font->_fontSize*0.2;
+	int str_h = _fontSize;
+	int off_y = _fontSize*0.2;
+	_font->_fontSize = _fontSize;
 	for (int i = 0; i < nLen; ++i)
 	{
 		auto char_texture = _font->getTextChar(_text.c_str()[i]);
@@ -181,7 +182,7 @@ void FontRanderComponent::layout()
 		if (str_w + char_texture->_adv_x > _maxWidth)
 		{
 			str_w = 0;
-			str_h += _font->_fontSize;
+			str_h += _fontSize;
 			size_w = _maxWidth;
 		}
 

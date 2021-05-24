@@ -43,13 +43,12 @@ void ActorOIComponent::doBegin()
 		}
 	});
 	_listener->listen([this](const MouseKeyEvent&et) {
-		if (et._isDown)
+		if (et.button & 1)
 		{
-			Actor* actor = (Actor*)_object;
-			auto pos = GameApp::getInstance()->convertViewToNode(actor->getParent(), Vector2(et._x, et._y));
-			auto offset = Vector2(0, 40);
-			pos.setVector(pos._x - actor->getPosition()._x - offset._x, pos._y - actor->getPosition()._y - offset._y);
-			actor->fire(pos, offset);
+			auto stateCom = _object->getComponent <ActorStateComponent>();
+			if (!stateCom)
+				return;
+			stateCom->onFire(et._isDown);
 		}
 	});
 }

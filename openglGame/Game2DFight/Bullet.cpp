@@ -3,6 +3,7 @@
 #include "component/AreaComponent.h"
 #include <component/FontRanderComponent.h>
 #include "component/BulletComponent/BulletMoveComponent.h"
+#include "component/BulletStateComponent.h"
 
 
 SPBullet Bullet::create(Actor* father)
@@ -27,6 +28,7 @@ void Bullet::init()
 	areaCom->setSize(Size(20, 20));
 
 	auto bmCom = addComponent<BulletMoveComponent>();
+	auto bsCom = addComponent<BulletStateComponent>();
 	
 }
 

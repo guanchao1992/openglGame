@@ -6,6 +6,7 @@
 #include "CollisionBulletComponent.h"
 #include "../ActorMoveComponent.h"
 #include "../ActorStateComponent.h"
+#include "../BulletStateComponent.h"
 
 
 void CollisionActorComponent::doBegin()
@@ -26,11 +27,14 @@ void CollisionActorComponent::collision(Object*other)
 	{
 		auto otherColCom = other->getComponent<CollisionBulletComponent>();
 		//ÅÐ¶ÏÊÇ·ñÎª×Óµ¯
-		CollisionBulletComponent* othercbc = dynamic_cast<CollisionBulletComponent*>(otherColCom);
-		if (othercbc)
+		//CollisionBulletComponent* othercbc = dynamic_cast<CollisionBulletComponent*>(otherColCom);
+		//auto otherStateCom = other->getComponent<BulletStateComponent>();
+		auto otherStateCom = dynamic_cast<BulletStateComponent*>(other->getComponent(COMPONENT_BULLET_STATE));
+		if (otherStateCom)
 		{
 			auto stateCom = _object->getComponent<ActorStateComponent>();
 			stateCom->enterState(STATE_HIT);
+			stateCom->setHP(stateCom->getHP() - otherStateCom->getAttack());
 		}
 		else {
 			auto amc = _object->getComponent<ActorMoveComponent>();

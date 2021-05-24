@@ -56,6 +56,23 @@ void ActorStateComponent::update(float time)
 {
 	_sm->update(time);
 	_sm_move->update(time);
+
+	if (_fireKey)
+	{
+		double x = 0, y = 0;
+		auto window = glfwGetCurrentContext();
+		if (window)
+		{
+			glfwGetCursorPos(window, &x, &y);
+			y = GameApp::getInstance()->getViewHeight() - y;
+		}
+
+		Actor* actor = (Actor*)_object;
+		auto pos = GameApp::getInstance()->convertViewToNode(actor->getParent(), Vector2(x, y));
+		auto offset = Vector2(0, 40);
+		pos.setVector(pos._x - actor->getPosition()._x - offset._x, pos._y - actor->getPosition()._y - offset._y);
+		actor->fire(pos, offset);
+	}
 	return;
 }
 
@@ -119,8 +136,13 @@ void ActorStateComponent::__notactiveEnter()
 {
 	auto atCom = _object->getComponent<ActorTipsComponent>();
 	wchar_t str[256];
-	swprintf_s(str, 256, L"×´Ì¬£ºÎ´¼¤»î", _sm->getState());
-	atCom->addTips(str);
+	swprintf_s(str, 256, L"Î´¼¤»î", _sm->getState());
+	//atCom->addTips(str);
+	auto actor = dynamic_cast<Actor*>(_object);
+	if (actor)
+	{
+		actor->setState(str);
+	}
 }
 void ActorStateComponent::__notactiveExit()
 {
@@ -130,8 +152,13 @@ void ActorStateComponent::__idleEnter()
 {
 	auto atCom = _object->getComponent<ActorTipsComponent>();
 	wchar_t str[256];
-	swprintf_s(str, 256, L"×´Ì¬£º¿ÕÏÐ", _sm->getState());
-	atCom->addTips(str);
+	swprintf_s(str, 256, L"¿ÕÏÐ", _sm->getState());
+//	atCom->addTips(str);
+	auto actor = dynamic_cast<Actor*>(_object);
+	if (actor)
+	{
+		actor->setState(str);
+	}
 }
 void ActorStateComponent::__idleExit()
 {
@@ -145,10 +172,12 @@ void ActorStateComponent::__hitEnter()
 		return;
 	auto atCom = _object->getComponent<ActorTipsComponent>();
 	wchar_t str[256];
-	swprintf_s(str, 256, L"×´Ì¬£ºÊÜ»÷", _sm->getState());
-	atCom->addTips(str);
+	swprintf_s(str, 256, L"ÊÜ»÷", _sm->getState());
+//	atCom->addTips(str);
 
 	actor->setColor(Vector4(1, 1, 0, 1));
+	actor->setState(str);
+
 }
 void ActorStateComponent::__hitExit()
 {
@@ -166,8 +195,9 @@ void ActorStateComponent::__readyEnter()
 		return;
 	auto atCom = _object->getComponent<ActorTipsComponent>();
 	wchar_t str[256];
-	swprintf_s(str, 256, L"×´Ì¬£ºË¼¿¼", _sm->getState());
-	atCom->addTips(str);
+	swprintf_s(str, 256, L"Ë¼¿¼", _sm->getState());
+//	atCom->addTips(str);
+	actor->setState(str);
 }
 void ActorStateComponent::__readyExit()
 {
@@ -179,8 +209,9 @@ void ActorStateComponent::__fireEnter()
 		return;
 	auto atCom = _object->getComponent<ActorTipsComponent>();
 	wchar_t str[256];
-	swprintf_s(str, 256, L"×´Ì¬£º¿ª»ð", _sm->getState());
-	atCom->addTips(str);
+	swprintf_s(str, 256, L"¿ª»ð", _sm->getState());
+//	atCom->addTips(str);
+	actor->setState(str);
 }
 void ActorStateComponent::__fireExit()
 {
@@ -192,8 +223,10 @@ void ActorStateComponent::__deathEnter()
 		return;
 	auto atCom = _object->getComponent<ActorTipsComponent>();
 	wchar_t str[256];
-	swprintf_s(str, 256, L"×´Ì¬£ºËÀÍö", _sm->getState());
-	atCom->addTips(str);
+	swprintf_s(str, 256, L"ËÀÍö", _sm->getState());
+	//atCom->addTips(str);
+
+	actor->setState(str);
 }
 void ActorStateComponent::__deathExit()
 {

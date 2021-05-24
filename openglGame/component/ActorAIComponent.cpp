@@ -62,7 +62,7 @@ void ActorAIComponent::update(float time)
 				auto r = atan2(p._y, p._x);
 
 				amc->setAcceleratedSpeed(Vector2(cosf(r) * 500, sinf(r) * 500));
-				actor->fire(Vector2(cosf(r) * 500, sinf(r) * 500), Vector2(0, 40));
+				actor->fire(Vector2(cosf(r), sinf(r)), Vector2(0, 40));
 			}
 			else
 			{

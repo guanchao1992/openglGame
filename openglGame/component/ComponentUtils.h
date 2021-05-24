@@ -15,6 +15,7 @@ enum ComponentType
 	COMPONENT_ACTIVE_MOVE,		//移动控制
 	COMPONENT_ACTOR_AI,			//AI组件，控制演员移动
 
+	COMPONENT_BULLET_STATE,		//子弹状态组件
 	COMPONENT_BULLET_MOVE,		//子弹移动控制
 	COMPONENT_BULLET_MOVE_CHANGE,//子弹移动控制的控制
 

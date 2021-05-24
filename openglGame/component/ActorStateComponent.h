@@ -45,6 +45,13 @@ public:
 	}
 	void calculateMove();
 
+	inline void onFire(bool keyPress) {
+		_fireKey = keyPress;
+	}
+	inline bool isFireDown() {
+		return _fireKey;
+	}
+
 	inline void setCamp(ActorCamp camp) { _camp = camp; }
 	inline ActorCamp getCamp() { return _camp; }
 
@@ -60,6 +67,11 @@ public:
 			return _sm->getStateData(stype);
 		}
 	};
+
+	int getHP() { return _hp; }
+	void setHP(int hp) { _hp = hp; }
+	int getAttack() { return _attack; }
+	void setAttack(int attack) { _attack = attack; }
 private:
 	virtual void __activeEnter();
 	virtual void __activeExit();
@@ -87,10 +99,14 @@ private:
 	bool _downKey = false;
 	bool _leftKey = false;
 	bool _rightKey = false;
+	bool _fireKey = false;
 	SPStateMachine _sm;
 	SPStateMachine _sm_move;	//移动单独抠出来
 
 	int _timerId;
 
 	ActorCamp _camp = ACTORCAMP_NULL;	//阵营
+
+	int _hp = 100;
+	int _attack = 5;
 };

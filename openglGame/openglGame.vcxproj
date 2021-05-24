@@ -189,6 +189,7 @@
     <ClCompile Include="component\BulletComponent\BMCComponentS2.cpp" />
     <ClCompile Include="component\BulletComponent\BMCComponentS3.cpp" />
     <ClCompile Include="component\BulletComponent\BulletMoveComponent.cpp" />
+    <ClCompile Include="component\BulletStateComponent.cpp" />
     <ClCompile Include="component\Component.cpp" />
     <ClCompile Include="component\ConllisionComponent\CollisionActorComponent.cpp" />
     <ClCompile Include="component\ConllisionComponent\CollisionBulletComponent.cpp" />
@@ -263,6 +264,7 @@
     <ClInclude Include="component\BulletComponent\BMCComponentS2.h" />
     <ClInclude Include="component\BulletComponent\BMCComponentS3.h" />
     <ClInclude Include="component\BulletComponent\BulletMoveComponent.h" />
+    <ClInclude Include="component\BulletStateComponent.h" />
     <ClInclude Include="component\Component.hpp" />
     <ClInclude Include="component\ComponentUtils.h" />
     <ClInclude Include="component\ConllisionComponent\CollisionActorComponent.h" />

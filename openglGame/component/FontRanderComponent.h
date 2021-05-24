@@ -45,6 +45,7 @@ private:
 
 	shared_ptr<Font> _font;
 	wstring _text;
+	int _fontSize = 20;
 	unsigned int _maxWidth = -1;
 };
 

@@ -4,6 +4,8 @@
 #include "Base/Vector2.h"
 #include "dexode/eventbus/Bus.hpp"
 #include "Game2DFight/StateMachine.h"
+#include "2d/Text.h"
+#include "2d/DrawProgress.h"
 
 enum ActorCamp
 {
@@ -11,7 +13,6 @@ enum ActorCamp
 	ACTORCAMP_PLAYER = 1,	//友
 	ACTORCAMP_ENEMY = 2,	//敌
 	ACTORCAMP_NEUTRAL = 4,	//中立
-
 };
 
 class ActorStateComponent :public Component
@@ -68,8 +69,11 @@ public:
 		}
 	};
 
+	void setName(const wchar_t*name);
+	void setState(const wchar_t*state);
+	void setHP(int hp); 
+
 	int getHP() { return _hp; }
-	void setHP(int hp) { _hp = hp; }
 	int getAttack() { return _attack; }
 	void setAttack(int attack) { _attack = attack; }
 private:
@@ -108,5 +112,12 @@ private:
 	ActorCamp _camp = ACTORCAMP_NULL;	//阵营
 
 	int _hp = 100;
+	int _hpMax = 100;
 	int _attack = 5;
+
+public:
+	//额外的显示
+	SPText			_ui_name = nullptr;
+	SPText			_ui_state = nullptr;
+	SPDrawProgress	_ui_hp = nullptr;
 };

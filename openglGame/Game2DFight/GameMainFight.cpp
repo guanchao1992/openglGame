@@ -45,7 +45,8 @@ void GameMainFight::init()
 	auto target1 = Actor::create();
 	_objectLayer->addChild(target1);
 	target1->setPosition(500, 100);
-	target1->setName(L"ľ׮");
+	target1->getComponent<ActorStateComponent>()->setName(L"ľ׮");
+
 	auto target1CollCom = target1->addComponent<CollisionActorComponent>();
 	target1CollCom->enableCollision(CMARK_ENEMY, CMARK_SELF | CMARK_ENEMY | CMARK_SELF_BULLET | CMARK_STONE);
 	auto target1_stateCom = target1->getComponent<ActorStateComponent>();
@@ -61,7 +62,7 @@ void GameMainFight::init()
 		auto target2 = Actor::create();
 		_objectLayer->addChild(target2);
 		target2->setPosition(rand() % 800 + 100, rand() % 500 + 40);
-		target2->setName(L"ľ׮");
+		target2->getComponent<ActorStateComponent>()->setName(L"ľ׮");
 		auto target2CollCom = target2->addComponent<CollisionActorComponent>();
 		target2CollCom->enableCollision(CMARK_ENEMY, CMARK_SELF | CMARK_ENEMY | CMARK_SELF_BULLET | CMARK_STONE);
 		target2->getComponent<ActorStateComponent>()->setCamp(ACTORCAMP_ENEMY);

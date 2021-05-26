@@ -23,6 +23,26 @@
 void ActorStateComponent::doBegin()
 {
 	__super::doBegin();
+	auto node = dynamic_cast<Node*>(_object);
+
+	_ui_name = Text::create(L"名字好多个字哦", DEFAULTE_FONT_FILE, 24);
+	_ui_name->addComponent<OutlineBoxComponent>();
+	auto nameAreaCom = _ui_name->getComponent<AreaComponent>();
+	nameAreaCom->setAnchor(Vector2(0.5, 0.5));
+	node->addChild(_ui_name);
+	_ui_name->setPosition(0, 90);
+
+	_ui_state = Text::create(L"状态", DEFAULTE_FONT_FILE, 18);
+	auto stateAreaCom = _ui_state->getComponent<AreaComponent>();
+	stateAreaCom->setAnchor(Vector2(0.5, 0.5));
+	node->addChild(_ui_state);
+	_ui_state->setPosition(0, 50);
+
+	_ui_hp = DrawProgress::create(Vector4(1, 0, 0, 1), Vector4(1, 1, 1, 0.3), Size(100, 20));
+	auto hpAreaCom = _ui_hp->getComponent<AreaComponent>();
+	hpAreaCom->setAnchor(Vector2(0.5, 0.5));
+	node->addChild(_ui_hp);
+	_ui_hp->setPosition(0, 70);
 
 	_timerId = TimerController::getInstance()->addTimer(0, -1, std::bind(&ActorStateComponent::update, this, std::placeholders::_1));
 
@@ -43,7 +63,6 @@ void ActorStateComponent::doBegin()
 	_sm_move->addState({ STATE_MOVE, {},STATE_STAND, 0.3,std::bind(&ActorStateComponent::__moveEnter,this),std::bind(&ActorStateComponent::__moveExit,this) });
 
 	_sm_move->enterState(STATE_STAND);
-
 }
 
 void ActorStateComponent::doEnd()
@@ -120,6 +139,23 @@ void ActorStateComponent::calculateMove()
 	amCom->setAcceleratedSpeed(as);
 }
 
+void ActorStateComponent::setName(const wchar_t*name)
+{
+	_ui_name->setString(name);
+}
+
+void ActorStateComponent::setState(const wchar_t*state)
+{
+	_ui_state->setString(state);
+}
+
+void ActorStateComponent::setHP(int hp)
+{
+	_hp = hp;
+	_ui_hp->setProportion(1.0f * _hp / _hpMax);
+}
+
+
 /**************状态机发生变化***************/
 void ActorStateComponent::__activeEnter()
 {
@@ -138,11 +174,7 @@ void ActorStateComponent::__notactiveEnter()
 	wchar_t str[256];
 	swprintf_s(str, 256, L"未激活", _sm->getState());
 	//atCom->addTips(str);
-	auto actor = dynamic_cast<Actor*>(_object);
-	if (actor)
-	{
-		actor->setState(str);
-	}
+	setState(str);
 }
 void ActorStateComponent::__notactiveExit()
 {
@@ -154,11 +186,7 @@ void ActorStateComponent::__idleEnter()
 	wchar_t str[256];
 	swprintf_s(str, 256, L"空闲", _sm->getState());
 //	atCom->addTips(str);
-	auto actor = dynamic_cast<Actor*>(_object);
-	if (actor)
-	{
-		actor->setState(str);
-	}
+	setState(str);
 }
 void ActorStateComponent::__idleExit()
 {
@@ -176,7 +204,8 @@ void ActorStateComponent::__hitEnter()
 //	atCom->addTips(str);
 
 	actor->setColor(Vector4(1, 1, 0, 1));
-	actor->setState(str);
+
+	setState(str);
 
 }
 void ActorStateComponent::__hitExit()
@@ -197,7 +226,7 @@ void ActorStateComponent::__readyEnter()
 	wchar_t str[256];
 	swprintf_s(str, 256, L"思考", _sm->getState());
 //	atCom->addTips(str);
-	actor->setState(str);
+	setState(str);
 }
 void ActorStateComponent::__readyExit()
 {
@@ -211,7 +240,7 @@ void ActorStateComponent::__fireEnter()
 	wchar_t str[256];
 	swprintf_s(str, 256, L"开火", _sm->getState());
 //	atCom->addTips(str);
-	actor->setState(str);
+	setState(str);
 }
 void ActorStateComponent::__fireExit()
 {
@@ -226,8 +255,9 @@ void ActorStateComponent::__deathEnter()
 	swprintf_s(str, 256, L"死亡", _sm->getState());
 	//atCom->addTips(str);
 
-	actor->setState(str);
+	setState(str);
 }
+
 void ActorStateComponent::__deathExit()
 {
 }

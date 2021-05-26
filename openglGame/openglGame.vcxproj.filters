@@ -200,6 +200,9 @@
     <ClCompile Include="component\BulletStateComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="2d\DrawProgress.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -428,6 +431,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="component\BulletStateComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\DrawProgress.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

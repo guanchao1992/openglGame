@@ -30,6 +30,12 @@
     <None Include="..\Shader\texture.vert.glsl">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="..\Shader\font.frag.glsl">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\Shader\font.vert.glsl">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2d\DrawBoxNode.cpp">

@@ -43,11 +43,12 @@ void GameApp::init()
 	_ui = GameUI::create();
 	_appNode->addChild(_ui, 100);
 
+	auto bgColor = Vector4(0.5, 0.5, 0.4, 0.5);
 	auto appDrawCom = _bg->addComponent<DrawRanderComponent>();
-	appDrawCom->addVertex(Vector2(0, 0), Vector4(0.3, 0.3, 0, 0.5));
-	appDrawCom->addVertex(Vector2(_projectWidth, 0), Vector4(0.3, 0.3, 0, 0.5));
-	appDrawCom->addVertex(Vector2(_projectWidth, _projectHeight), Vector4(0.3, 0.3, 0, 0.5));
-	appDrawCom->addVertex(Vector2(0, _projectHeight), Vector4(0.3, 0.3, 0, 0.5));
+	appDrawCom->addVertex(Vector2(0, 0), bgColor);
+	appDrawCom->addVertex(Vector2(_projectWidth, 0), bgColor);
+	appDrawCom->addVertex(Vector2(_projectWidth, _projectHeight), bgColor);
+	appDrawCom->addVertex(Vector2(0, _projectHeight), bgColor);
 	appDrawCom->signDraw(GL_TRIANGLE_FAN);
 	_bg->setPosition(0, 0);
 	//_bg->setColor(Vector4(0.3, 0.3, 0, 0.5));

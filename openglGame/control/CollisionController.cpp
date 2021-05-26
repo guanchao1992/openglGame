@@ -100,7 +100,6 @@ void CollisionController::collisionDetection()
 	{
 		searchNodes.clear();
 		auto node = (Node*)(*it)->getObject();
-		node->setColor(Vector4(1, 0, 0, 1));
 		auto areaCom = node->getComponent<AreaComponent>();
 		auto rect = areaCom->getAreaRect(true);
 		_tree->Search(rect._left, rect._bottom, rect._right, rect._top, searchNodes);

@@ -117,7 +117,7 @@ private:
 
 public:
 	//∂ÓÕ‚µƒœ‘ æ
-	SPText			_ui_name = nullptr;
-	SPText			_ui_state = nullptr;
-	SPDrawProgress	_ui_hp = nullptr;
+	Text*			_ui_name = nullptr;
+	Text*			_ui_state = nullptr;
+	DrawProgress*	_ui_hp = nullptr;
 };

@@ -55,7 +55,7 @@ void ActorTipsComponent::addTips(const wchar_t*text)
 	auto nodetext = Text::create(text, DEFAULTE_FONT_FILE, 24);
 	nodetext->setScale(0.6);
 	nodetext->setPosition(-30, 0);
-	nodetext->setColor(Vector4(0.1, 0.1, 0.1, 1));
+	//nodetext->setColor(Vector4(0.1, 0.1, 0.1, 1));
 	auto areaCom = nodetext->getComponent<AreaComponent>();
 	areaCom->setAnchor(Vector2(1, 0));
 

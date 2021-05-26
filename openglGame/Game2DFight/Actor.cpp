@@ -28,13 +28,13 @@ void Actor::init()
 	auto stateCom = addComponent<ActorStateComponent>();
 
 	auto drawCom = addComponent<DrawRanderComponent>();
-	drawCom->addVertex(Vector2(0.f, 0));
-	drawCom->addVertex(Vector2(40.f, 0));
-	drawCom->addVertex(Vector2(40.f, 40));
-	drawCom->addVertex(Vector2(0.f, 40));
+	drawCom->addVertex(Vector2(0.f, 0), Vector4(0.1, 0.1, 0.8, 1));
+	drawCom->addVertex(Vector2(40.f, 0), Vector4(0.1, 0.1, 0.8, 1));
+	drawCom->addVertex(Vector2(40.f, 60), Vector4(0.1, 0.1, 0.8, 1));
+	drawCom->addVertex(Vector2(0.f, 60), Vector4(0.1, 0.1, 0.8, 1));
 	drawCom->signDraw(GL_TRIANGLE_FAN);
 
-	addComponent<OutlineBoxComponent>();
+	//addComponent<OutlineBoxComponent>();
 	auto areaCom = getComponent<AreaComponent>();
 	areaCom->setAnchor(Vector2(0.5, 0));
 	areaCom->setSize(Size(40, 60));
@@ -62,6 +62,7 @@ void Actor::fire(const Vector2&aim, const Vector2&offset)
 			bsCom->setCamp(stateCom->getCamp());
 			GameApp::getInstance()->_start->addChild(b);
 			b->setPosition(getPosition()._x + offset._x, getPosition()._y + offset._y);
+
 			/*
 			b->addComponent<BMCComponentS>();
 			b->addComponent<BMCComponentS1>();

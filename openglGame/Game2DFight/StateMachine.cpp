@@ -56,18 +56,20 @@ bool StateMachine::checkEnterState(StateType stype)
 	{
 		return false;
 	}
+	_stateEnd = false;
 	enterState(stype);
 	return true;
 }
 
 void StateMachine::update(float time)
 {
-	if (_toState == STATE_NONE || _toState == _state)
+	if (_toState == STATE_NONE && _stateEnd)
 		return;
 	_accumulationTime += time;
 	if (_accumulationTime >= _nextTime)
 	{
 		enterState(_toState);
+		_stateEnd = true;
 	}
 
 	return;

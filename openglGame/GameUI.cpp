@@ -80,16 +80,16 @@ void GameUI::init()
 
 void GameUI::initBk()
 {
+	Vector4 bgcolor(0.4, 0.4, 0.2, 0.3);
 	{
 		auto fd = Node::create();
 		auto drawCom = fd->addComponent<DrawRanderComponent>();
-		drawCom->addVertex(Vector2(0, 0));
-		drawCom->addVertex(Vector2(0, 100));
-		drawCom->addVertex(Vector2(20, 100));
-		drawCom->addVertex(Vector2(20, 20));
-		drawCom->addVertex(Vector2(100, 20));
-		drawCom->addVertex(Vector2(100, 0));
-		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
+		drawCom->addVertex(Vector2(0, 0), bgcolor);
+		drawCom->addVertex(Vector2(0, 100), bgcolor);
+		drawCom->addVertex(Vector2(20, 100), bgcolor);
+		drawCom->addVertex(Vector2(20, 20), bgcolor);
+		drawCom->addVertex(Vector2(100, 20), bgcolor);
+		drawCom->addVertex(Vector2(100, 0), bgcolor);
 		fd->setPosition(10, 10);
 		_leftBottom->addChild(fd);
 		fd->setTag(100);
@@ -98,13 +98,12 @@ void GameUI::initBk()
 	{
 		auto fd = Node::create();
 		auto drawCom = fd->addComponent<DrawRanderComponent>();
-		drawCom->addVertex(Vector2(0, 0));
-		drawCom->addVertex(Vector2(0, -100));
-		drawCom->addVertex(Vector2(20, -100));
-		drawCom->addVertex(Vector2(20, -20));
-		drawCom->addVertex(Vector2(100, -20));
-		drawCom->addVertex(Vector2(100, 0));
-		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
+		drawCom->addVertex(Vector2(0, 0), bgcolor);
+		drawCom->addVertex(Vector2(0, -100), bgcolor);
+		drawCom->addVertex(Vector2(20, -100), bgcolor);
+		drawCom->addVertex(Vector2(20, -20), bgcolor);
+		drawCom->addVertex(Vector2(100, -20), bgcolor);
+		drawCom->addVertex(Vector2(100, 0), bgcolor);
 		fd->setPosition(10, -10);
 		_leftTop->addChild(fd);
 		fd->setTag(100);
@@ -113,13 +112,12 @@ void GameUI::initBk()
 	{
 		auto fd = Node::create();
 		auto drawCom = fd->addComponent<DrawRanderComponent>();
-		drawCom->addVertex(Vector2(0, 0));
-		drawCom->addVertex(Vector2(0, 100));
-		drawCom->addVertex(Vector2(-20, 100));
-		drawCom->addVertex(Vector2(-20, 20));
-		drawCom->addVertex(Vector2(-100, 20));
-		drawCom->addVertex(Vector2(-100, 0));
-		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
+		drawCom->addVertex(Vector2(0, 0), bgcolor);
+		drawCom->addVertex(Vector2(0, 100), bgcolor);
+		drawCom->addVertex(Vector2(-20, 100), bgcolor);
+		drawCom->addVertex(Vector2(-20, 20), bgcolor);
+		drawCom->addVertex(Vector2(-100, 20), bgcolor);
+		drawCom->addVertex(Vector2(-100, 0), bgcolor);
 		fd->setPosition(-10, 10);
 		_rightBottom->addChild(fd);
 		fd->setTag(100);
@@ -128,13 +126,12 @@ void GameUI::initBk()
 	{
 		auto fd = Node::create();
 		auto drawCom = fd->addComponent<DrawRanderComponent>();
-		drawCom->addVertex(Vector2(0, 0));
-		drawCom->addVertex(Vector2(0, -100));
-		drawCom->addVertex(Vector2(-20, -100));
-		drawCom->addVertex(Vector2(-20, -20));
-		drawCom->addVertex(Vector2(-100, -20));
-		drawCom->addVertex(Vector2(-100, 0));
-		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.8));
+		drawCom->addVertex(Vector2(0, 0), bgcolor);
+		drawCom->addVertex(Vector2(0, -100), bgcolor);
+		drawCom->addVertex(Vector2(-20, -100), bgcolor);
+		drawCom->addVertex(Vector2(-20, -20), bgcolor);
+		drawCom->addVertex(Vector2(-100, -20), bgcolor);
+		drawCom->addVertex(Vector2(-100, 0), bgcolor);
 		fd->setPosition(-10, -10);
 		_rightTop->addChild(fd);
 		fd->setTag(100);
@@ -143,19 +140,18 @@ void GameUI::initBk()
 	{
 		auto fd = Node::create();
 		auto drawCom = fd->addComponent<DrawRanderComponent>();
-		drawCom->addVertex(Vector2(1, 1));
-		drawCom->addVertex(Vector2(100, 1));
-		drawCom->addVertex(Vector2(100, -1));
-		drawCom->addVertex(Vector2(1, -1));
-		drawCom->addVertex(Vector2(1, -100));
-		drawCom->addVertex(Vector2(-1, -100));
-		drawCom->addVertex(Vector2(-1, -1));
-		drawCom->addVertex(Vector2(-100, -1));
-		drawCom->addVertex(Vector2(-100, 1));
-		drawCom->addVertex(Vector2(-1, 1));
-		drawCom->addVertex(Vector2(-1, 100));
-		drawCom->addVertex(Vector2(1, 100));
-		fd->setColor(Vector4(0.4, 0.4, 0.2, 0.4));
+		drawCom->addVertex(Vector2(1, 1), bgcolor);
+		drawCom->addVertex(Vector2(100, 1), bgcolor);
+		drawCom->addVertex(Vector2(100, -1), bgcolor);
+		drawCom->addVertex(Vector2(1, -1), bgcolor);
+		drawCom->addVertex(Vector2(1, -100), bgcolor);
+		drawCom->addVertex(Vector2(-1, -100), bgcolor);
+		drawCom->addVertex(Vector2(-1, -1), bgcolor);
+		drawCom->addVertex(Vector2(-100, -1), bgcolor);
+		drawCom->addVertex(Vector2(-100, 1), bgcolor);
+		drawCom->addVertex(Vector2(-1, 1), bgcolor);
+		drawCom->addVertex(Vector2(-1, 100), bgcolor);
+		drawCom->addVertex(Vector2(1, 100), bgcolor);
 		_center->addChild(fd);
 		fd->setTag(100);
 	}

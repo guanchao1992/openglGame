@@ -32,7 +32,7 @@ void FontRanderComponent::doBegin()
 {
 	__super::doBegin();
 	auto app = GameApp::getInstance();
-	_program = app->getProgram("texture");
+	_program = app->getProgram("font");
 	_vertexLocation = glGetAttribLocation(_program, "a_vertex");
 	_textCoordLocation = glGetAttribLocation(_program, "a_texCoord");
 	_texture0Location = glGetUniformLocation(_program, "CC_Texture0");

@@ -6,6 +6,7 @@ StatementNode(Text)
 class Text :public Node
 {
 public: 
+	Text();
 	/*
 	str 显示的字符串
 	font 字体文件路径

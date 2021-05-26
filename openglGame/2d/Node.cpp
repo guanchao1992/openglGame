@@ -6,6 +6,10 @@
 #include "control/TimerController.h"
 #include "component/RanderComponent.h"
 
+Node::Node()
+{
+	_color.setVector(0.f, 0.f, 0.f, 0.f);
+}
 Node::~Node()
 {
 	_childs.clear();

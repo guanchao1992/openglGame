@@ -158,6 +158,8 @@
   <ItemGroup>
     <None Include="..\Shader\filldraw.frag.glsl" />
     <None Include="..\Shader\filldraw.vert.glsl" />
+    <None Include="..\Shader\font.frag.glsl" />
+    <None Include="..\Shader\font.vert.glsl" />
     <None Include="..\Shader\texture.frag.glsl" />
     <None Include="..\Shader\texture.vert.glsl" />
   </ItemGroup>

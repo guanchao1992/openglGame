@@ -32,6 +32,7 @@ class Node : public Object
 	StatementCreate(Node)
 protected:
 public:
+	Node();
 	~Node();
 public:
 	virtual void init() {};
@@ -116,7 +117,7 @@ protected:
 	float _scaleY = 1.0f;
 	float _scaleZ = 1.0f;
 
-	Vector4 _color = Vector4(1.f, 1.f, 1.f, 1.f);
+	Vector4 _color;	//ÑÕÉ«µþ¼Ó
 	Node* _parent = nullptr;
 
 	vector<SPNode> _childs;

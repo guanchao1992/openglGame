@@ -41,11 +41,13 @@ public:
 	~StateMachine();
 	void init();
 	void addState(const State& s);
-	void enterState(StateType stype);		//不检查from
 	bool checkEnterState(StateType stype);	//检查from，不满足则返回false
 	void update(float time);
 
 	inline State*getStateData(StateType stype) { return &_mapStats[stype]; }
+
+private:
+	void enterState(StateType stype);		//不检查from
 public:
 	inline StateType getState() {
 		return _state;
@@ -57,6 +59,7 @@ private:
 	std::map<StateType, State> _mapStats;
 	StateType _state = STATE_NONE;
 	StateType _toState = STATE_NONE;
+	bool	  _stateEnd = false;
 	float _nextTime = 0;
 	float _accumulationTime = 0;
 };

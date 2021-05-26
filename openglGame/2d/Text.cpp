@@ -6,6 +6,11 @@
 #include "component/MouseComponent.h"
 #include "component/FontRanderComponent.h"
 
+Text::Text()
+{
+	_color.setVector(1, 1, 1, 1);
+}
+
 //DEFAULTE_FONT_FILE
 shared_ptr<Text> Text::create(const string&str, const char*font, int fontSize)
 {

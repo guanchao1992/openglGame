@@ -16,6 +16,7 @@
 #include "control/CollisionController.h"
 #include "component/ConllisionComponent/CollisionActorComponent.h"
 #include "component/ActorAIComponent.h"
+#include "component/ActorSkillComponent.h"
 
 
 void GameMainFight::init()
@@ -41,6 +42,12 @@ void GameMainFight::init()
 	auto playerCollCom = _player->addComponent<CollisionActorComponent>();
 	playerCollCom->enableCollision(CMARK_SELF, CMARK_SELF | CMARK_ENEMY | CMARK_ENEMY_BULLET | CMARK_STONE);
 	_player->getComponent<ActorStateComponent>()->setCamp(ACTORCAMP_PLAYER);
+
+	//给主角添加技能
+	auto asc = _player->addComponent<ActorSkillComponent>();
+	asc->addSkill(10001);
+	asc->addSkill(20001);
+	asc->addSkill(30001);
 
 	auto target1 = Actor::create();
 	_objectLayer->addChild(target1);

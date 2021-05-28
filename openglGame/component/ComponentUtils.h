@@ -12,7 +12,8 @@ enum ComponentType
 
 	COMPONENT_ACTOR_STATE,		//演员状态组件
 	COMPONENT_ACTOR_OI,			//控制演员的输入接口
-	COMPONENT_ACTIVE_MOVE,		//移动控制
+	COMPONENT_ACTOR_MOVE,		//移动控制
+	COMPONENT_ACTOR_SKILL,		//使用技能
 	COMPONENT_ACTOR_AI,			//AI组件，控制演员移动
 
 	COMPONENT_BULLET_STATE,		//子弹状态组件

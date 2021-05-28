@@ -181,6 +181,7 @@
     <ClCompile Include="component\ActorAIComponent.cpp" />
     <ClCompile Include="component\ActorMoveComponent.cpp" />
     <ClCompile Include="component\ActorOIComponent.cpp" />
+    <ClCompile Include="component\ActorSkillComponent.cpp" />
     <ClCompile Include="component\ActorStateComponent.cpp" />
     <ClCompile Include="component\ActorTipsComponent.cpp" />
     <ClCompile Include="component\AreaComponent.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="component\ActorAIComponent.h" />
     <ClInclude Include="component\ActorMoveComponent.h" />
     <ClInclude Include="component\ActorOIComponent.h" />
+    <ClInclude Include="component\ActorSkillComponent.h" />
     <ClInclude Include="component\ActorStateComponent.h" />
     <ClInclude Include="component\ActorTipsComponent.h" />
     <ClInclude Include="component\AreaComponent.h" />

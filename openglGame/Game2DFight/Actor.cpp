@@ -17,6 +17,7 @@
 #include "component/ActorStateComponent.h"
 #include "component/BulletStateComponent.h"
 #include "2d/DrawProgress.h"
+#include "component/ActorSkillComponent.h"
 
 
 void Actor::init()
@@ -46,6 +47,15 @@ void Actor::fire(const Vector2&aim, const Vector2&offset)
 	auto stateCom = getComponent<ActorStateComponent>();
 	if (!stateCom)
 		return;
+
+	auto asCom = getComponent<ActorSkillComponent>();
+	if (!asCom)
+		return;
+
+	auto l = atan2(aim._y, aim._x) / PI * 180;
+	asCom->fire(10001, l);
+
+	return;
 
 	if (stateCom->enterState(STATE_FIRE))
 	{

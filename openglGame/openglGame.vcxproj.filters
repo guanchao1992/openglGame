@@ -209,6 +209,9 @@
     <ClCompile Include="2d\DrawProgress.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="component\ActorSkillComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -440,6 +443,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="2d\DrawProgress.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ActorSkillComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

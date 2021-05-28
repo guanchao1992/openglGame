@@ -1,0 +1,32 @@
+[
+  {
+    "id": 10001,
+    "name": "普通攻击（其1）",
+    "baseId": 1,
+    "type": 1,
+    "cd": 2.0,
+    "effect1": "{\"type\":1,\"dir\":0,\"speed\":200,\"delay\":0.1}",
+    "effect2": "{}",
+    "effect3": "{}"
+  },
+  {
+    "id": 20001,
+    "name": "重击炮",
+    "baseId": 2,
+    "type": 2,
+    "cd": 5.0,
+    "effect1": "{\"type\":1,\"dir\":0,\"speed\":500,\"delay\":0.4}",
+    "effect2": "{\"type\":2,\"dir\":180,\"speed\":500,\"delay\":0.4,\"time\":0.1}",
+    "effect3": "{}"
+  },
+  {
+    "id": 30001,
+    "name": "连击枪",
+    "baseId": 3,
+    "type": 3,
+    "cd": 4.0,
+    "effect1": "{\"type\":1,\"dir\":0,\"speed\":400,\"delay\":0.1}",
+    "effect2": "{\"type\":1,\"dir\":0,\"speed\":400,\"delay\":0.3}",
+    "effect3": "{\"type\":1,\"dir\":0,\"speed\":400,\"delay\":0.5}"
+  }
+]

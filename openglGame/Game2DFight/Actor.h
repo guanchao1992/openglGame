@@ -12,7 +12,7 @@ public:
 	StatementCreate(Actor);
 	void init();
 public:
-	void fire(const Vector2&aim, const Vector2&offset);
+	void fire(const Vector3&aim);
 
 private:
 };

@@ -9,6 +9,8 @@
 #include "tables/SkillTable.h"
 #include "Game2DFight/Bullet.h"
 #include "BulletStateComponent.h"
+#include "ConllisionComponent/CollisionBulletComponent.h"
+#include "ConllisionComponent/CollisionActorComponent.h"
 
 
 void ActorSkillComponent::doBegin()
@@ -85,6 +87,32 @@ void ActorSkillComponent::doingEffect(const SkillEffectDoing&ef)
 		GameApp::getInstance()->_start->addChild(b);
 		b->setPosition(actor->getPosition());
 
+		auto bulletCollCom = b->addComponent<CollisionBulletComponent>();
+		auto collCom = _object->getComponent<CollisionActorComponent>();
+		if (collCom)
+		{
+			switch (collCom->getFlagMark())
+			{
+			case  CMARK_SELF:
+			case  CMARK_SELF_BULLET:
+				bulletCollCom->enableCollision(CMARK_SELF_BULLET, CMARK_ENEMY | CMARK_STONE);
+				break;
+			case  CMARK_ENEMY:
+			case  CMARK_ENEMY_BULLET:
+				bulletCollCom->enableCollision(CMARK_ENEMY_BULLET, CMARK_SELF | CMARK_STONE);
+				break;
+			case  CMARK_FRIENDLY:
+			case  CMARK_FRIENDLY_BULLET:
+				bulletCollCom->enableCollision(CMARK_FRIENDLY_BULLET, CMARK_ENEMY | CMARK_STONE);
+				break;
+			case  CMARK_STONE:
+			case  CMARK_NEUTRAL:
+			case  CMARK_NEUTRAL_BULLET:
+				//他们(石头和中立单位)应该不会开枪
+			default:
+				break;
+			}
+		}
 		break;
 	}
 	default:

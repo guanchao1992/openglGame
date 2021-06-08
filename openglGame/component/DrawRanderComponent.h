@@ -25,9 +25,9 @@ public:
 public:
 
 	void clearAllVertex();
-	void addVertex(const Vector2&pos, const Vector4&color = Vector4(1, 1, 1, 1));
-	void addVertex(float x, float y, const Vector4&color = Vector4(1, 1, 1, 1));
-	void addVertexs(const Vector2*poss, int size, const Vector4&color, GLenum drawType);
+	void addVertex(const Vector3&pos, const Vector4&color = Vector4(1, 1, 1, 1));
+	void addVertex(float x, float y, float z, const Vector4&color = Vector4(1, 1, 1, 1));
+	void addVertexs(const Vector3*poss, int size, const Vector4&color, GLenum drawType);
 	//标记一个绘制节点,并指定绘制方式，将addVertex添加的节点绘制成图像
 	void signDraw(GLenum drawType);
 private:
@@ -37,7 +37,7 @@ private:
 
 	GLint _projectMatrix;
 
-	vector<Vector2> _vertexs;
+	vector<Vector3> _vertexs;
 	vector<Vector4> _colors;
 	
 	int _last_sign = 0;

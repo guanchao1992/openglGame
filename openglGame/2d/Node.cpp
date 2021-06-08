@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "control/TimerController.h"
 #include "component/RanderComponent.h"
+#include <component/AreaComponent.h>
 
 Node::Node()
 {
@@ -184,8 +185,8 @@ void Node::setAngleCoordinate(float angleX, float angleY, float angleZ)
 
 void Node::setRotateAxis(Vector3 vec, float angle)
 {
-	_rotateAxis = vec;
-	_angleAxis = angle;
+	//_rotateAxis = vec;
+	//_angleAxis = angle;
 
 	_revisit = true;
 }
@@ -220,30 +221,18 @@ void Node::setScale(float scale)
 
 void Node::refreshTransformParent()
 {
-	glm::mat4 transformMat(1.0f);
-
-	transformMat = glm::translate(transformMat, _position._x, _position._y, _position._z);
-
-	if (_angleZ != 0)
-		transformMat = glm::rotate(transformMat, _angleZ, 0.f, 0.f, 1.f);
-	if (_angleY != 0)
-		transformMat = glm::rotate(transformMat, _angleY, 0.f, 1.f, 0.f);
-	if (_angleX != 0)
-		transformMat = glm::rotate(transformMat, _angleX, 1.f, 0.f, 0.f);
-	if (_angleAxis != 0)
-		transformMat = glm::rotate(transformMat, _angleAxis, _rotateAxis._x, _rotateAxis._y, _rotateAxis._z);
-
-	if (_scaleX != 1.0f || _scaleY != 1.0f || _scaleZ != 1.0f)
-		transformMat = glm::scale(transformMat, _scaleX, _scaleY, _scaleZ);
-
-	for (int i = 0; i < 4; ++i)
+	auto areaCom = getComponent<AreaComponent>();
+	if (areaCom)
 	{
-		for (int j = 0; j < 4; ++j)
-		{
-			auto index = i * 4 + j;
-			_transform[index] = transformMat[i][j];
-		}
+		auto size = areaCom->getSize();
+		auto anchor = areaCom->getAnchor();
+		_areaOffsetX = -anchor._x * size._width;
+		_areaOffsetY = -anchor._y * size._height;
 	}
+	glusMatrix4x4Identityf(_transform);
+	glusMatrix4x4Scalef(_transform, _scaleX, _scaleY, _scaleZ);
+	glusMatrix4x4RotateRzRyRxf(_transform, _angleZ, _angleY, _angleX);
+	glusMatrix4x4Translatef(_transform, _position._x + _areaOffsetX, _position._y + _areaOffsetY, _position._z);
 }
 
 GLfloat* Node::getTransformParent()

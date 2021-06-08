@@ -18,9 +18,14 @@ public:
 public:
 	template <class T>
 	T* addComponent() {
+		auto com = getComponent<T>();
+		if (com)
+		{
+			return com;
+		}
 		auto comController = ComponentController::getInstance();
-		auto com = comController->recordComponent(make_shared<T>());
-		return  dynamic_cast<T*>(addComponent(com));
+		auto newCom = comController->recordComponent(make_shared<T>());
+		return  dynamic_cast<T*>(addComponent(newCom));
 	}
 
 	virtual void removeComponent(Component* com);

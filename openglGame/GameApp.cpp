@@ -42,19 +42,22 @@ void GameApp::init()
 
 	_ui = GameUI::create();
 	_appNode->addChild(_ui, 100);
+	//_ui->setVisible(false);
 
 	auto bgColor = Vector4(0.5, 0.5, 0.4, 0.5);
 	auto appDrawCom = _bg->addComponent<DrawRanderComponent>();
-	appDrawCom->addVertex(Vector2(0, 0), bgColor);
-	appDrawCom->addVertex(Vector2(_projectWidth, 0), bgColor);
-	appDrawCom->addVertex(Vector2(_projectWidth, _projectHeight), bgColor);
-	appDrawCom->addVertex(Vector2(0, _projectHeight), bgColor);
+	appDrawCom->addVertex(Vector3(0, 0, 0), bgColor);
+	appDrawCom->addVertex(Vector3(_projectWidth, 0, 0), bgColor);
+	appDrawCom->addVertex(Vector3(_projectWidth, _projectHeight, 0), bgColor);
+	appDrawCom->addVertex(Vector3(0, _projectHeight, 0), bgColor);
 	appDrawCom->signDraw(GL_TRIANGLE_FAN);
-	_bg->setPosition(0, 0);
-	//_bg->setColor(Vector4(0.3, 0.3, 0, 0.5));
+	auto bgAreaCom = _bg->addComponent<AreaComponent>();
+	bgAreaCom->setSize(Size(_projectWidth, _projectHeight));
+	bgAreaCom->setAnchor(Vector2(0.5, 0.5));
+	_bg->setPosition(0, 0, _projectWidth);
 
-	//_start = GameStart::create();
-	_start = GameMainFight::create();
+	_start = GameStart::create();
+	//_start = GameMainFight::create();
 	_appNode->addChild(_start, 10);
 
 
@@ -146,6 +149,7 @@ SPShader GameApp::getShader(const char*name)
 	return nullptr;
 }
 
+
 void GameApp::reshape()
 {
 	//Node::reshape();
@@ -163,6 +167,7 @@ void GameApp::reshape()
 		0.0f, 0.0f, 1.0f, 0.0f,
 		0.0f, 0.0f, 0.0f, 1.0f };
 	glusMatrix4x4Copyf(_transform, biasMatrix, false);
+	/*
 	if (w_s < h_s)
 	{
 		_transform[12] = 0;
@@ -173,15 +178,64 @@ void GameApp::reshape()
 		_transform[12] = (_viewWidth / _proScale - _projectWidth) / 2;
 		_transform[13] = 0;
 	}
+	*/
+
+	/*
+	以下参数分别是:
+		y方向的视角
+		纵横比
+		*剪裁*面到原点的距离
+		远剪裁*面到原点的距离
+	*/
+	float fov = PI / 4;
+	float aspect = 1.0f;// *_viewWidth / _viewHeight;
+	float zn = 1000;
+	float zf = 100000;
 
 	GLfloat viewMatrix[] = {
-		2 / _viewWidth * _proScale, 0.0f, 0.0f, 0.0f,
-		0.0f, 2 / _viewHeight * _proScale, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.1 / _viewWidth * _proScale, 0.8 / _viewWidth * _proScale,
-		-1, -1, -0.5f, 1.0f };
+		1 / (tan(fov * 0.5f) * aspect), 0.f, 0.f, 0.f,
+		0.f, 1 / tan(fov * 0.5f), 0.f, 0.f,
+		0.f, 0.f, zf / (zf - zn), 1.f / _viewWidth,
+		0.0f, 0.0f, (zn * zf) / (zn - zf), 1.0f
+	};
+
+	//glewMatrixRotated
+	//glusMatrix4x4RotateRzRxRyf(viewMatrix, 0, 11.25, 0);
+
+	/*
+	static GLUSfloat g_cameraPosition[3] = { .0f, .0f, 10.0f };
+	glusMatrix4x4LookAtf(viewMatrix, 
+		g_cameraPosition[0], g_cameraPosition[1], g_cameraPosition[2],
+		0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f);
+
+	*/
+
+	GLfloat modelMatrix[] = {
+		1.0f/ _viewWidth * _proScale, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f/ _viewHeight * _proScale, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f / _viewWidth * _proScale * 0.1, 0.0f,
+		-.0f, -.0f, -0.f, 1.0f };
+
+	/*
+	GLfloat modelMatrix[] = {
+	1.0f, 0.0f, 0.0f, 0.0f,
+	0.0f, 1.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 0.5f, 1.0f };
+	*/
+	/*
+		transformMat = glm::rotate(transformMat, _angleZ, 0.f, 0.f, 1.f);
+		transformMat = glm::rotate(transformMat, _angleY, 0.f, 1.f, 0.f);
+	*/
 
 	glusMatrix4x4Copyf(_viewMatrix, viewMatrix, false);
-	glusMatrix4x4Multiplyf(_modelViewMatrix, _viewMatrix, _modelMatrix);
+	glusMatrix4x4Copyf(_modelMatrix, modelMatrix, false);
+
+	glusMatrix4x4Multiplyf(_modelViewMatrix, _modelMatrix, _viewMatrix);
+
+	glusMatrix4x4Copyf(_reverseModelViewMatrix, _modelViewMatrix, false);
+	glusMatrix4x4Inversef(_reverseModelViewMatrix);
 
 	for (auto it = _shaders.begin(); it != _shaders.end(); it++)
 	{
@@ -207,9 +261,10 @@ void GameApp::visit()
 
 void GameApp::rander()
 {
-	//_appNode->rander();
+	glEnable(GL_DEPTH_TEST);
 	_bg->rander();
 	_start->rander();
+	glDisable(GL_DEPTH_TEST);
 	_ui->rander();
 }
 
@@ -253,7 +308,7 @@ int GameApp::getNodeCount()
 	return _ui->getAllChildNum() + _start->getAllChildNum();
 }
 
-Vector2 GameApp::convertToWorld(Node*node, const Vector2&pos)
+Vector3 GameApp::convertToWorld(Node*node, const Vector3&pos)
 {
 	GLfloat projectTransform[] = {
 	1.0f, 0.0f, 0.0f, 0.0f,
@@ -280,14 +335,14 @@ Vector2 GameApp::convertToWorld(Node*node, const Vector2&pos)
 	1.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 1.0f, 0.0f,
-	pos._x / _proScale, pos._y / _proScale, 0.0f, 1.0f };
+	pos._x / _proScale, pos._y / _proScale, pos._z / _proScale, 1.0f };
 
 	glusMatrix4x4Multiplyf(transform, projectTransform, transform);
 	
-	return Vector2(transform[12], transform[13]);
+	return Vector3(transform[12], transform[13], transform[14]);
 }
 
-Vector2 GameApp::convertViewToNode(Node*node, const Vector2&pos)
+Vector3 GameApp::convertViewToNode(Node*node, const Vector3&pos)
 {
 	GLfloat projectTransform[] = {
 	1.0f, 0.0f, 0.0f, 0.0f,
@@ -309,17 +364,40 @@ Vector2 GameApp::convertViewToNode(Node*node, const Vector2&pos)
 		auto transform = (*it)->getTransformParent();
 		glusMatrix4x4Multiplyf(projectTransform, projectTransform, transform);
 	}
+
+	glusMatrix4x4Multiplyf(projectTransform, projectTransform, _modelViewMatrix);
+
 	glusMatrix4x4Inversef(projectTransform);
 
-	GLfloat transform[] = {
-	1.0f, 0.0f, 0.0f, 0.0f,
-	0.0f, 1.0f, 0.0f, 0.0f,
-	0.0f, 0.0f, 1.0f, 0.0f,
-	pos._x / _proScale, pos._y / _proScale, 0.0f, 1.0f };
+	//GLfloat modelViewMatrix[16];
+	//glusMatrix4x4Copyf(modelViewMatrix, _modelViewMatrix, false);
+	//glusMatrix4x4Inversef(modelViewMatrix);
 
-	glusMatrix4x4Multiplyf(transform, projectTransform, transform);
+	//glusMatrix4x4Multiplyf(transform, viewMatrix, transform);
 
-	return Vector2(transform[12], transform[13]);
+
+	float inPos[3] = { 2 * pos._x / _viewWidth + 1, 2 * pos._y / _viewHeight + 1, 0.2 * pos._z / _viewWidth };
+	float outPos[3];
+	glusMatrix4x4MultiplyVector3f(outPos, projectTransform, inPos);
+
+	return Vector3(outPos[0], outPos[1], outPos[2]);
+	//return Vector3(transform[12], transform[13], transform[14]);
+}
+
+Vector3 GameApp::posViewToWorld(int x, int y, float z)
+{
+	Vector3 out;
+	auto n = _viewMatrix[10] * _viewMatrix[11] - _viewMatrix[10];
+	auto f = _viewMatrix[10] * _viewMatrix[11] + _viewMatrix[10];
+
+	out._x = (2 * x / _viewWidth * _proScale - 1) * (z + f) / n;
+	out._y = (2 * y / _viewHeight * _proScale - 1) * (z + f) / n;
+	//out._z = (2 * z / _viewWidth * _proScale - 0.5) * (z + f) / n;
+	//2 / _viewWidth * _proScale * 0.1
+	out._z = ((z / (_viewWidth * 5) - 0.5) / n);
+		
+
+	return out;
 }
 
 void GameApp::postEvent(EventType type)

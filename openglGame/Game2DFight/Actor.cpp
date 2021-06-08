@@ -29,10 +29,10 @@ void Actor::init()
 	auto stateCom = addComponent<ActorStateComponent>();
 
 	auto drawCom = addComponent<DrawRanderComponent>();
-	drawCom->addVertex(Vector2(0.f, 0), Vector4(0.1, 0.1, 0.8, 1));
-	drawCom->addVertex(Vector2(40.f, 0), Vector4(0.1, 0.1, 0.8, 1));
-	drawCom->addVertex(Vector2(40.f, 60), Vector4(0.1, 0.1, 0.8, 1));
-	drawCom->addVertex(Vector2(0.f, 60), Vector4(0.1, 0.1, 0.8, 1));
+	drawCom->addVertex(Vector3(0.f, 0, 0), Vector4(0.1, 0.1, 0.8, 1));
+	drawCom->addVertex(Vector3(40.f, 0, 0), Vector4(0.1, 0.1, 0.8, 1));
+	drawCom->addVertex(Vector3(40.f, 60, 0), Vector4(0.1, 0.1, 0.8, 1));
+	drawCom->addVertex(Vector3(0.f, 60, 0), Vector4(0.1, 0.1, 0.8, 1));
 	drawCom->signDraw(GL_TRIANGLE_FAN);
 
 	//addComponent<OutlineBoxComponent>();
@@ -42,7 +42,7 @@ void Actor::init()
 
 }
 
-void Actor::fire(const Vector2&aim, const Vector2&offset)
+void Actor::fire(const Vector3&aim)
 {
 	auto stateCom = getComponent<ActorStateComponent>();
 	if (!stateCom)
@@ -53,7 +53,7 @@ void Actor::fire(const Vector2&aim, const Vector2&offset)
 		return;
 
 	auto l = atan2(aim._y, aim._x) / PI * 180;
-	asCom->fire(10001, l);
+	asCom->fire(30001, l);
 
 	return;
 
@@ -65,13 +65,13 @@ void Actor::fire(const Vector2&aim, const Vector2&offset)
 		for (int i = 0; i < 1; i++)
 		{
 			auto b = Bullet::create(this);
-			b->setDir(aim);
+			b->setDir(Vector2(aim._x, aim._y));
 			b->setSpeed(400.f);
 			auto bsCom = b->getComponent<BulletStateComponent>();
 			bsCom->setAttack(stateCom->getAttack());
 			bsCom->setCamp(stateCom->getCamp());
 			GameApp::getInstance()->_start->addChild(b);
-			b->setPosition(getPosition()._x + offset._x, getPosition()._y + offset._y);
+			b->setPosition(getPosition()._x, getPosition()._y);
 
 			/*
 			b->addComponent<BMCComponentS>();

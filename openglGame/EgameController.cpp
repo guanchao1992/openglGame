@@ -345,10 +345,10 @@ void EgameController::redrawAll()
 			if (_place[x][y] != 0)
 			{
 				auto color = Block::getBlockColor(_place[x][y]);
-				drawCom->addVertex(Vector2((x + 0) * _block_scale, (y + 0)*_block_scale), color);
-				drawCom->addVertex(Vector2((x + 1) * _block_scale, (y + 0)*_block_scale), color);
-				drawCom->addVertex(Vector2((x + 1) * _block_scale, (y + 1)*_block_scale), color);
-				drawCom->addVertex(Vector2((x + 0) * _block_scale, (y + 1)*_block_scale), color);
+				drawCom->addVertex(Vector3((x + 0) * _block_scale, (y + 0)*_block_scale, 0), color);
+				drawCom->addVertex(Vector3((x + 1) * _block_scale, (y + 0)*_block_scale, 0), color);
+				drawCom->addVertex(Vector3((x + 1) * _block_scale, (y + 1)*_block_scale, 0), color);
+				drawCom->addVertex(Vector3((x + 0) * _block_scale, (y + 1)*_block_scale, 0), color);
 				drawCom->signDraw(GL_TRIANGLE_FAN);
 			}
 		}
@@ -409,10 +409,10 @@ void EgameController::setBlockPlace(const SPBlock&sp)
 		if ((x >= 0 && x <= _max_x) && (y >= 0 && y < _max_y))
 		{
 			_place[x][y] = (int)sp->_blockType;
-			drawCom->addVertex(Vector2((x + 0) * _block_scale, (y + 0)*_block_scale), sp->getColor());
-			drawCom->addVertex(Vector2((x + 1) * _block_scale, (y + 0)*_block_scale), sp->getColor());
-			drawCom->addVertex(Vector2((x + 1) * _block_scale, (y + 1)*_block_scale), sp->getColor());
-			drawCom->addVertex(Vector2((x + 0) * _block_scale, (y + 1)*_block_scale), sp->getColor());
+			drawCom->addVertex(Vector3((x + 0) * _block_scale, (y + 0)*_block_scale, 0), sp->getColor());
+			drawCom->addVertex(Vector3((x + 1) * _block_scale, (y + 0)*_block_scale, 0), sp->getColor());
+			drawCom->addVertex(Vector3((x + 1) * _block_scale, (y + 1)*_block_scale, 0), sp->getColor());
+			drawCom->addVertex(Vector3((x + 0) * _block_scale, (y + 1)*_block_scale, 0), sp->getColor());
 			drawCom->signDraw(GL_TRIANGLE_FAN);
 		}
 	}

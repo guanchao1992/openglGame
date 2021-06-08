@@ -105,8 +105,8 @@ void FontRanderComponent::draw()
 	static Vector2 texCoords[] = { {0,0},{0,1},{1,1},{1,0} };
 	for (auto it = _vertexs.begin(); it != _vertexs.end(); it++)
 	{
-		pVectexs[i].vertexs[0] = it->_x - anchor._x * size._width;
-		pVectexs[i].vertexs[1] = it->_y - anchor._y * size._height + size._height;
+		pVectexs[i].vertexs[0] = it->_x;// -anchor._x * size._width;
+		pVectexs[i].vertexs[1] = it->_y + size._height;// -anchor._y * size._height + size._height;
 		pVectexs[i].vertexs[2] = 0.0f;
 		pVectexs[i].vertexs[3] = 1.0f;
 
@@ -120,7 +120,7 @@ void FontRanderComponent::draw()
 	glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
 
 	//如果缓冲区大小发生改变，则重新创建缓冲区
-	glBufferData(GL_ARRAY_BUFFER, _vertexs.size() * (4 + 2) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, _vertexs.size() * (4 + 2) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_STATIC_DRAW);
 
 	glBindVertexArray(_verticesVAO);
 
@@ -201,4 +201,10 @@ void FontRanderComponent::layout()
 
 	auto areaCom = _object->getComponent<AreaComponent>();
 	areaCom->setSize(Size(size_w, str_h));
+
+	auto node = dynamic_cast<Node*>(_object);
+	if (node)
+	{
+		node->revisit();
+	}
 }

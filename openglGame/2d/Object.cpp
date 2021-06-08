@@ -16,7 +16,9 @@ Component* Object::addComponent(Component* com)
 	if (it != _components_map.end())
 	{
 		printf("不允许重复添加组件:%s！\n", name);
-		return com;
+		auto comController = ComponentController::getInstance();
+		comController->delComponent(com);
+		return it->second;
 	}
 	_components_map.insert(map<string, Component*>::value_type(name, com));
 

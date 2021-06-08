@@ -42,6 +42,8 @@ void DrawRanderComponent::rander()
 	glUniformMatrix4fv(_projectMatrix, 1, GL_FALSE, projectTransform);
 	glUniform4f(_makeColorLocation, color._r, color._g, color._b, color._l);
 	glBindVertexArray(_verticesVAO);
+
+
 	if (_signs.size() > 0)
 	{
 		for (auto it = _signs.begin(); it != _signs.end(); it++)
@@ -77,9 +79,9 @@ void DrawRanderComponent::draw()
 	int i = 0;
 	for (auto it = _vertexs.begin(); it != _vertexs.end(); it++)
 	{
-		pVectexs[i].vertexs[0] = it->_x - anchor._x * size._width;
-		pVectexs[i].vertexs[1] = it->_y - anchor._y * size._height;
-		pVectexs[i].vertexs[2] = 0.0f;
+		pVectexs[i].vertexs[0] = it->_x;// -anchor._x * size._width;
+		pVectexs[i].vertexs[1] = it->_y;// -anchor._y * size._height;
+		pVectexs[i].vertexs[2] = it->_z;
 		pVectexs[i].vertexs[3] = 1.0f;
 
 		auto& color = _colors[i];
@@ -91,7 +93,7 @@ void DrawRanderComponent::draw()
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
-	glBufferData(GL_ARRAY_BUFFER, _vertexs.size() * (4 + 4) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, _vertexs.size() * (4 + 4) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_STATIC_DRAW);
 
 	glBindVertexArray(_verticesVAO);
 
@@ -116,19 +118,19 @@ void DrawRanderComponent::clearAllVertex()
 	_redraw = true;
 }
 
-void DrawRanderComponent::addVertex(const Vector2&pos, const Vector4&color)
+void DrawRanderComponent::addVertex(const Vector3&pos, const Vector4&color)
 {
 	_vertexs.push_back(pos);
 	_colors.push_back(color);
 	_redraw = true;
 }
 
-void DrawRanderComponent::addVertex(float x, float y, const Vector4&color)
+void DrawRanderComponent::addVertex(float x, float y, float z, const Vector4&color)
 {
-	addVertex(Vector2(x, y), color);
+	addVertex(Vector3(x, y, z), color);
 }
 
-void DrawRanderComponent::addVertexs(const Vector2*poss, int size, const Vector4&color, GLenum drawType)
+void DrawRanderComponent::addVertexs(const Vector3*poss, int size, const Vector4&color, GLenum drawType)
 {
 	for (int i = 0; i < size; ++i)
 	{

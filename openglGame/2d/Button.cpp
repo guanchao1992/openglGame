@@ -4,6 +4,7 @@
 #include "control/TextureController.h"
 #include "GameEvent.h"
 #include "component/MouseComponent.h"
+#include <component/OutlineBoxComponent.h>
 
 Button::~Button()
 {
@@ -34,6 +35,8 @@ void Button::init(const char*imgNormal, const char*imgSelect)
 	auto textureCom = addComponent<TextureRanderComponent>();
 
 	textureCom->setTextureID(_textureNormalId);
+
+	addComponent<OutlineBoxComponent>();
 
 	auto mouseCom = addComponent<MouseComponent>();
 	mouseCom->setMouseKeyFunc([this](MouseComponent&com, const MouseKeyEvent&et) {
@@ -72,6 +75,7 @@ void Button::setContentSize(const Size&size)
 {
 	auto areaCom = getComponent<AreaComponent>();
 	areaCom->setSize(size);
+	_title->setPosition(Vector2(size._width / 2, size._height / 2));
 }
 
 void Button::setTitle(const string&str, const char*font, int fontSize)
@@ -81,6 +85,8 @@ void Button::setTitle(const string&str, const char*font, int fontSize)
 		_title = Text::create(str, font, fontSize);
 		addChild(_title);
 		_title->getComponent<AreaComponent>()->setAnchor(Vector2(0.5, 0.5));
+		auto areaCom = getComponent<AreaComponent>();
+		_title->setPosition(Vector2(areaCom->getSize()._width / 2, areaCom->getSize()._height / 2));
 	}
 	else
 	{
@@ -95,6 +101,9 @@ void Button::setTitle(const wstring&str, const char*font, int fontSize)
 		_title = Text::create(str, font, fontSize);
 		addChild(_title, 10);
 		_title->getComponent<AreaComponent>()->setAnchor(Vector2(0.5, 0.5));
+		_title->addComponent<OutlineBoxComponent>();
+		auto areaCom = getComponent<AreaComponent>();
+		_title->setPosition(Vector2(areaCom->getSize()._width / 2, areaCom->getSize()._height / 2));
 	}
 	else
 	{

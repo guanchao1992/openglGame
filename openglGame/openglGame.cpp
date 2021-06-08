@@ -51,7 +51,8 @@ GLUSboolean init(GLUSvoid)
 	// Basic blending equation.
 	glEnable(GL_BLEND);
 
-	//glClearDepth(1.0f);
+	//glEnable(GL_POLYGON_OFFSET_FILL);
+	//glFrontFace(GL_CW);
 	//glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
 
@@ -61,6 +62,13 @@ GLUSboolean init(GLUSvoid)
 	QueryPerformanceCounter(&g_nLast);
 	QueryPerformanceFrequency(&g_freq);
 	g_frameInterval = g_freq.QuadPart / 120;
+
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearDepth(1.0f);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return GLUS_TRUE;
 }
@@ -73,20 +81,27 @@ GLUSvoid reshape(GLUSint width, GLUSint height)
 	app->reshape();
 	app->setViewSize(width, height);
 	glViewport(0, 0, width, height);
+	//glMatrixMode(GL_PROJECTION);
+	//glLoadIdentity();
+	//gluPerspective(50, width / height, 1, 20);
 }
 
 GLUSboolean update(GLUSfloat time)
 {
 	auto app = GameApp::getInstance();
 	app->update(time);
+
+	glClearColor(0.2, 0.2, 0.2, 0.5);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+
 	if (app->isReLoadView())
 	{
 		app->reshape();
 	}
+
 	app->visit();
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(1.0, 1.0, 1.0, 0.5);
 	GameApp::getInstance()->rander();
 
 	/*
@@ -126,7 +141,7 @@ int initWindow(GLUSint width, GLUSint height)
 			EGL_RED_SIZE, 8,
 			EGL_GREEN_SIZE, 8,
 			EGL_BLUE_SIZE, 8,
-			EGL_DEPTH_SIZE, 0,
+			EGL_DEPTH_SIZE, 24,
 			EGL_STENCIL_SIZE, 0,
 			EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT,
 			EGL_NONE

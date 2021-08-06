@@ -12,6 +12,8 @@ public:
 	virtual void update(float time) {};
 };
 
+class ControllerMaster;
+
 template <typename T>
 class ControllerBaseT :public ControllerBase
 {

@@ -7,6 +7,7 @@
 #include <map>
 #include <memory>
 #include "base/ControllerBase.hpp"
+#include <string>
 
 using namespace std;
 

@@ -14,10 +14,10 @@ DrawBoxNode:: ~DrawBoxNode()
 void DrawBoxNode::init()
 {
 	auto com = addComponent<DrawRanderComponent>();
-	com->addVertex(Vector3(0.f, 0, 0));
-	com->addVertex(Vector3(40.f, 0, 0));
-	com->addVertex(Vector3(40.f, 40, 0));
-	com->addVertex(Vector3(0.f, 40, 0));
+	com->addVertex(Vector2(0.f, 0));
+	com->addVertex(Vector2(40.f, 0));
+	com->addVertex(Vector2(40.f, 40));
+	com->addVertex(Vector2(0.f, 40));
 	resetBoxType(BOX_1);
 }
 

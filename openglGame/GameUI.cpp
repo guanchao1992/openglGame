@@ -19,15 +19,7 @@
 
 void GameUI::init()
 {
-	auto app = GameApp::getInstance();
-	_listener = app->createListenerSP();
-	auto w = app->getProjectWidth();
-	auto h = app->getProjectHeight();
-
-	auto areaCom = addComponent<AreaComponent>();
-	areaCom->setSize(Size(w, h));
-	addComponent<OutlineBoxComponent>();
-	areaCom->setAnchor(Vector2(0.5, 0.5));
+	_listener = GameApp::getInstance()->createListenerSP();
 	
 	_leftBottom = Node::create();
 	_leftTop = Node::create();
@@ -40,14 +32,6 @@ void GameUI::init()
 	addChild(_rightBottom);
 	addChild(_rightTop);
 	addChild(_center);
-
-	_leftBottom->setPosition(0, 0);
-	_leftTop->setPosition(0, h);
-	_rightBottom->setPosition(w, 0);
-	_rightTop->setPosition(w, h);
-	_center->setPosition(w / 2, h / 2);
-
-	//setScale(0.5);
 
 	auto eventCom = addComponent<EventComponent>();
 	eventCom->addEvent(EVENT_GAME_RESTART, [this](Object*obj, const Event&event) {
@@ -100,13 +84,13 @@ void GameUI::initBk()
 	{
 		auto fd = Node::create();
 		auto drawCom = fd->addComponent<DrawRanderComponent>();
-		drawCom->addVertex(Vector3(0, 0, 0), bgcolor);
-		drawCom->addVertex(Vector3(0, 100, 0), bgcolor);
-		drawCom->addVertex(Vector3(20, 100, 0), bgcolor);
-		drawCom->addVertex(Vector3(20, 20, 0), bgcolor);
-		drawCom->addVertex(Vector3(100, 20, 0), bgcolor);
-		drawCom->addVertex(Vector3(100, 0,0), bgcolor);
-		fd->setPosition(0, 0);
+		drawCom->addVertex(Vector2(0, 0), bgcolor);
+		drawCom->addVertex(Vector2(0, 100), bgcolor);
+		drawCom->addVertex(Vector2(20, 100), bgcolor);
+		drawCom->addVertex(Vector2(20, 20), bgcolor);
+		drawCom->addVertex(Vector2(100, 20), bgcolor);
+		drawCom->addVertex(Vector2(100, 0), bgcolor);
+		fd->setPosition(10, 10);
 		_leftBottom->addChild(fd);
 		fd->setTag(100);
 	}
@@ -114,13 +98,13 @@ void GameUI::initBk()
 	{
 		auto fd = Node::create();
 		auto drawCom = fd->addComponent<DrawRanderComponent>();
-		drawCom->addVertex(Vector3(0, 0, 0), bgcolor);
-		drawCom->addVertex(Vector3(0, -100, 0), bgcolor);
-		drawCom->addVertex(Vector3(20, -100, 0), bgcolor);
-		drawCom->addVertex(Vector3(20, -20, 0), bgcolor);
-		drawCom->addVertex(Vector3(100, -20, 0), bgcolor);
-		drawCom->addVertex(Vector3(100, 0, 0), bgcolor);
-		fd->setPosition(0, -0);
+		drawCom->addVertex(Vector2(0, 0), bgcolor);
+		drawCom->addVertex(Vector2(0, -100), bgcolor);
+		drawCom->addVertex(Vector2(20, -100), bgcolor);
+		drawCom->addVertex(Vector2(20, -20), bgcolor);
+		drawCom->addVertex(Vector2(100, -20), bgcolor);
+		drawCom->addVertex(Vector2(100, 0), bgcolor);
+		fd->setPosition(10, -10);
 		_leftTop->addChild(fd);
 		fd->setTag(100);
 	}
@@ -128,13 +112,13 @@ void GameUI::initBk()
 	{
 		auto fd = Node::create();
 		auto drawCom = fd->addComponent<DrawRanderComponent>();
-		drawCom->addVertex(Vector3(0, 0, 0), bgcolor);
-		drawCom->addVertex(Vector3(0, 100, 0), bgcolor);
-		drawCom->addVertex(Vector3(-20, 100, 0), bgcolor);
-		drawCom->addVertex(Vector3(-20, 20, 0), bgcolor);
-		drawCom->addVertex(Vector3(-100, 20, 0), bgcolor);
-		drawCom->addVertex(Vector3(-100, 0, 0), bgcolor);
-		fd->setPosition(-0, 0);
+		drawCom->addVertex(Vector2(0, 0), bgcolor);
+		drawCom->addVertex(Vector2(0, 100), bgcolor);
+		drawCom->addVertex(Vector2(-20, 100), bgcolor);
+		drawCom->addVertex(Vector2(-20, 20), bgcolor);
+		drawCom->addVertex(Vector2(-100, 20), bgcolor);
+		drawCom->addVertex(Vector2(-100, 0), bgcolor);
+		fd->setPosition(-10, 10);
 		_rightBottom->addChild(fd);
 		fd->setTag(100);
 	}
@@ -142,13 +126,13 @@ void GameUI::initBk()
 	{
 		auto fd = Node::create();
 		auto drawCom = fd->addComponent<DrawRanderComponent>();
-		drawCom->addVertex(Vector3(0, 0, 0), bgcolor);
-		drawCom->addVertex(Vector3(0, -100, 0), bgcolor);
-		drawCom->addVertex(Vector3(-20, -100, 0), bgcolor);
-		drawCom->addVertex(Vector3(-20, -20, 0), bgcolor);
-		drawCom->addVertex(Vector3(-100, -20, 0), bgcolor);
-		drawCom->addVertex(Vector3(-100, 0, 0), bgcolor);
-		fd->setPosition(-0, -0);
+		drawCom->addVertex(Vector2(0, 0), bgcolor);
+		drawCom->addVertex(Vector2(0, -100), bgcolor);
+		drawCom->addVertex(Vector2(-20, -100), bgcolor);
+		drawCom->addVertex(Vector2(-20, -20), bgcolor);
+		drawCom->addVertex(Vector2(-100, -20), bgcolor);
+		drawCom->addVertex(Vector2(-100, 0), bgcolor);
+		fd->setPosition(-10, -10);
 		_rightTop->addChild(fd);
 		fd->setTag(100);
 	}
@@ -156,18 +140,18 @@ void GameUI::initBk()
 	{
 		auto fd = Node::create();
 		auto drawCom = fd->addComponent<DrawRanderComponent>();
-		drawCom->addVertex(Vector3(1, 1, 0), bgcolor);
-		drawCom->addVertex(Vector3(100, 1, 0), bgcolor);
-		drawCom->addVertex(Vector3(100, -1, 0), bgcolor);
-		drawCom->addVertex(Vector3(1, -1, 0), bgcolor);
-		drawCom->addVertex(Vector3(1, -100, 0), bgcolor);
-		drawCom->addVertex(Vector3(-1, -100, 0), bgcolor);
-		drawCom->addVertex(Vector3(-1, -1, 0), bgcolor);
-		drawCom->addVertex(Vector3(-100, -1, 0), bgcolor);
-		drawCom->addVertex(Vector3(-100, 1, 0), bgcolor);
-		drawCom->addVertex(Vector3(-1, 1, 0), bgcolor);
-		drawCom->addVertex(Vector3(-1, 100, 0), bgcolor);
-		drawCom->addVertex(Vector3(1, 100, 0), bgcolor);
+		drawCom->addVertex(Vector2(1, 1), bgcolor);
+		drawCom->addVertex(Vector2(100, 1), bgcolor);
+		drawCom->addVertex(Vector2(100, -1), bgcolor);
+		drawCom->addVertex(Vector2(1, -1), bgcolor);
+		drawCom->addVertex(Vector2(1, -100), bgcolor);
+		drawCom->addVertex(Vector2(-1, -100), bgcolor);
+		drawCom->addVertex(Vector2(-1, -1), bgcolor);
+		drawCom->addVertex(Vector2(-100, -1), bgcolor);
+		drawCom->addVertex(Vector2(-100, 1), bgcolor);
+		drawCom->addVertex(Vector2(-1, 1), bgcolor);
+		drawCom->addVertex(Vector2(-1, 100), bgcolor);
+		drawCom->addVertex(Vector2(1, 100), bgcolor);
 		_center->addChild(fd);
 		fd->setTag(100);
 	}
@@ -190,19 +174,14 @@ void GameUI::initDebug()
 {
 	_debug = Node::create();
 	_leftBottom->addChild(_debug, 1000);
-	setPosition(0, 0, 0);
 
 	auto text1 = Text::create(L"这里是debug信息", DEFAULTE_FONT_FILE, 24);
-	auto textAreaCom = text1->addComponent<AreaComponent>();
-	textAreaCom->setAnchor(Vector2(0.5, 0.5));
 	text1->addComponent<OutlineBoxComponent>();
 	_debug->addChild(text1);
-	text1->setPosition(0, 0);
+	text1->setPosition(10, 10);
 	text1->setScale(1, 1, 1);
 	text1->setTag(1);
 	text1->setColor(Vector4(1, 1, 1, 0.6));
-
-	auto textAreaCom2 = text1->getComponent<AreaComponent>();
 
 	_debug->addTimer(0, -1, [this](float time) {
 		static float t_time = 0.f;
@@ -242,8 +221,12 @@ void GameUI::reshape()
 	
 	auto w = GameApp::getInstance()->getProjectWidth();
 	auto h = GameApp::getInstance()->getProjectHeight();
-	//setScale(0.5);
 
+	//_leftBottom->setPosition(0, 0);
+	_leftTop->setPosition(0, h);
+	_rightBottom->setPosition(w, 0);
+	_rightTop->setPosition(w, h);
+	_center->setPosition(w / 2, h / 2);
 }
 
 void GameUI::showStartUI()
@@ -257,17 +240,6 @@ void GameUI::showStartUI()
 		btn_start->setPosition(-130, -140);
 		btn_start->setCallBack([this]() {
 			printf("开始游戏");
-			//node_start_uis->removeFromParent();
-		});
-		btn_start->setAngleCoordinate(0, 1, 0);
-	}
-	{
-		auto btn_start = Button::create("./res/btn_normal.png", "./res/btn_select.png");
-		btn_start->setTitle(L"开始2", DEFAULTE_FONT_FILE, 24);
-		_leftBottom->addChild(btn_start);
-		btn_start->setPosition(300, 0);
-		btn_start->setCallBack([this]() {
-			printf("开始游戏2");
 			//node_start_uis->removeFromParent();
 		});
 		btn_start->setAngleCoordinate(0, 1, 0);

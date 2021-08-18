@@ -17,7 +17,7 @@
 void GameStart::init()
 {
 	initListen();
-	//initWorld();
+	initWorld();
 
 	//画格子
 	{
@@ -31,40 +31,18 @@ void GameStart::init()
 			{
 				if ((x + y) % 2 == 0)
 				{
-					drawCom->addVertex(Vector3(120 * x + 0, 120 * y + 0, 0), Vector4(0.0f, 0.2f, 0.2f, 1));
-					drawCom->addVertex(Vector3(120 * x + 120, 120 * y + 0, 0), Vector4(0.0f, 0.2f, 0.2f, 1));
-					drawCom->addVertex(Vector3(120 * x + 120, 120 * y + 120, 0), Vector4(0.0f, 0.2f, 0.2f, 1));
-					drawCom->addVertex(Vector3(120 * x + 0, 120 * y + 120, 0), Vector4(0.0f, 0.2f, 0.2f, 1));
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.2f, 0.2f, 0.2f, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.2f, 0.2f, 0.2f, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.2f, 0.2f, 0.2f, 1));
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.2f, 0.2f, 0.2f, 1));
 					drawCom->signDraw(GL_TRIANGLE_FAN);
 				}
 				else
 				{
-					drawCom->addVertex(Vector3(120 * x + 0, 120 * y + 0, 0), Vector4(0.3, 0.3, 0.3, 1));
-					drawCom->addVertex(Vector3(120 * x + 120, 120 * y + 0, 0), Vector4(0.3, 0.3, 0.3, 1));
-					drawCom->addVertex(Vector3(120 * x + 120, 120 * y + 120, 0), Vector4(0.3, 0.3, 0.3, 1));
-					drawCom->addVertex(Vector3(120 * x + 0, 120 * y + 120, 0), Vector4(0.3, 0.3, 0.3, 1));
-					drawCom->signDraw(GL_TRIANGLE_FAN);
-				}
-			}
-		}
-		for (int x = 0; x < 5; ++x)
-		{
-			for (int y = 0; y < 5; ++y)
-			{
-				if ((x + y) % 2 == 0)
-				{
-					drawCom->addVertex(Vector3(120 * x + 0, 120 * y + 0, 100), Vector4(0.4f, 0.2f, 0.2f, 1));
-					drawCom->addVertex(Vector3(120 * x + 120, 120 * y + 0, 100), Vector4(0.4f, 0.2f, 0.2f, 1));
-					drawCom->addVertex(Vector3(120 * x + 120, 120 * y + 120, 100), Vector4(0.4f, 0.2f, 0.2f, 1));
-					drawCom->addVertex(Vector3(120 * x + 0, 120 * y + 120, 100), Vector4(0.4f, 0.2f, 0.2f, 1));
-					drawCom->signDraw(GL_TRIANGLE_FAN);
-				}
-				else
-				{
-					drawCom->addVertex(Vector3(120 * x + 0, 120 * y + 0, 100), Vector4(0.3, 0.3, 0.3, 1));
-					drawCom->addVertex(Vector3(120 * x + 120, 120 * y + 0, 100), Vector4(0.3, 0.3, 0.3, 1));
-					drawCom->addVertex(Vector3(120 * x + 120, 120 * y + 120, 100), Vector4(0.3, 0.3, 0.3, 1));
-					drawCom->addVertex(Vector3(120 * x + 0, 120 * y + 120, 100), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 0), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->addVertex(Vector2(120 * x + 120, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
+					drawCom->addVertex(Vector2(120 * x + 0, 120 * y + 120), Vector4(0.3, 0.3, 0.3, 1));
 					drawCom->signDraw(GL_TRIANGLE_FAN);
 				}
 			}
@@ -95,10 +73,6 @@ void GameStart::init()
 	areaCom->setAnchor(Vector2(0.5, 0.5));
 	auto mouseCom = addComponent<MouseComponent>();
 	mouseCom->setMouseKeyFunc([this](MouseComponent&mouseCon, const MouseKeyEvent&event) {
-		if (event.button & 1 && event._isDown)
-		{
-
-		}
 	});
 	mouseCom->setMouseMoveFunc([this](MouseComponent&mouseCon, const MouseMoveEvent&event) {
 		if (event._buttons & 1)
@@ -110,11 +84,8 @@ void GameStart::init()
 		{
 			auto app = GameApp::getInstance();
 			this->setPosition(_position._x + (event._x - _oldDownPos._x) / app->getProScale(), _position._y + (event._y - _oldDownPos._y) / app->getProScale());
-
 		}
 		_oldDownPos = Vector2(event._x, event._y);
-
-
 	});
 }
 
@@ -155,61 +126,8 @@ void GameStart::initListen()
 	_listener->listen([this](const MouseKeyEvent& et) {
 		if ((et.button & 4) && et._isDown)
 		{
-			auto app = GameApp::getInstance();
-			auto vPos1 = app->posViewToWorld(et._x, et._y, 0);
-			auto vPos2 = app->posViewToWorld(et._x, et._y, 1000);
-
-			printf("s:(%f,%f,%f)---(%f,%f,%f)\n", vPos1._x, vPos1._y, vPos1._z, vPos2._x, vPos2._y, vPos2._z);
-			auto pos1 = app->convertViewToNode(this, vPos1);
-			auto pos2 = app->convertViewToNode(this, vPos2);
-
-			auto axz = (pos2._z - pos1._z) / (pos2._x - pos1._x);
-			auto bxz = pos1._z - axz * pos1._x;
-
-			auto ayz = (pos2._z - pos1._z) / (pos2._y - pos1._y);
-			auto byz = pos1._z - ayz * pos1._y;
-
-			//令z==0，求x,y
-			float x = 0;
-			float y = 0;
-			if (pos1._x == pos2._x)
-				x = pos1._x;
-			else
-				x = (0 - bxz) / axz;
-			if (pos1._y == pos2._y)
-				y = pos1._y;
-			else
-				y = (0 - byz) / ayz;
-
-			printf("e:(%f,%f,%f)---(%f,%f,%f)\n", pos1._x, pos1._y, pos1._z, pos2._x, pos2._y, pos2._z);
-			printf("相交的点：(%f,%f,%f)\n", x, y, 0.f);
-			/*
-			auto pos = GameApp::getInstance()->convertViewToNode(this, Vector3(et._x, et._y, 0));
+			auto pos = GameApp::getInstance()->convertViewToNode(this, Vector2(et._x, et._y));
 			onAddBox(Vector2(pos._x / WORLD_SCALE, pos._y / WORLD_SCALE), Size(4, 4), Vector4(0.5, 0.1, 0, 1));
-			*/
-			//onAddBox(Vector2(x / WORLD_SCALE, y / WORLD_SCALE), Size(4, 4), Vector4(0.5, 0.1, 0, 1));
-
-
-			{
-				auto fd = Node::create();
-				auto drawCom = fd->addComponent<DrawRanderComponent>();
-				fd->setPosition(0, 0);
-				addChild(fd, 10);
-				drawCom->addVertex(pos1, Vector4(1.0f, 0.2f, 0.2f, 1));
-				drawCom->addVertex(pos2, Vector4(1.0f, 0.2f, 0.2f, 1));
-				drawCom->signDraw(GL_LINE_STRIP);
-			}
-
-			auto fd = Node::create();
-			auto drawCom = fd->addComponent<DrawRanderComponent>();
-			fd->setPosition(x, y);
-			addChild(fd, 10);
-			drawCom->addVertex(Vector3(-10, -10, 0), Vector4(0.5f, 0.2f, 0.2f, 1));
-			drawCom->addVertex(Vector3(10, -10, 0), Vector4(0.5f, 0.2f, 0.2f, 1));
-			drawCom->addVertex(Vector3(10, 10, 0), Vector4(0.5f, 0.2f, 0.2f, 1));
-			drawCom->addVertex(Vector3(-10, 10, 0), Vector4(0.5f, 0.2f, 0.2f, 1));
-			drawCom->signDraw(GL_TRIANGLE_FAN);
-
 		}
 	});
 }
@@ -227,10 +145,10 @@ void GameStart::initWorld()
 		auto h = 1.f;
 		auto ground1 = Node::create();
 		auto com = ground1->addComponent<DrawRanderComponent>();
-		com->addVertex(-w * WORLD_SCALE, h * WORLD_SCALE, 0);
-		com->addVertex(w * WORLD_SCALE, h * WORLD_SCALE, 0);
-		com->addVertex(w * WORLD_SCALE, -h * WORLD_SCALE, 0);
-		com->addVertex(-w * WORLD_SCALE, -h * WORLD_SCALE, 0);
+		com->addVertex(-w * WORLD_SCALE, h * WORLD_SCALE);
+		com->addVertex(w * WORLD_SCALE, h * WORLD_SCALE);
+		com->addVertex(w * WORLD_SCALE, -h * WORLD_SCALE);
+		com->addVertex(-w * WORLD_SCALE, -h * WORLD_SCALE);
 		ground1->setColor(1, 0, 0, 1);
 		addChild(ground1);
 
@@ -339,17 +257,17 @@ void GameStart::onAddBox(const Vector2& pos, const Size& size, const Vector4& co
 {
 	auto box1 = Node::create();
 	auto com = box1->addComponent<DrawRanderComponent>();
-	com->addVertex(size._width / 2 * WORLD_SCALE, -size._height / 2 * WORLD_SCALE, 0);
-	com->addVertex(size._width / 2 * WORLD_SCALE, size._height / 2 * WORLD_SCALE, 0);
-	com->addVertex(-size._width / 2 * WORLD_SCALE, size._height / 2 * WORLD_SCALE, 0);
-	com->addVertex(-size._width / 2 * WORLD_SCALE, -size._height / 2 * WORLD_SCALE, 0);
+	com->addVertex(size._width / 2 * WORLD_SCALE, -size._height / 2 * WORLD_SCALE);
+	com->addVertex(size._width / 2 * WORLD_SCALE, size._height / 2 * WORLD_SCALE);
+	com->addVertex(-size._width / 2 * WORLD_SCALE, size._height / 2 * WORLD_SCALE);
+	com->addVertex(-size._width / 2 * WORLD_SCALE, -size._height / 2 * WORLD_SCALE);
 	box1->setColor(color);
 	addChild(box1);
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(pos._x, pos._y);
-	bodyDef.linearVelocity = b2Vec2(0, 0); //指定初始线性速度
+	bodyDef.linearVelocity = b2Vec2(10, 0); //指定初始线性速度
 	bodyDef.userData._node = box1.get();
 	bodyDef.linearDamping = 4.0f;
 	bodyDef.angularDamping = 0.4;

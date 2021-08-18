@@ -13,8 +13,8 @@ bool MouseComponent::onMouseKeyEvent(const MouseKeyEvent&et)
 		Node*node = (Node*)(_object);
 		if (!node)
 			return false;
-		auto pos = GameApp::getInstance()->convertViewToNode(node, Vector3(et._x, et._y, 0));
-		if (node->getComponent<AreaComponent>()->isPosInArea(Vector2(pos._x, pos._y)))
+		auto pos = GameApp::getInstance()->convertViewToNode(node, Vector2(et._x, et._y));
+		if (node->getComponent<AreaComponent>()->isPosInArea(pos))
 		{
 			if (et._isDown)
 			{
@@ -48,8 +48,8 @@ bool MouseComponent::onMouseMoveEvent(const MouseMoveEvent&et)
 		Node*node = (Node*)(_object);
 		if (!node)
 			return false;
-		auto pos = GameApp::getInstance()->convertViewToNode(node, Vector3(et._x, et._y, 0));
-		if (node->getComponent<AreaComponent>()->isPosInArea(Vector2(pos._x, pos._y)))
+		auto pos = GameApp::getInstance()->convertViewToNode(node, Vector2(et._x, et._y));
+		if (node->getComponent<AreaComponent>()->isPosInArea(pos))
 		{
 			doMouseIn(et);
 			if (_funcMouseMove)

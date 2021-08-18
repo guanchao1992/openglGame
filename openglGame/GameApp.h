@@ -47,14 +47,8 @@ public:
 
 	inline shared_ptr<dexode::EventBus> getEventBus() { return _events; }
 
-	Vector3 convertToWorld(Node*node, const Vector3&pos);
-	Vector3 convertViewToNode(Node*node, const Vector3&pos);
-
-	//鼠标点击的屏幕坐标转换成世界坐标，x、y是像素坐标，z表示深度
-	//世界坐标为（-1,1）
-	Vector3 posViewToWorld(int x, int y, float z);
-
-	inline GLfloat* getReverseModelViewMatrix() { return _reverseModelViewMatrix; }
+	Vector2 convertToWorld(Node*node, const Vector2&pos);
+	Vector2 convertViewToNode(Node*node, const Vector2&pos);
 public:
 	GLint getProgram(const char*name);
 	SPShader getShader(const char*name);
@@ -81,7 +75,6 @@ protected:
 	GLfloat _viewMatrix[16];
 	GLfloat _modelMatrix[16];
 	GLfloat _modelViewMatrix[16];
-	GLfloat _reverseModelViewMatrix[16];//反向mv
 
 	GLfloat _viewWidth;			//窗口宽度
 	GLfloat _viewHeight;		//窗口高度

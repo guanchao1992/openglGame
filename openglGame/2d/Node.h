@@ -82,8 +82,6 @@ public:
 
 	void setVisible(bool visible);
 	bool isVisible() { return _visible; }
-
-	inline void revisit() { _revisit = true; }
 	//debug
 	//获得所有子节点数量
 	int getAllChildNum();
@@ -102,8 +100,6 @@ public:
 
 public:
 	void setRanderComponent(RanderComponent* com);
-	inline float getAreaOffsetX() { return _areaOffsetX; }
-	inline float getAreaOffsetY() { return _areaOffsetY; }
 protected:
 
 	Vector3 _position = Vector3(0.f, 0.f, 0.f);
@@ -112,6 +108,10 @@ protected:
 	float _angleX = 0.0f;				//绕X轴旋转角度（临时计算数据）
 	float _angleY = 0.0f;				//绕Y轴旋转角度（临时计算数据）
 	float _angleZ = 0.0f;				//绕Z轴旋转角度（临时计算数据）
+
+	//两种旋转计算方式
+	Vector3		_rotateAxis = Vector3(0.f, 0.f, 0.f);	//给定的轴向量
+	float		_angleAxis = 0.0f;
 
 	float _scaleX = 1.0f;
 	float _scaleY = 1.0f;
@@ -138,9 +138,5 @@ protected:
 
 protected:
 	RanderComponent* _randerComponent = nullptr;		//特殊的，用于显示
-
-	//如果有AreaComponent，则会有位移偏转
-	float _areaOffsetX = 0.f;
-	float _areaOffsetY = 0.f;
 };
 

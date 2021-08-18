@@ -22,16 +22,16 @@ void DrawProgress::reDraw()
 	auto size = getComponent<AreaComponent>()->getSize();
 	auto com = getComponent<DrawRanderComponent>();
 	com->clearAllVertex();
-	com->addVertex(Vector3(0.f, 0, 0), _bgColor);
-	com->addVertex(Vector3(size._width, 0, 0), _bgColor);
-	com->addVertex(Vector3(size._width, size._height, 0), _bgColor);
-	com->addVertex(Vector3(0.f, size._height, 0), _bgColor);
+	com->addVertex(Vector2(0.f, 0), _bgColor);
+	com->addVertex(Vector2(size._width, 0), _bgColor);
+	com->addVertex(Vector2(size._width, size._height), _bgColor);
+	com->addVertex(Vector2(0.f, size._height), _bgColor);
 	com->signDraw(GL_TRIANGLE_FAN);
 
-	com->addVertex(Vector3(0.f, 0, 0), _barColor);
-	com->addVertex(Vector3(size._width * _proportion, 0, 0), _barColor);
-	com->addVertex(Vector3(size._width * _proportion, size._height, 0), _barColor);
-	com->addVertex(Vector3(0.f, size._height, 0), _barColor);
+	com->addVertex(Vector2(0.f, 0), _barColor);
+	com->addVertex(Vector2(size._width * _proportion, 0), _barColor);
+	com->addVertex(Vector2(size._width * _proportion, size._height), _barColor);
+	com->addVertex(Vector2(0.f, size._height), _barColor);
 	com->signDraw(GL_TRIANGLE_FAN);
 }
 

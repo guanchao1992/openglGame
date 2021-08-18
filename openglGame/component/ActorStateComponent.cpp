@@ -90,10 +90,10 @@ void ActorStateComponent::update(float time)
 		}
 
 		Actor* actor = (Actor*)_object;
-		auto pos = GameApp::getInstance()->convertViewToNode(actor->getParent(), Vector3(x, y, 0));
+		auto pos = GameApp::getInstance()->convertViewToNode(actor->getParent(), Vector2(x, y));
 		auto offset = Vector2(0, 40);
-		pos.setVector(pos._x - actor->getPosition()._x - offset._x, pos._y - actor->getPosition()._y - offset._y, pos._z);
-		actor->fire(pos);
+		pos.setVector(pos._x - actor->getPosition()._x - offset._x, pos._y - actor->getPosition()._y - offset._y);
+		actor->fire(pos, offset);
 	}
 	return;
 }

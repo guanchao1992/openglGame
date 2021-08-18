@@ -106,8 +106,8 @@ void OutlineBoxComponent::draw()
 
 	for (int i = 0; i < 5; ++i)
 	{
-		pVectexs[i].vertexs[0] = vec[i]._x;// -anchor._x * size._width;
-		pVectexs[i].vertexs[1] = vec[i]._y;// -anchor._y * size._height;
+		pVectexs[i].vertexs[0] = vec[i]._x - anchor._x * size._width;
+		pVectexs[i].vertexs[1] = vec[i]._y - anchor._y * size._height;
 		pVectexs[i].vertexs[2] = 0.0f;
 		pVectexs[i].vertexs[3] = 1.0f;
 
@@ -128,7 +128,7 @@ void OutlineBoxComponent::draw()
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, _verticesVBO);
 
-	glBufferData(GL_ARRAY_BUFFER, 5 * (4 + 4) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 5 * (4 + 4) * sizeof(GLfloat), (GLfloat*)pVectexs, GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(_verticesVAO);
 

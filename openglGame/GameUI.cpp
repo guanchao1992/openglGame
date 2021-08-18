@@ -96,7 +96,7 @@ void GameUI::init()
 
 void GameUI::initBk()
 {
-	Vector4 bgcolor(0.4, 0.4, 0.2, 0.3);
+	Vector4 bgcolor(0.8, 0.4, 0.2, 0.3);
 	{
 		auto fd = Node::create();
 		auto drawCom = fd->addComponent<DrawRanderComponent>();

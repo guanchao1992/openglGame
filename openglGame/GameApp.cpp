@@ -61,7 +61,6 @@ void GameApp::init()
 	_appNode->addChild(_start, 10);
 
 
-	/*
 	char path[256];
 	int index = 1;
 	//»­¸ñ×Ó
@@ -72,8 +71,7 @@ void GameApp::init()
 			auto tn = Node::create();
 			tn->addComponent<AreaComponent>()->setSize(Size(120, 120));
 			auto textureCom = tn->addComponent<TextureRanderComponent>();
-			sprintf_s(path, 256, ".\\res\\test (%d).png", index++);
-			auto pt = TextureController::getInstance()->loadPng(path);
+			auto pt = TextureController::getInstance()->loadPng(".\\res\\test (1).png");
 			textureCom->setTextureID(pt->_textureId);
 
 			tn->setPosition(Vector2(120 * x, 120 * y));
@@ -81,7 +79,6 @@ void GameApp::init()
 		}
 	}
 
-	*/
 	postEvent(EVENT_GAME_RESTART);
 }
 
@@ -190,12 +187,12 @@ void GameApp::reshape()
 	float fov = PI / 4;
 	float aspect = 1.0f;// *_viewWidth / _viewHeight;
 	float zn = 1000;
-	float zf = 100000;
+	float zf = 1000000;
 
 	GLfloat viewMatrix[] = {
 		1 / (tan(fov * 0.5f) * aspect), 0.f, 0.f, 0.f,
 		0.f, 1 / tan(fov * 0.5f), 0.f, 0.f,
-		0.f, 0.f, zf / (zf - zn), 1.f / _viewWidth,
+		0.f, 0.f, zf / (zf - zn), 0.f,
 		0.0f, 0.0f, (zn * zf) / (zn - zf), 1.0f
 	};
 
@@ -261,10 +258,10 @@ void GameApp::visit()
 
 void GameApp::rander()
 {
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 	_bg->rander();
 	_start->rander();
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 	_ui->rander();
 }
 

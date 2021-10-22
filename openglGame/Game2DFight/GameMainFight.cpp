@@ -17,6 +17,8 @@
 #include "component/ConllisionComponent/CollisionActorComponent.h"
 #include "component/ActorAIComponent.h"
 #include "component/ActorSkillComponent.h"
+#include "component/TrackComponent/TrackComponent.h"
+#include "component/TrackComponent/TrackTestComponent.h"
 
 
 void GameMainFight::init()
@@ -73,6 +75,9 @@ void GameMainFight::init()
 		auto target2CollCom = target2->addComponent<CollisionActorComponent>();
 		target2CollCom->enableCollision(CMARK_ENEMY, CMARK_SELF | CMARK_ENEMY | CMARK_SELF_BULLET | CMARK_STONE);
 		target2->getComponent<ActorStateComponent>()->setCamp(ACTORCAMP_ENEMY);
+
+		auto target2TrackCom = target2->addComponent<TrackTestComponent>();
+		target2TrackCom->resetTracks(30, 1, -1);
 	}
 
 

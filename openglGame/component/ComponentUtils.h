@@ -9,6 +9,7 @@ enum ComponentType
 	COMPONENT_MOUSE_MOVE = 3,	//鼠标移动
 	COMPONENT_AREA,				//区块
 	COMPONENT_OUTLINE,			//描线
+	COMPONENT_ROUTE,			//路径
 
 	COMPONENT_ACTOR_STATE,		//演员状态组件
 	COMPONENT_ACTOR_OI,			//控制演员的输入接口
@@ -21,6 +22,8 @@ enum ComponentType
 	COMPONENT_BULLET_MOVE_CHANGE,//子弹移动控制的控制
 
 	COMPONENT_COLLISION,	//碰撞组件
+
+	COMPONENT_TRACK,//轨迹控制组件
 
 };
 

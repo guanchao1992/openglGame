@@ -212,6 +212,15 @@
     <ClCompile Include="component\ActorSkillComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="component\RouteComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\TrackComponent\TrackComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="component\TrackComponent\TrackTestComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DrawBoxNode.h">
@@ -446,6 +455,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="component\ActorSkillComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\RouteComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\TrackComponent\TrackComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="component\TrackComponent\TrackTestComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

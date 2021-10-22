@@ -23,15 +23,15 @@
     <ProjectGuid>{813B49BE-6234-40AC-9C3C-9A98B9C1FCB0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>openglGame</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <VCToolsVersion>14.29.30037</VCToolsVersion>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -204,8 +204,11 @@
     <ClCompile Include="component\FontRanderComponent.cpp" />
     <ClCompile Include="component\OutlineBoxComponent.cpp" />
     <ClCompile Include="component\RanderComponent.cpp" />
+    <ClCompile Include="component\RouteComponent.cpp" />
     <ClCompile Include="component\TextureRanderComponent.cpp" />
     <ClCompile Include="component\MouseComponent.cpp" />
+    <ClCompile Include="component\TrackComponent\TrackComponent.cpp" />
+    <ClCompile Include="component\TrackComponent\TrackTestComponent.cpp" />
     <ClCompile Include="control\CollisionController.cpp" />
     <ClCompile Include="control\ComponentController.cpp" />
     <ClCompile Include="control\FontController.cpp" />
@@ -282,8 +285,11 @@
     <ClInclude Include="component\FontRanderComponent.h" />
     <ClInclude Include="component\OutlineBoxComponent.h" />
     <ClInclude Include="component\RanderComponent.h" />
+    <ClInclude Include="component\RouteComponent.h" />
     <ClInclude Include="component\TextureRanderComponent.h" />
     <ClInclude Include="component\MouseComponent.h" />
+    <ClInclude Include="component\TrackComponent\TrackComponent.h" />
+    <ClInclude Include="component\TrackComponent\TrackTestComponent.h" />
     <ClInclude Include="control\CollisionController.h" />
     <ClInclude Include="control\ComponentController.hpp" />
     <ClInclude Include="control\FontController.h" />

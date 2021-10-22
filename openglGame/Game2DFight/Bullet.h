@@ -10,8 +10,11 @@ class Bullet : public Node
 public:
 	static SPBullet create(Actor* father);
 	void init();
+
+protected:
+	virtual void initComp();
 public:
-	void setSpeed(float speed,float radian);
+	void setSpeed(float speed, float radian);
 	void setSpeed(float speed);
 	void setDir(const Vector2&dir);
 	void setSpeed(const Vector2&speed);
